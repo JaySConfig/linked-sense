@@ -42,28 +42,37 @@ const Step = ({ emoji, text }) => {
 const Problem = () => {
   return (
     <section className="bg-neutral text-neutral-content">
-      <div className="max-w-7xl mx-auto px-8 py-16 md:py-32 text-center">
+      <div className="max-w-7xl mx-auto px-8 py-8 md:py-32 text-center flex flex-col">
+        
+        {/* Header */}
         <h2 className="max-w-3xl mx-auto font-extrabold text-4xl md:text-5xl tracking-tight mb-6 md:mb-8">
-          80% of startups fail because founders never launch
+          Why LinkedSense?
         </h2>
-        <p className="max-w-xl mx-auto text-lg opacity-90 leading-relaxed mb-12 md:mb-20">
-          Emails, DNS records, user authentication... There&apos;s so much going
-          on.
-        </p>
 
-        <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-6">
-          <Step emoji="🧑‍💻" text="8 hrs to add Stripe" />
-
-          <Arrow extraStyle="max-md:-scale-x-100 md:-rotate-90" />
-
-          <Step emoji="😮‍💨" text="Struggle to find time" />
-
-          <Arrow extraStyle="md:-scale-x-100 md:-rotate-90" />
-
-          <Step emoji="😔" text="Quit project" />
+        {/* Subtext */}
+        <div className="max-w-xl mx-auto text-lg opacity-90 leading-relaxed mb-8 md:mb-12">
+          <p className="mb-4">Most LinkedIn creators rely on guesswork.</p>
+          <p className="mb-4">
+            LinkedSense removes the uncertainty by providing clear, AI-powered content insights.
+          </p>
         </div>
+
+        {/* Benefits Section with `flex-grow` */}
+        <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 flex-grow">
+          <Step emoji="✅" text="Discover What Works Best" />
+          <Step emoji="✅" text="Get real-time engagement analysis" />
+          <Step emoji="✅" text="Optimise your content strategy" />
+        </div>
+
+        {/* CTA - Kept at bottom without increasing section size */}
+        <div className="max-w-xl mx-auto text-lg leading-relaxed mt-auto pt-12">
+          <p className="font-bold text-2xl">Start making data-driven LinkedIn posts today.</p>
+        </div>
+
       </div>
     </section>
+
+
   );
 };
 
