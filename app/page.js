@@ -1,14 +1,12 @@
 import Link from "next/link";
-import ButtonSignin from "@/components/ButtonSignin";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
-import FeaturesGrid from "@/components/FeaturesGrid";
-import CTA from "@/components/CTA";
-import FeaturesListicle from "@/components/FeaturesListicle";
+
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import FeaturesAccordion from "@/components/FeaturesAccordion";
+import FeaturesCard from "@/components/FeaturesCard";
+import ButtonSignin from "@/components/ButtonSignin";
 
 
 
@@ -31,15 +29,8 @@ export default function Page() {
         </section>
 
         <section className="flex flex-col items-center justify-center text-center gap-12 px-8 ">
-        <FeaturesListicle/>
-        </section>
-
-        <section className="flex flex-col items-center justify-center text-center gap-12 px-8 ">
-        <FeaturesGrid/>
-        </section>
-
-        <section className="flex flex-col items-center justify-center text-center gap-12 px-8 ">
-        <FeaturesAccordion/>
+        <FeaturesCard/>
+        <ButtonSignin />
         </section>
 
         <section className="flex flex-col items-center justify-center text-center gap-12 px-8 pb-24">
@@ -49,6 +40,8 @@ export default function Page() {
         <section>
           <Footer/>
         </section>
+
+
 
       </main>
     </>

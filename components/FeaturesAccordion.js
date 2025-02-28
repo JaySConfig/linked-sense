@@ -12,93 +12,135 @@ import Image from "next/image";
 // - alt: The alt text of the image (if type is 'image')
 const features = [
   {
-    title: "Emails",
+    title: "🔍 AI-Powered Insights",
     description:
-      "Send transactional emails, setup your DNS to avoid spam folder (DKIM, DMARC, SPF in subdomain), and listen to webhook to receive & forward emails",
-    type: "video",
-    path: "https://d3m8mk7e1mf7xn.cloudfront.net/app/newsletter.webm",
-    format: "video/webm",
-    svg: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-6 h-6"
-      >
-        <path
-          strokeLinecap="round"
-          d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 10-2.636 6.364M16.5 12V8.25"
-        />
-      </svg>
-    ),
+      "Understand what makes your LinkedIn posts perform best with intelligent analysis.",
+    // type: "video",
+    // path: "https://d3m8mk7e1mf7xn.cloudfront.net/app/newsletter.webm",
+    // format: "video/webm",
+    // svg: (
+    //   <svg
+    //     xmlns="http://www.w3.org/2000/svg"
+    //     fill="none"
+    //     viewBox="0 0 24 24"
+    //     strokeWidth={1.5}
+    //     stroke="currentColor"
+    //     className="w-6 h-6"
+    //   >
+    //     <path
+    //       strokeLinecap="round"
+    //       d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 10-2.636 6.364M16.5 12V8.25"
+    //     />
+    //   </svg>
+    // ),
   },
   {
-    title: "Payments",
+    title: "📊 Engagement Analysis",
     description:
-      "Create checkout sessions, handle webhooks to update user's account (subscriptions, one-time payments...) and tips to setup your account & reduce chargebacks",
-    type: "image",
-    path: "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
-    alt: "A computer",
-    svg: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-6 h-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
-        />
-      </svg>
-    ),
+      "See real-time engagement trends and optimise accordingly.",
+    // type: "image",
+    // path: "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
+    // alt: "A computer",
+    // svg: (
+    //   <svg
+    //     xmlns="http://www.w3.org/2000/svg"
+    //     fill="none"
+    //     viewBox="0 0 24 24"
+    //     strokeWidth={1.5}
+    //     stroke="currentColor"
+    //     className="w-6 h-6"
+    //   >
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
+    //     />
+    //   </svg>
+    // ),
   },
   {
-    title: "Authentication",
+    title: "⏰ Best Time to Post",
     description:
-      "Magic links setup, login with Google walkthrough, save user in MongoDB/Supabase, private/protected pages & API calls",
-    svg: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-6 h-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
-        />
-      </svg>
-    ),
+      "Find the optimal posting time for maximum reach and visibility.",
+    // svg: (
+    //   <svg
+    //     xmlns="http://www.w3.org/2000/svg"
+    //     fill="none"
+    //     viewBox="0 0 24 24"
+    //     strokeWidth={1.5}
+    //     stroke="currentColor"
+    //     className="w-6 h-6"
+    //   >
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+    //     />
+    //   </svg>
+    // ),
   },
   {
-    title: "Style",
+    title: "✨ Content Recommendations",
     description:
-      "Components, animations & sections (like this features section), 20+ themes with daisyUI, automatic dark mode",
-    svg: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-6 h-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
-        />
-      </svg>
-    ),
+      "Get AI-driven suggestions to improve your LinkedIn strategy.",
+    // svg: (
+    //   <svg
+    //     xmlns="http://www.w3.org/2000/svg"
+    //     fill="none"
+    //     viewBox="0 0 24 24"
+    //     strokeWidth={1.5}
+    //     stroke="currentColor"
+    //     className="w-6 h-6"
+    //   >
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
+    //     />
+    //   </svg>
+    // ),
+  },
+  {
+    title: "🎯 Audience Insights",
+    description:
+      "Discover what resonates most with your audience.",
+    // svg: (
+    //   <svg
+    //     xmlns="http://www.w3.org/2000/svg"
+    //     fill="none"
+    //     viewBox="0 0 24 24"
+    //     strokeWidth={1.5}
+    //     stroke="currentColor"
+    //     className="w-6 h-6"
+    //   >
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
+    //     />
+    //   </svg>
+    // ),
+  },
+  {
+    title: "📈 Post Performance Breakdown",
+    description:
+      "Understand why some posts succeed while others don&#39;t.",
+    // svg: (
+    //   <svg
+    //     xmlns="http://www.w3.org/2000/svg"
+    //     fill="none"
+    //     viewBox="0 0 24 24"
+    //     strokeWidth={1.5}
+    //     stroke="currentColor"
+    //     className="w-6 h-6"
+    //   >
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
+    //     />
+    //   </svg>
+    // ),
   },
 ];
 
