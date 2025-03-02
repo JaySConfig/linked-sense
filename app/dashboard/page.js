@@ -1,7 +1,6 @@
 'use client'
 
 import ButtonAccount from "@/components/ButtonAccount";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const dynamic = "force-dynamic";
@@ -15,14 +14,13 @@ export default async function Dashboard() {
     <main className="min-h-screen p-8 pb-24">
       
       <section className="max-w-xl mx-auto space-y-8">
-        <Header />
         <ButtonAccount />
         <h1 className="text-3xl md:text-4xl font-extrabold">Dashboard</h1>
       </section>
       <section className="max-w-xl mx-auto space-y-8">
 
       </section>
-      <Footer />
+      
     </main>
   );
 }
