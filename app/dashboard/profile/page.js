@@ -6,6 +6,7 @@ import { useState } from 'react';
 export default function ProfilePage() {
   // State for the form data
   const [formData, setFormData] = useState({
+    typeOfProfile: '',
     industry: '',
     role: '',
     experience: '',
@@ -88,6 +89,26 @@ export default function ProfilePage() {
             <p className="text-sm text-base-content/70">Tell us about your professional experience</p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+
+            <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Type of Profile</span>
+                </label>
+                <select 
+                  name="typeOfProfile" 
+                  value={formData.typeOfProfile}
+                  onChange={handleChange}
+                  className="select select-bordered w-full"
+                >
+                  <option value="" disabled>Select your profile</option>
+                  <option value="personal">Personal</option>
+                  <option value="company">Company</option>
+                  
+                </select>
+              </div>
+
+
+
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Industry</span>
