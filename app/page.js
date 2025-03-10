@@ -1,4 +1,5 @@
-import Link from "next/link";
+// import Link from "next/link";
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
@@ -16,7 +17,9 @@ export default function Page() {
       <header className="p-4 flex max-w-3xl mx-auto items-center justify-center">
         {/* <Head/> */}
         {/* <ButtonSignin text="Login" /> */}
+        <Suspense fallback={<div className="w-full text-center">Loading header...</div>}>
         <Header />
+        </Suspense>
         
       </header>
       <main>

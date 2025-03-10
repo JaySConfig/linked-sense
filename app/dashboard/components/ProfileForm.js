@@ -54,7 +54,7 @@ export default function ProfileForm({ initialData = {} }) {
     
     try {
       // Call the server action to save data
-      // const result = await saveProfileData(formData);
+      await saveProfileData(formData);
       setMessage('Profile updated successfully!');
     } catch (error) {
       setMessage('Error saving profile. Please try again.');
