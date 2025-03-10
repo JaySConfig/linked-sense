@@ -30,21 +30,21 @@ export default function ProfileForm({ initialData = {} }) {
     });
   };
 
-  // Handle checkbox changes for multiple selections
-  const handleCheckboxChange = (e) => {
-    const { name, value, checked } = e.target;
-    if (checked) {
-      setFormData({
-        ...formData,
-        [name]: [...formData[name], value]
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: formData[name].filter(item => item !== value)
-      });
-    }
-  };
+  // // Handle checkbox changes for multiple selections
+  // const handleCheckboxChange = (e) => {
+  //   const { name, value, checked } = e.target;
+  //   if (checked) {
+  //     setFormData({
+  //       ...formData,
+  //       [name]: [...formData[name], value]
+  //     });
+  //   } else {
+  //     setFormData({
+  //       ...formData,
+  //       [name]: formData[name].filter(item => item !== value)
+  //     });
+  //   }
+  // };
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -54,7 +54,7 @@ export default function ProfileForm({ initialData = {} }) {
     
     try {
       // Call the server action to save data
-      const result = await saveProfileData(formData);
+      // const result = await saveProfileData(formData);
       setMessage('Profile updated successfully!');
     } catch (error) {
       setMessage('Error saving profile. Please try again.');

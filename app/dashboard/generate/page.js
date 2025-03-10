@@ -26,6 +26,16 @@ export default function GeneratePage() {
     <div className="space-y-6">
       <h1 className="text-3xl md:text-4xl font-extrabold">Generate LinkedIn Posts</h1>
       <p className="text-base-content/80">Get AI-powered post ideas based on your profile.</p>
+      <div className="bg-base-200 p-4 rounded-lg mb-6">
+      <h2 className="font-bold text-lg mb-2">How This Works</h2>
+      <ol className="list-decimal list-inside space-y-2 text-base-content/80">
+        <li>Select a <strong>content category</strong> that matches your mood or goal today</li>
+        <li>Choose a <strong>specific question</strong> from that category to answer</li>
+        <li>Write your <strong>authentic response</strong> to the question</li>
+        <li>Select your preferred <strong>tone</strong> and whether you want a <strong>call to action</strong></li>
+        <li>Click <strong>Generate Post Ideas</strong> to create LinkedIn-ready content!</li>
+      </ol>
+    </div>
 
       {/* Post Generation Form */}
       {/* <div className="p-6 bg-base-100 shadow-lg rounded-lg space-y-4">
@@ -42,6 +52,8 @@ export default function GeneratePage() {
 
     <div className="form-control">
       <label className="label">Content Inspiration Category</label>
+      <p className="text-sm text-base-content/70 mb-2">Choose the type of content you want to create today</p>
+
       <select
         name="contentCategory"
         value={formData.contentCategory}
@@ -68,7 +80,7 @@ export default function GeneratePage() {
           <>
             <option value="">Select a reflection question</option>
             <option value="challenge">1️⃣ What was the biggest challenge you faced this week, and how did you handle it?</option>
-            <option value="failure">2️⃣ What's something that didn't go as planned, and what did you learn from it?</option>
+            <option value="failure">2️⃣ What&apos;s something that didn&apos;t go as planned, and what did you learn from it?</option>
             <option value="redo">3️⃣ If you could redo one decision from this week, what would it be and why?</option>
           </>
         )}
@@ -76,16 +88,16 @@ export default function GeneratePage() {
         {formData.contentCategory === "insightsLessons" && (
           <>
             <option value="">Select an insight question</option>
-            <option value="ahamoment">4️⃣ Did you have an "aha" moment that changed how you work or think?</option>
-            <option value="learned">5️⃣ What's the most interesting thing you read, watched, or learned this week?</option>
-            <option value="habit">6️⃣ What's one habit or small change that made a big impact on your productivity this week?</option>
+            <option value="ahamoment">4️⃣ Did you have an &quot;aha&quot; moment that changed how you work or think?</option>
+            <option value="learned">5️⃣ What&apos;s the most interesting thing you read, watched, or learned this week?</option>
+            <option value="habit">6️⃣ What&apos;s one habit or small change that made a big impact on your productivity this week?</option>
           </>
         )}
         
         {formData.contentCategory === "winsAccomplishments" && (
           <>
             <option value="">Select an accomplishment question</option>
-            <option value="proud">7️⃣ What's one thing you accomplished this week that you're proud of?</option>
+            <option value="proud">7️⃣ What&apos;s one thing you accomplished this week that you&apos;re proud of?</option>
             <option value="perspective">8️⃣ Did a conversation or meeting this week completely shift your perspective on something?</option>
           </>
         )}
@@ -94,8 +106,8 @@ export default function GeneratePage() {
           <>
             <option value="">Select an advice question</option>
             <option value="advice">9️⃣ If you had to give one piece of advice to someone starting in your field based on this week, what would it be?</option>
-            <option value="nextweek">🔟 What's one thing you'll do differently next week based on what you learned this week?</option>
-            <option value="smallthing">🔥 What's something small that had a surprisingly big impact this week?</option>
+            <option value="nextweek">🔟 What&apos;s one thing you&apos;ll do differently next week based on what you learned this week?</option>
+            <option value="smallthing">🔥 What&apos;s something small that had a surprisingly big impact this week?</option>
           </>
         )}
       </select>
@@ -148,7 +160,7 @@ export default function GeneratePage() {
           </select>
         </div>
 
-        <div className="form-control">
+        {/* <div className="form-control">
           <label className="label">Whats the key takeaway for your audience?</label>
           <textarea
             name="keyTakeaway"
@@ -157,7 +169,7 @@ export default function GeneratePage() {
             className="textarea textarea-bordered"
             placeholder="What do you want your audience to learn or take away?"
           />
-        </div>
+        </div> */}
 
         <div className="form-control">
           <label className="label">Do you want to include a call to action?</label>
@@ -174,6 +186,17 @@ export default function GeneratePage() {
             <option value="inviteToConnect">Invite people to connect</option>
           </select>
         </div>
+        <details className="mt-4 collapse collapse-arrow bg-base-200">
+          <summary className="collapse-title font-medium">Tips for Better Results</summary>
+          <div className="collapse-content">
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>Be specific with your examples - concrete details perform better than generalisations</li>
+              <li>Keep your answer focused on one key story or insight</li>
+              <li>Include real examples from your experience when possible</li>
+              <li>Consider what would be most valuable to your LinkedIn audience</li>
+            </ul>
+          </div>
+        </details>
 
         <button className=" justify-center btn btn-primary mt-4">Generate Post Ideas</button>
       </div>

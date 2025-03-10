@@ -72,7 +72,7 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl md:text-4xl font-extrabold">My Profile</h1>
-      <p className="text-base-content/80">Complete your profile to get personalized LinkedIn content suggestions</p>
+      <p className="text-base-content/80">Complete your profile to get personalised LinkedIn content suggestions</p>
       
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Show success/error message if any */}
@@ -260,7 +260,7 @@ export default function ProfilePage() {
                 value={formData.professionalBrand}
                 onChange={handleChange}
                 className="textarea textarea-bordered h-20"
-                placeholder="What do you want to be known for? What's your professional value proposition?"
+                placeholder="What do you want to be known for? What&apos;s your professional value proposition?"
               />
             </div>
           </div>
@@ -308,14 +308,14 @@ export default function ProfilePage() {
             
             <div className="form-control mt-4">
               <label className="label">
-                <span className="label-text">What's Your Story?</span>
+                <span className="label-text">What&apos;s Your Story?</span>
               </label>
               <textarea 
                 name="uniquePerspective"
                 value={formData.uniquePerspective}
                 onChange={handleChange}
                 className="textarea textarea-bordered h-32"
-                placeholder="Share key experiences, challenges you've overcome, or unique perspectives you bring to your field"
+                placeholder="Share key experiences, challenges you&apos;ve overcome, or unique perspectives you bring to your field"
               />
             </div>
           </div>
