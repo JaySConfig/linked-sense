@@ -2,15 +2,18 @@
 
 import { useState  } from "react";
 
-export default function GeneratePage() {
+export default function GeneratePage( onSubmit ) {
     // state for the form inputs
+
+    const [generatedPost, setGeneratedPost] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState({
       contentCategory: "reflectionChallenges",
       contentQuestion: "",
-      postType: "thoughtLeadership",
+      // postType: "thoughtLeadership",
       postTone: "professional",
-      keyTakeaway: "",
+      // keyTakeaway: "",
       callToAction: "noCta",
       answerText: ""
     });
@@ -21,8 +24,38 @@ export default function GeneratePage() {
 
     };
 
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setIsLoading(true);
+      
+      try {
+        const response = await fetch('/api/generate-post', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.details || data.error || 'Failed to generate post');
+        }
+        
+        setGeneratedPost(data.post);
+      } catch (error) {
+        console.error('Error:', error);
+        // Optional: add error state handling here
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
    
   return (
+    <section>
+    <form onSubmit={handleSubmit}>
     <div className="space-y-6">
       <h1 className="text-3xl md:text-4xl font-extrabold">Generate LinkedIn Posts</h1>
       <p className="text-base-content/80">Get AI-powered post ideas based on your profile.</p>
@@ -199,7 +232,42 @@ export default function GeneratePage() {
         </details>
 
         <button className=" justify-center btn btn-primary mt-4">Generate Post Ideas</button>
+        
       </div>
+      
+      </form>
+      <div>
+      {isLoading && (
+          <div className="mt-8 text-center">
+            <div className="loading loading-spinner loading-lg"></div>
+            <p className="mt-2">Generating your LinkedIn post...</p>
+          </div>
+        )}
+
+        {generatedPost && !isLoading && (
+          <div className="mt-8 p-6 bg-base-100 shadow-lg rounded-lg">
+            <h2 className="text-xl font-bold mb-4">Your Generated LinkedIn Post</h2>
+            <div className="whitespace-pre-wrap bg-base-200 p-4 rounded-lg">
+              {generatedPost}
+            </div>
+            <div className="flex justify-between mt-4">
+              <button 
+                className="btn btn-outline btn-sm"
+                onClick={() => {navigator.clipboard.writeText(generatedPost)}}
+              >
+                Copy to Clipboard
+              </button>
+              <button className="btn btn-primary btn-sm">Share to LinkedIn</button>
+            </div>
+          </div>
+        )}
+
+      </div>
+      </section>
+      
+      
+
+      
     
   );
 }
