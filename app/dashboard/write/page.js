@@ -2,7 +2,7 @@
 
 import { useState  } from "react";
 
-export default function writePage( onSubmit ) {
+export default function WritePage( onSubmit ) {
     // state for the form inputs
 
     const [writtenPost, setWrittenPost] = useState("");
