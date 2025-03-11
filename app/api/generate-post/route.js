@@ -29,41 +29,44 @@ export const writePOST = async (request) => {
     
     // Create a prompt for the LinkedIn post
     const prompt = `
-    You are an expert LinkedIn content writer. Your task is to generate a well-structured, engaging LinkedIn post based on the following user input.
+    You are a LinkedIn content expert skilled in crafting highly engaging, well-structured LinkedIn posts. 
 
-      **Post Details:**
-      - **Topic:** ${postTopic}
-      - **Key Takeaways:** ${keyTakeaway}
-      - **Post Type:** ${postType} (e.g., Thought Leadership, Personal Story, Industry Insights)
-      - **Tone:** ${postTone} (e.g., Professional, Conversational, Inspirational)
-      - **Post Length:** ${postLength} (e.g., Short, Medium, Long)
-      - **Call to Action:** ${callToAction} (If “noCta,” do not include a CTA)
+      ### **Task**  
+      Generate a LinkedIn post based on the following user inputs:  
 
-      ### **Guidelines:**
-      - Write in a compelling, authentic LinkedIn style.
-      - Use clear formatting, short paragraphs, and line breaks to enhance readability.
-      - If **key takeaways** are provided, focus on delivering **valuable insights** around them.
-      - If the **post type** is "thoughtLeadership," provide **unique perspectives** that spark discussion.
-      - If a **CTA is included**, make it natural and engaging.
+      - **Content Category:** ${contentCategory}  
+      - **Chosen Question:** ${contentQuestion}  
+      - **User's Response:** ${answerText}  
+      - **Post Tone:** ${postTone} (e.g., Professional, Conversational, Inspirational, Witty/Funny, Data-Driven)  
+      - **Call to Action:** ${callToAction} (If "noCta", exclude a CTA)  
+
+      ### **Guidelines:**  
+      1️⃣ **Make it engaging & structured** – Use short paragraphs and line breaks for readability.  
+      2️⃣ **Follow LinkedIn best practices** – Use **a strong hook** to grab attention.  
+      3️⃣ **Include emojis and hashtags naturally** – But don’t overdo it.  
+      4️⃣ **If a CTA is provided, make it compelling** – Ensure it flows naturally.  
+      5️⃣ **Keep it concise** – Deliver value in a clear, engaging way.  
 
       ### **Example Output:**  
-      For a **thought leadership post** on “AI in Marketing” with a **professional tone**, the output might look like this:
+      For a **reflection post** on overcoming challenges, with a **conversational tone** and **CTA asking for engagement**, the output might look like this:
 
       ---
-      💡 **AI is changing the marketing game—are you keeping up?**  
+      🚀 **This week threw a curveball at me... but here’s what I learned!**  
 
-      In the last five years, we’ve seen AI go from a **buzzword** to a **game-changer**. But it’s not about replacing marketers—it’s about **enhancing creativity and efficiency**.  
+      I faced a huge challenge when [describe user’s response]. At first, I struggled, but then I realized:  
 
-      🔹 AI helps **personalize content at scale**  
-      🔹 Automates repetitive tasks so teams focus on **strategy**  
-      🔹 Provides **data-driven insights** for better decision-making  
+      ✅ [Key takeaway 1]  
+      ✅ [Key takeaway 2]  
+      ✅ [Key takeaway 3]  
 
-      The question is: **How are you leveraging AI in your marketing strategy?**  
+      This experience reminded me that [insight related to user’s answer].  
 
-      #AI #Marketing #Innovation
+      💬 **What’s a challenge you overcame recently? Let’s share & learn from each other!**  
+
+      #Leadership #Growth #LessonsLearned
       ---
 
-      **Now, generate a LinkedIn post based on the provided inputs.** 🚀
+      Now, using the provided inputs, craft a LinkedIn post following these principles.
 
     `;
     
