@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export const POST = async (request) => {
+export const writePOST = async (request) => {
   try {
     const { contentCategory, contentQuestion, postTone, callToAction, answerText } = await request.json();
     
@@ -29,10 +29,42 @@ export const POST = async (request) => {
     
     // Create a prompt for the LinkedIn post
     const prompt = `
-    You're a linkedIn expert, use the following information to create a professional linkedIn post 
-    that will generate engagement. ${answerText}. The tone should be ${postTone}. At the end of the post we will want to ${callToAction}
-      Format it with emojis and hashtags as appropriate for LinkedIn.
-      Keep it concise and engaging.
+    You are an expert LinkedIn content writer. Your task is to generate a well-structured, engaging LinkedIn post based on the following user input.
+
+      **Post Details:**
+      - **Topic:** ${postTopic}
+      - **Key Takeaways:** ${keyTakeaway}
+      - **Post Type:** ${postType} (e.g., Thought Leadership, Personal Story, Industry Insights)
+      - **Tone:** ${postTone} (e.g., Professional, Conversational, Inspirational)
+      - **Post Length:** ${postLength} (e.g., Short, Medium, Long)
+      - **Call to Action:** ${callToAction} (If “noCta,” do not include a CTA)
+
+      ### **Guidelines:**
+      - Write in a compelling, authentic LinkedIn style.
+      - Use clear formatting, short paragraphs, and line breaks to enhance readability.
+      - If **key takeaways** are provided, focus on delivering **valuable insights** around them.
+      - If the **post type** is "thoughtLeadership," provide **unique perspectives** that spark discussion.
+      - If a **CTA is included**, make it natural and engaging.
+
+      ### **Example Output:**  
+      For a **thought leadership post** on “AI in Marketing” with a **professional tone**, the output might look like this:
+
+      ---
+      💡 **AI is changing the marketing game—are you keeping up?**  
+
+      In the last five years, we’ve seen AI go from a **buzzword** to a **game-changer**. But it’s not about replacing marketers—it’s about **enhancing creativity and efficiency**.  
+
+      🔹 AI helps **personalize content at scale**  
+      🔹 Automates repetitive tasks so teams focus on **strategy**  
+      🔹 Provides **data-driven insights** for better decision-making  
+
+      The question is: **How are you leveraging AI in your marketing strategy?**  
+
+      #AI #Marketing #Innovation
+      ---
+
+      **Now, generate a LinkedIn post based on the provided inputs.** 🚀
+
     `;
     
     console.log("Sending prompt to Gemini API...");
