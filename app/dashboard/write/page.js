@@ -76,7 +76,7 @@ export default function writePage( onSubmit ) {
         </div> 
         
         <div className="form-control">
-          <label className="label">What's type of post is it?</label>
+          <label className="label">What type of post is it?</label>
           <select
             name="postType"
             value={formData.postType}
