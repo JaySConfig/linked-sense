@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export const writePOST = async (request) => {
+export const POST = async (request) => {
   try {
     const { contentCategory, contentQuestion, postTone, callToAction, answerText } = await request.json();
     
