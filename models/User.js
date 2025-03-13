@@ -36,6 +36,20 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // ADD THIS PROFILE FIELD
+    profile: {
+      typeOfProfile: String,
+      industry: String,
+      role: String,
+      experience: String,
+      expertise: String,
+      linkedinGoals: [String],
+      targetAudience: String,
+      professionalBrand: String,
+      influencers: String,
+      examplePosts: String,
+      uniquePerspective: String
+    }
   },
   {
     timestamps: true,

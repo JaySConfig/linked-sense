@@ -1,6 +1,9 @@
 // app/dashboard/profile/page.js
 "use client";
 
+import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+
 import { useState } from 'react';
 
 export default function ProfilePage() {
@@ -21,6 +24,42 @@ export default function ProfilePage() {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
+
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!session) return;
+
+      try{
+        console.log('fetching profile data...')
+        const response = await fetch('/api/profile');
+        console.log('api response status', response.status);
+
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('profile data recieved', data);
+
+          if (data.profile && Object.keys(data.profile).length > 0) {
+          console.log('Setting form data with profile');
+          setFormData(prev => ({
+            ...prev,
+            ...data.profile,
+            linkedinGoals: Array.isArray(data.profile.linkedinGoals) ? 
+              data.profile.linkedinGoals : []
+          }));
+        } else {
+          console.log('No profile data found');
+        }
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchProfile();
+  }, [session]);
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -47,27 +86,34 @@ export default function ProfilePage() {
     }
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setMessage('');
-    
-    try {
-      // Here you would call an API to save the data
-      console.log('Form submitted:', formData);
+      // Handle form submission
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+      setMessage('');
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setMessage('Profile updated successfully!');
-    } catch (error) {
-      setMessage('Error saving profile. Please try again.');
-      console.error('Save error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      try {
+        // Call the API to save profile data
+        const response = await fetch('/api/profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to save profile');
+        }
+        
+        setMessage('Profile updated successfully!');
+      } catch (error) {
+        setMessage('Error saving profile. Please try again.');
+        console.error('Save error:', error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
 
   return (
     <div className="space-y-6">
