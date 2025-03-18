@@ -70,19 +70,6 @@ export default function GeneratePage( onSubmit ) {
       </ol>
     </div>
 
-      {/* Post Generation Form */}
-      {/* <div className="p-6 bg-base-100 shadow-lg rounded-lg space-y-4">
-        <div className="form-control">
-          <label className="label">What have you been up to lately?</label>
-          <textarea
-            name="recentActivity"
-            value={formData.recentActivity}
-            onChange={handleChange}
-            className="textarea textarea-bordered"
-            placeholder="Describe something interesting you've done recently..."
-          />
-        </div> */}
-
     <div className="form-control">
       <label className="label">Content Inspiration Category</label>
       <p className="text-sm text-base-content/70 mb-2">Choose the type of content you want to create today</p>
@@ -160,22 +147,7 @@ export default function GeneratePage( onSubmit ) {
       </div>
     )}
 
-        
-
-        {/* <div className="form-control">
-          <label className="label">What type of post do you want to create?</label>
-          <select
-            name="postType"
-            value={formData.postType}
-            onChange={handleChange}
-            className="select select-bordered"
-          >
-            <option value="thoughtLeadership">Thought Leadership</option>
-            <option value="personalStory">Personal Story</option>
-            <option value="educational">Educational/Practical Tips</option>
-            <option value="engagement">Audience Engagement (Poll, Question, Discussion)</option>
-          </select>
-        </div> */}
+      
 
         <div className="form-control">
           <label className="label">How do you want this post to feel?</label>
@@ -193,26 +165,15 @@ export default function GeneratePage( onSubmit ) {
           </select>
         </div>
 
-        {/* <div className="form-control">
-          <label className="label">Whats the key takeaway for your audience?</label>
-          <textarea
-            name="keyTakeaway"
-            value={formData.keyTakeaway}
-            onChange={handleChange}
-            className="textarea textarea-bordered"
-            placeholder="What do you want your audience to learn or take away?"
-          />
-        </div> */}
 
         <div className="form-control">
-          <label className="label">Do you want to include a call to action?</label>
+          <label className="label">What do you want people to do?</label>
           <select
             name="callToAction"
             value={formData.callToAction}
             onChange={handleChange}
             className="select select-bordered"
           >
-            <option value="noCTA">No CTA</option>
             <option value="askAQuestion">Ask a question</option>
             <option value="encourageDiscussion">Encourage Discussion</option>
             <option value="promoteProductService">Promote a product/service</option>

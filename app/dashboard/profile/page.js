@@ -383,3 +383,5 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+app/dashboard/profile/page.js

@@ -1,7 +1,5 @@
 'use client'
 
-import ButtonAccount from "@/components/ButtonAccount";
-import Footer from "@/components/Footer";
 import Link from 'next/link';
 
 export const dynamic = "force-dynamic";
@@ -78,7 +76,7 @@ export default function Dashboard() {
       <div className="card bg-base-100 shadow-lg">
         <div className="card-body">
           <h2 className="card-title">Content Ideas For You</h2>
-          <p className="text-sm text-base-content/70 mb-4">Complete your profile to get personalized content ideas</p>
+          <p className="text-sm text-base-content/70 mb-4">Complete your profile to get personalised content ideas</p>
           
           <div className="space-y-4">
             <div className="p-4 bg-base-200 rounded-lg hover:bg-base-300 cursor-pointer transition-colors">
