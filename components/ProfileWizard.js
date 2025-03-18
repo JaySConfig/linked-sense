@@ -6,7 +6,7 @@ function OnboardingFlow() {
     {
       id: 'goals',
       title: 'Goals',
-      description: 'Let\'s understand what you want to achieve on LinkedIn',
+      description: "Let's understand what you want to achieve on LinkedIn.",
       questions: [
         {
           id: 'primaryGoal',
@@ -47,15 +47,58 @@ function OnboardingFlow() {
       ]
     },
     {
+      id: 'audience',
+      title: 'Understanding Your Audience',
+      description: "Let's identify who you're speaking to and what matters most to them.",
+      questions: [
+        {
+          id: 'audienceChallenges',
+          question: 'What are the biggest challenges your audience faces?',
+          type: 'tagInput',
+          description: 'Identify the key struggles your audience encounters.',
+          minSelections: 3,
+          maxSelections: 5,
+          suggestions: [
+            'Scaling their business', 'Generating consistent leads', 'Navigating industry changes', 'Managing remote teams',
+            'Breaking into leadership roles'
+          ]
+        },
+        {
+          id: 'audienceFears',
+          question: 'What are your audience’s biggest fears when it comes to their industry or career?',
+          type: 'tagInput',
+          description: 'Recognize the concerns that may hold your audience back.',
+          minSelections: 3,
+          maxSelections: 5,
+          suggestions: [
+            'Losing relevance in the industry', 'Struggling to stand out', 'Failing to generate enough revenue', 'Losing job security',
+            'Being seen as an imposter'
+          ]
+        },
+        {
+          id: 'audienceGoals',
+          question: 'What are the primary goals your audience wants to achieve?',
+          type: 'tagInput',
+          description: 'Determine the aspirations that drive your audience forward.',
+          minSelections: 3,
+          maxSelections: 5,
+          suggestions: [
+            'Building a strong personal brand', 'Getting promoted to leadership', 'Raising funding for their startup',
+            'Becoming a sought-after speaker', 'Mastering digital marketing'
+          ]
+        }
+      ]
+    },
+    {
       id: 'persona',
       title: 'Executive Persona & Positioning',
-      description: 'Let\'s define how you want to be perceived on LinkedIn',
+      description: "Let's define how you want to be perceived on LinkedIn.",
       questions: [
         {
           id: 'expertiseAreas',
-          question: 'Which topics do you want to be known for? (Select 3-5 areas)',
+          question: 'Which key areas of expertise do you want to be recognized for on LinkedIn?',
           type: 'tagInput',
-          description: 'These will become your content pillars on LinkedIn',
+          description: 'These will become your content pillars on LinkedIn.',
           minSelections: 3,
           maxSelections: 5,
           suggestions: [
@@ -64,10 +107,69 @@ function OnboardingFlow() {
             'Customer Experience', 'Product Development', 'Sustainability',
             'AI/Machine Learning', 'Blockchain', 'Industry Insights'
           ]
+        },
+        {
+          id: 'uniquePerspective',
+          question: 'How do you naturally express your insights?',
+          type: 'singleSelect',
+          description: 'Define the style in which you communicate your expertise.',
+          options: [
+            { value: 'analytical', label: 'Analytical (Breaks down complex ideas with logic & data)' },
+            { value: 'inspiring', label: 'Inspiring (Motivates with personal stories & big-picture thinking)' },
+            { value: 'challenging', label: 'Challenging (Questions norms & disrupts industry beliefs)' },
+            { value: 'informative', label: 'Informative (Provides structured knowledge through education & tutorials)' }
+          ]
+        },
+        {
+          id: 'contentPillars',
+          question: 'What topics do you consistently post about?',
+          type: 'tagInput',
+          description: 'Define the recurring themes that shape your LinkedIn content.',
+          minSelections: 3,
+          maxSelections: 5,
+          suggestions: [
+            'Startup Growth & Bootstrapping', 'AI in Marketing & Tech Trends', 'Leadership & Team Building',
+            'Personal Branding & Career Growth', 'Fundraising & Investor Relations', 'Sales & Business Development'
+          ]
+        }
+      ]
+    },
+    {
+      id: 'content',
+      title: 'Content Strategy',
+      description: "Let's define how you'll structure and deliver your content on LinkedIn.",
+      questions: [
+        {
+          id: 'contentTypes',
+          question: 'What content types do you want to create?',
+          type: 'multiSelect',
+          description: 'Pick at least two content types that match your style.',
+          minSelections: 2,
+          options: [
+            { value: 'storytelling', label: 'Storytelling (Personal experiences & insights)' },
+            { value: 'controversial', label: 'Controversial Takes (Challenging industry norms)' },
+            { value: 'educational', label: 'Educational How-To Guides (Step-by-step breakdowns)' },
+            { value: 'dataDriven', label: 'Data-Driven Insights (Using research & stats)' },
+            { value: 'engagement', label: 'Engagement-Driven Posts (Polls, questions, carousels)' },
+            { value: 'caseStudies', label: 'Case Studies & Testimonials (Proof-based content)' },
+            { value: 'promotional', label: 'Promotional & Lead-Generation Posts (Sales-focused content)' }
+          ]
+        },
+        {
+          id: 'postingFrequency',
+          question: 'How often do you want to post each week?',
+          type: 'singleSelect',
+          description: 'Choose a frequency that aligns with your goals and availability.',
+          options: [
+            { value: '1-2', label: '1-2 times per week' },
+            { value: '3-4', label: '3-4 times per week' },
+            { value: '5', label: '5 times per week' }
+          ]
         }
       ]
     }
   ];
+  
 
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -165,7 +267,7 @@ function OnboardingFlow() {
   // Render different question types
   const renderSingleSelect = () => {
     return (
-      <div className="flex flex-col space-y-3">
+      <div className="flex flex-col space-y-3 ">
         {currentQuestion.options.map((option, index) => {
           const isSelected = answers[currentQuestion.id] === option.value;
           
@@ -174,7 +276,7 @@ function OnboardingFlow() {
               key={option.value}
               className={`flex items-center p-4 border rounded-lg text-left transition-colors
                 ${isSelected 
-                  ? 'border-blue-500 bg-blue-50' 
+                  ? 'border-emerald-700 bg-emerald-50' 
                   : 'border-gray-200 hover:bg-gray-50'}`}
               onClick={() => handleSingleSelect(currentQuestion.id, option.value)}
             >
@@ -209,7 +311,7 @@ function OnboardingFlow() {
                 key={option.value}
                 className={`flex items-center p-4 border rounded-lg text-left transition-colors
                   ${isSelected 
-                    ? 'border-blue-500 bg-blue-50' 
+                    ? 'border-emerald-700 bg-emerald-50' 
                     : !canSelectMore && !isSelected
                       ? 'border-gray-200 opacity-50 cursor-not-allowed'
                       : 'border-gray-200 hover:bg-gray-50'}`}
@@ -241,7 +343,7 @@ function OnboardingFlow() {
         {/* Selected tags */}
         <div className="flex flex-wrap gap-2 mb-4">
           {tags.map(tag => (
-            <div key={tag} className="flex items-center bg-blue-50 border border-blue-200 rounded-full px-3 py-1">
+            <div key={tag} className="flex items-center bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">
               <span className="mr-1">{tag}</span>
               <button 
                 type="button"
@@ -263,7 +365,7 @@ function OnboardingFlow() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Type an expertise area..."
-                className="border border-gray-300 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 "
+                className="border border-gray-300 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-1 focus:ring-emerald-500 "
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && inputValue.trim()) {
                     e.preventDefault();
@@ -338,14 +440,14 @@ function OnboardingFlow() {
         {(currentQuestionIndex > 0 || currentSectionIndex > 0) && (
           <button
             onClick={goToPreviousQuestion}
-            className="px-4 py-2 border mr-2 border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            className="px-4 py-2 border mr-2 border-gray-700 rounded-md text-gray-900 hover:bg-gray-100"
           >
             Back
           </button>
         )}
         <button
           onClick={goToNextQuestion}
-          className="px-4 py-2 bg-white text-black rounded-md border hover:bg-gray-200"
+          className="px-4 py-2 bg-white text-black border border-emerald-700 rounded-md  hover:bg-emerald-100"
         >
           Next
         </button>
