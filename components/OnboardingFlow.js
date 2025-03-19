@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReviewAnswers from './ReviewAnswers';
 
 function OnboardingFlow() {
   // Define our sections with their questions
@@ -65,7 +66,7 @@ function OnboardingFlow() {
         },
         {
           id: 'audienceFears',
-          question: 'What are your audience’s biggest fears when it comes to their industry or career?',
+          question: 'What are your audience\’s biggest fears when it comes to their industry or career?',
           type: 'tagInput',
           description: 'Recognize the concerns that may hold your audience back.',
           minSelections: 3,
@@ -165,7 +166,32 @@ function OnboardingFlow() {
             { value: '3-4', label: '3-4 times per week' },
             { value: '5', label: '5 times per week' }
           ]
-        }
+        },
+        {
+          id: 'userVoice',
+          question: 'How should your content feel to your audience?',
+          type: 'singleSelect',
+          description: 'Helps us understand your voice',
+          options: [
+            { value: 'professional', label: 'Professional & Insightful' },
+            { value: 'casual', label: 'Casual & Conversational' },
+            { value: 'authoritative', label: 'Authoritative & Bold' },
+            { value: 'storytelling', label: 'Storytelling & Relatable' }
+          ]
+        },
+        {
+          id: 'engagementStyle',
+          question: ' How do you prefer to engage with your LinkedIn audience?',
+          type: 'multiSelect',
+          description: 'Pick at least one engagement type that matches your style.',
+          minSelections: 1,
+          options: [
+            { value: 'commenting', label: 'Commenting on industry posts' },
+            { value: 'polls', label: 'Running polls & discussions' },
+            { value: 'DMs', label: 'Building connections through DMs' },
+            { value: 'live', label: 'Hosting LinkedIn Live sessions' }
+          ]
+        },
       ]
     }
   ];
@@ -175,6 +201,17 @@ function OnboardingFlow() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [inputValue, setInputValue] = useState('');
+  const [isReviewMode, setIsReviewMode] = useState(false);
+
+  const handleSubmit = () => {
+    if (!isReviewMode) {
+      setIsReviewMode(true);
+    } else {
+      // Actually submit the data
+      console.log("Final answers:", answers);
+      // Call your API here
+    }
+  }
   
   // Get current section and question
   const currentSection = sections[currentSectionIndex];
@@ -421,9 +458,51 @@ function OnboardingFlow() {
         return <p>Unknown question type: {currentQuestion.type}</p>;
     }
   };
-  
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
+
+  // Add this function to render answers based on question type
+const renderAnswer = (question, answer) => {
+  switch (question.type) {
+    case 'singleSelect':
+      // Find the label for the selected value
+      const selectedOption = question.options.find(opt => opt.value === answer);
+      return <p className="text-gray-700">{selectedOption?.label || answer}</p>;
+      
+    case 'multiSelect':
+      // Find labels for all selected values
+      return (
+        <ul className="list-disc pl-5">
+          {answer.map(value => {
+            const option = question.options.find(opt => opt.value === value);
+            return <li key={value} className="text-gray-700">{option?.label || value}</li>;
+          })}
+        </ul>
+      );
+      
+    case 'tagInput':
+      return (
+        <div className="flex flex-wrap gap-2">
+          {answer.map(tag => (
+            <span key={tag} className="bg-gray-100 rounded-full px-3 py-1 text-sm">
+              {tag}
+            </span>
+          ))}
+        </div>
+      );
+      
+    default:
+      return <p className="text-gray-700">{JSON.stringify(answer)}</p>;
+  }
+};
+return (
+  <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
+    {isReviewMode ? (
+      <ReviewAnswers 
+        sections={sections} 
+        answers={answers} 
+        onSubmit={handleSubmit} 
+        onEdit={() => setIsReviewMode(false)}
+      />
+    ) : (
       <div className="w-full max-w-md mx-auto">
         <div className="mb-8">
           <p className="text-sm text-gray-500 mb-1">{currentSection.title}</p>
@@ -434,26 +513,42 @@ function OnboardingFlow() {
         </div>
         
         {renderQuestion()}
-      </div>
-      
-      <div className="mt-8 flex justify-end w-full max-w-md mx-auto">
-        {(currentQuestionIndex > 0 || currentSectionIndex > 0) && (
+        
+        <div className="mt-8 flex justify-end">
+          {(currentQuestionIndex > 0 || currentSectionIndex > 0) && (
+            <button
+              onClick={goToPreviousQuestion}
+              className="px-4 py-2 border mr-2 border-gray-700 rounded-md text-gray-900 hover:bg-gray-100"
+            >
+              Back
+            </button>
+          )}
+        
           <button
-            onClick={goToPreviousQuestion}
-            className="px-4 py-2 border mr-2 border-gray-700 rounded-md text-gray-900 hover:bg-gray-100"
+            onClick={
+              currentSectionIndex === sections.length - 1 && 
+              currentQuestionIndex === currentSection.questions.length - 1
+                ? () => setIsReviewMode(true)
+                : goToNextQuestion
+            }
+            className={
+              currentSectionIndex === sections.length - 1 && 
+              currentQuestionIndex === currentSection.questions.length - 1
+                ? "px-4 py-2 bg-emerald-600 text-white border border-emerald-700 rounded-md hover:bg-emerald-700"
+                : "px-4 py-2 bg-white text-black border border-emerald-700 rounded-md hover:bg-emerald-100"
+            }
           >
-            Back
+            {currentSectionIndex === sections.length - 1 && 
+            currentQuestionIndex === currentSection.questions.length - 1
+              ? "Review Answers"
+              : "Next"
+            }
           </button>
-        )}
-        <button
-          onClick={goToNextQuestion}
-          className="px-4 py-2 bg-white text-black border border-emerald-700 rounded-md  hover:bg-emerald-100"
-        >
-          Next
-        </button>
+        </div>
       </div>
-    </div>
-  );
+    )}
+  </div>
+);
 }
 
 export default OnboardingFlow;
