@@ -22,7 +22,7 @@ function ReviewAnswers({ sections, answers, onSubmit, onEdit }) {
           return (
             <div className="flex flex-wrap gap-2">
               {answer.map(tag => (
-                <span key={tag} className="bg-gray-100 rounded-full px-3 py-1 text-sm">
+                <span key={tag} className="bg-emerald-100 rounded-full px-3 py-1 text-sm">
                   {tag}
                 </span>
               ))}
@@ -49,7 +49,7 @@ function ReviewAnswers({ sections, answers, onSubmit, onEdit }) {
               <h3 className="font-medium text-lg mb-3">{section.title}</h3>
               {section.questions.map(question => (
                 <div key={question.id} className="mb-4">
-                  <p className="text-sm font-medium">{question.question}</p>
+                  <p className="text-sm font-medium mb-2">{question.question}</p>
                   {renderAnswer(question, answers[question.id])}
                 </div>
               ))}

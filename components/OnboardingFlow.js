@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReviewAnswers from './ReviewAnswers';
+import SectionProgress from './SectionProgress';
 
 function OnboardingFlow() {
   // Define our sections with their questions
@@ -493,60 +494,141 @@ const renderAnswer = (question, answer) => {
       return <p className="text-gray-700">{JSON.stringify(answer)}</p>;
   }
 };
+// return (
+//   <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
+//     <SectionProgress 
+//       sections={sections} 
+//       currentSectionIndex={currentSectionIndex}
+//       currentQuestionIndex={currentQuestionIndex}
+//       isReviewMode={isReviewMode} 
+//     />
+
+//     {isReviewMode ? (
+//       <ReviewAnswers 
+//         sections={sections} 
+//         answers={answers} 
+//         onSubmit={handleSubmit} 
+//         onEdit={() => setIsReviewMode(false)}
+//       />
+//     ) : (
+//       <div className="w-full max-w-md mx-auto">
+//         <div className="mb-8">
+//           <p className="text-sm text-gray-500 mb-1">{currentSection.title}</p>
+//           <h2 className="text-xl font-medium mb-1 text-gray-700">
+//             {currentQuestionIndex + 1}→ {currentQuestion.question}
+//           </h2>
+//           <p className="text-sm text-gray-500">{currentSection.description}</p>
+//         </div>
+        
+//         <div className="min-h-[350px]"> {/* Adjust height based on your longest question */}
+//           {renderQuestion()}
+//         </div>
+        
+//         <div className="mt-8 flex justify-end">
+//           {(currentQuestionIndex > 0 || currentSectionIndex > 0) && (
+//             <button
+//               onClick={goToPreviousQuestion}
+//               className="px-4 py-2 border mr-2 border-gray-700 rounded-md text-gray-900 hover:bg-gray-100"
+//             >
+//               Back
+//             </button>
+//           )}
+        
+//           <button
+//             onClick={
+//               currentSectionIndex === sections.length - 1 && 
+//               currentQuestionIndex === currentSection.questions.length - 1
+//                 ? () => setIsReviewMode(true)
+//                 : goToNextQuestion
+//             }
+//             className={
+//               currentSectionIndex === sections.length - 1 && 
+//               currentQuestionIndex === currentSection.questions.length - 1
+//                 ? "px-4 py-2 bg-emerald-600 text-white border border-emerald-700 rounded-md hover:bg-emerald-700"
+//                 : "px-4 py-2 bg-white text-black border border-emerald-700 rounded-md hover:bg-emerald-100"
+//             }
+//           >
+//             {currentSectionIndex === sections.length - 1 && 
+//             currentQuestionIndex === currentSection.questions.length - 1
+//               ? "Review Answers"
+//               : "Next"
+//             }
+//           </button>
+//         </div>
+//       </div>
+//     )}
+//   </div>
+// );
 return (
-  <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
-    {isReviewMode ? (
-      <ReviewAnswers 
-        sections={sections} 
-        answers={answers} 
-        onSubmit={handleSubmit} 
-        onEdit={() => setIsReviewMode(false)}
+  <div className="min-h-screen bg-white p-4">
+    {/* Fixed top section */}
+    <div className="max-w-md mx-auto">
+      {/* Progress indicator always at the top */}
+      <SectionProgress 
+        sections={sections}
+        currentSectionIndex={currentSectionIndex}
+        currentQuestionIndex={currentQuestionIndex}
+        isReviewMode={isReviewMode}
       />
-    ) : (
-      <div className="w-full max-w-md mx-auto">
-        <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-1">{currentSection.title}</p>
-          <h2 className="text-xl font-medium mb-1 text-gray-700">
-            {currentQuestionIndex + 1}→ {currentQuestion.question}
-          </h2>
-          <p className="text-sm text-gray-500">{currentSection.description}</p>
-        </div>
-        
-        {renderQuestion()}
-        
-        <div className="mt-8 flex justify-end">
-          {(currentQuestionIndex > 0 || currentSectionIndex > 0) && (
+      
+      {isReviewMode ? (
+        <ReviewAnswers
+          sections={sections}
+          answers={answers}
+          onSubmit={handleSubmit}
+          onEdit={() => setIsReviewMode(false)}
+        />
+      ) : (
+        <>
+          {/* Question header - fixed at top */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-500 mb-1">{currentSection.title}</p>
+            <h2 className="text-xl font-medium mb-1 text-gray-700">
+              {currentQuestionIndex + 1}→ {currentQuestion.question}
+            </h2>
+            <p className="text-sm text-gray-500">{currentSection.description}</p>
+          </div>
+          
+          {/* Question content - can expand downward */}
+          <div>
+            {renderQuestion()}
+          </div>
+          
+          {/* Navigation - fixed distance from the question header */}
+          <div className="mt-8 flex justify-end">
+            {(currentQuestionIndex > 0 || currentSectionIndex > 0) && (
+              <button
+                onClick={goToPreviousQuestion}
+                className="px-4 py-2 border mr-2 border-gray-700 rounded-md text-gray-900 hover:bg-gray-100"
+              >
+                Back
+              </button>
+            )}
+          
             <button
-              onClick={goToPreviousQuestion}
-              className="px-4 py-2 border mr-2 border-gray-700 rounded-md text-gray-900 hover:bg-gray-100"
+              onClick={
+                currentSectionIndex === sections.length - 1 && 
+                currentQuestionIndex === currentSection.questions.length - 1
+                  ? () => setIsReviewMode(true)
+                  : goToNextQuestion
+              }
+              className={
+                currentSectionIndex === sections.length - 1 && 
+                currentQuestionIndex === currentSection.questions.length - 1
+                  ? "px-4 py-2 bg-emerald-600 text-white border border-emerald-700 rounded-md hover:bg-emerald-700"
+                  : "px-4 py-2 bg-white text-black border border-emerald-700 rounded-md hover:bg-emerald-100"
+              }
             >
-              Back
+              {currentSectionIndex === sections.length - 1 && 
+              currentQuestionIndex === currentSection.questions.length - 1
+                ? "Review Answers"
+                : "Next"
+              }
             </button>
-          )}
-        
-          <button
-            onClick={
-              currentSectionIndex === sections.length - 1 && 
-              currentQuestionIndex === currentSection.questions.length - 1
-                ? () => setIsReviewMode(true)
-                : goToNextQuestion
-            }
-            className={
-              currentSectionIndex === sections.length - 1 && 
-              currentQuestionIndex === currentSection.questions.length - 1
-                ? "px-4 py-2 bg-emerald-600 text-white border border-emerald-700 rounded-md hover:bg-emerald-700"
-                : "px-4 py-2 bg-white text-black border border-emerald-700 rounded-md hover:bg-emerald-100"
-            }
-          >
-            {currentSectionIndex === sections.length - 1 && 
-            currentQuestionIndex === currentSection.questions.length - 1
-              ? "Review Answers"
-              : "Next"
-            }
-          </button>
-        </div>
-      </div>
-    )}
+          </div>
+        </>
+      )}
+    </div>
   </div>
 );
 }
