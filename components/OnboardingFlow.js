@@ -1,223 +1,81 @@
-import React, { useState } from 'react';
-import ReviewAnswers from './ReviewAnswers';
+import React, { useState, useEffect } from 'react';
 import SectionProgress from './SectionProgress';
+import ReviewAnswers from './ReviewAnswers';
+import { sections } from './QuestionsData'; 
 
 function OnboardingFlow() {
-  // Define our sections with their questions
-  const sections = [
-    {
-      id: 'goals',
-      title: 'Goals',
-      description: "Let's understand what you want to achieve on LinkedIn.",
-      questions: [
-        {
-          id: 'primaryGoal',
-          question: 'What is your primary LinkedIn goal?',
-          type: 'singleSelect',
-          options: [
-            { value: 'thoughtLeadership', label: 'Thought Leadership' },
-            { value: 'leadGeneration', label: 'Lead Generation' },
-            { value: 'careerGrowth', label: 'Career Growth' },
-            { value: 'communityBuilding', label: 'Community Building' },
-            { value: 'brandAwareness', label: 'PR/Brand Awareness' }
-          ]
-        },
-        {
-          id: 'targetAudience',
-          question: 'Which audience are you primarily trying to reach on LinkedIn?',
-          type: 'singleSelect',
-          options: [
-            { value: 'executives', label: 'Senior Executives & Decision Makers' },
-            { value: 'peers', label: 'Industry Peers & Colleagues' },
-            { value: 'clients', label: 'Potential Clients & Customers' },
-            { value: 'recruiters', label: 'Recruiters & Hiring Managers' },
-            { value: 'investors', label: 'Investors & Stakeholders' }
-          ]
-        },
-        {
-          id: 'commercialObjectives',
-          question: 'What commercial objectives do you have?',
-          type: 'singleSelect',
-          options: [
-            { value: 'driveSales', label: 'Drive Sales' },
-            { value: 'attractJobOffers', label: 'Attract Job Offers' },
-            { value: 'secureFunding', label: 'Secure Funding' },
-            { value: 'establishCredibility', label: 'Establish Credibility' },
-            { value: 'expandNetwork', label: 'Expand Professional Network' }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'audience',
-      title: 'Understanding Your Audience',
-      description: "Let's identify who you're speaking to and what matters most to them.",
-      questions: [
-        {
-          id: 'audienceChallenges',
-          question: 'What are the biggest challenges your audience faces?',
-          type: 'tagInput',
-          description: 'Identify the key struggles your audience encounters.',
-          minSelections: 3,
-          maxSelections: 5,
-          suggestions: [
-            'Scaling their business', 'Generating consistent leads', 'Navigating industry changes', 'Managing remote teams',
-            'Breaking into leadership roles'
-          ]
-        },
-        {
-          id: 'audienceFears',
-          question: 'What are your audience\’s biggest fears when it comes to their industry or career?',
-          type: 'tagInput',
-          description: 'Recognize the concerns that may hold your audience back.',
-          minSelections: 3,
-          maxSelections: 5,
-          suggestions: [
-            'Losing relevance in the industry', 'Struggling to stand out', 'Failing to generate enough revenue', 'Losing job security',
-            'Being seen as an imposter'
-          ]
-        },
-        {
-          id: 'audienceGoals',
-          question: 'What are the primary goals your audience wants to achieve?',
-          type: 'tagInput',
-          description: 'Determine the aspirations that drive your audience forward.',
-          minSelections: 3,
-          maxSelections: 5,
-          suggestions: [
-            'Building a strong personal brand', 'Getting promoted to leadership', 'Raising funding for their startup',
-            'Becoming a sought-after speaker', 'Mastering digital marketing'
-          ]
-        }
-      ]
-    },
-    {
-      id: 'persona',
-      title: 'Executive Persona & Positioning',
-      description: "Let's define how you want to be perceived on LinkedIn.",
-      questions: [
-        {
-          id: 'expertiseAreas',
-          question: 'Which key areas of expertise do you want to be recognized for on LinkedIn?',
-          type: 'tagInput',
-          description: 'These will become your content pillars on LinkedIn.',
-          minSelections: 3,
-          maxSelections: 5,
-          suggestions: [
-            'Leadership', 'Strategy', 'Innovation', 'Digital Transformation',
-            'Marketing', 'Sales', 'Finance', 'Operations', 'Human Resources',
-            'Customer Experience', 'Product Development', 'Sustainability',
-            'AI/Machine Learning', 'Blockchain', 'Industry Insights'
-          ]
-        },
-        {
-          id: 'uniquePerspective',
-          question: 'How do you naturally express your insights?',
-          type: 'singleSelect',
-          description: 'Define the style in which you communicate your expertise.',
-          options: [
-            { value: 'analytical', label: 'Analytical (Breaks down complex ideas with logic & data)' },
-            { value: 'inspiring', label: 'Inspiring (Motivates with personal stories & big-picture thinking)' },
-            { value: 'challenging', label: 'Challenging (Questions norms & disrupts industry beliefs)' },
-            { value: 'informative', label: 'Informative (Provides structured knowledge through education & tutorials)' }
-          ]
-        },
-        {
-          id: 'contentPillars',
-          question: 'What topics do you consistently post about?',
-          type: 'tagInput',
-          description: 'Define the recurring themes that shape your LinkedIn content.',
-          minSelections: 3,
-          maxSelections: 5,
-          suggestions: [
-            'Startup Growth & Bootstrapping', 'AI in Marketing & Tech Trends', 'Leadership & Team Building',
-            'Personal Branding & Career Growth', 'Fundraising & Investor Relations', 'Sales & Business Development'
-          ]
-        }
-      ]
-    },
-    {
-      id: 'content',
-      title: 'Content Strategy',
-      description: "Let's define how you'll structure and deliver your content on LinkedIn.",
-      questions: [
-        {
-          id: 'contentTypes',
-          question: 'What content types do you want to create?',
-          type: 'multiSelect',
-          description: 'Pick at least two content types that match your style.',
-          minSelections: 2,
-          options: [
-            { value: 'storytelling', label: 'Storytelling (Personal experiences & insights)' },
-            { value: 'controversial', label: 'Controversial Takes (Challenging industry norms)' },
-            { value: 'educational', label: 'Educational How-To Guides (Step-by-step breakdowns)' },
-            { value: 'dataDriven', label: 'Data-Driven Insights (Using research & stats)' },
-            { value: 'engagement', label: 'Engagement-Driven Posts (Polls, questions, carousels)' },
-            { value: 'caseStudies', label: 'Case Studies & Testimonials (Proof-based content)' },
-            { value: 'promotional', label: 'Promotional & Lead-Generation Posts (Sales-focused content)' }
-          ]
-        },
-        {
-          id: 'postingFrequency',
-          question: 'How often do you want to post each week?',
-          type: 'singleSelect',
-          description: 'Choose a frequency that aligns with your goals and availability.',
-          options: [
-            { value: '1-2', label: '1-2 times per week' },
-            { value: '3-4', label: '3-4 times per week' },
-            { value: '5', label: '5 times per week' }
-          ]
-        },
-        {
-          id: 'userVoice',
-          question: 'How should your content feel to your audience?',
-          type: 'singleSelect',
-          description: 'Helps us understand your voice',
-          options: [
-            { value: 'professional', label: 'Professional & Insightful' },
-            { value: 'casual', label: 'Casual & Conversational' },
-            { value: 'authoritative', label: 'Authoritative & Bold' },
-            { value: 'storytelling', label: 'Storytelling & Relatable' }
-          ]
-        },
-        {
-          id: 'engagementStyle',
-          question: ' How do you prefer to engage with your LinkedIn audience?',
-          type: 'multiSelect',
-          description: 'Pick at least one engagement type that matches your style.',
-          minSelections: 1,
-          options: [
-            { value: 'commenting', label: 'Commenting on industry posts' },
-            { value: 'polls', label: 'Running polls & discussions' },
-            { value: 'DMs', label: 'Building connections through DMs' },
-            { value: 'live', label: 'Hosting LinkedIn Live sessions' }
-          ]
-        },
-      ]
-    }
-  ];
-  
+  // Your existing sections data
+ 
 
+  // State variables
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [inputValue, setInputValue] = useState('');
   const [isReviewMode, setIsReviewMode] = useState(false);
+  const [hasExistingProgress, setHasExistingProgress] = useState(false);
 
-  const handleSubmit = () => {
-    if (!isReviewMode) {
-      setIsReviewMode(true);
-    } else {
-      // Actually submit the data
-      console.log("Final answers:", answers);
-      // Call your API here
+  // Save progress to localStorage
+  const saveProgress = () => {
+    const progressData = {
+      answers,
+      currentSectionIndex,
+      currentQuestionIndex,
+      isReviewMode
+    };
+    
+    localStorage.setItem('onboardingProgress', JSON.stringify(progressData));
+  };
+
+  // Load progress from localStorage
+  const loadProgress = () => {
+    try {
+      const savedProgress = localStorage.getItem('onboardingProgress');
+      
+      if (savedProgress) {
+        const progressData = JSON.parse(savedProgress);
+        
+        // Restore the state
+        setAnswers(progressData.answers || {});
+        setCurrentSectionIndex(progressData.currentSectionIndex || 0);
+        setCurrentQuestionIndex(progressData.currentQuestionIndex || 0);
+        setIsReviewMode(progressData.isReviewMode || false);
+        
+        return true; // Indicate that progress was successfully loaded
+      }
+    } catch (error) {
+      console.error('Error loading progress:', error);
     }
-  }
-  
-  // Get current section and question
-  const currentSection = sections[currentSectionIndex];
-  const currentQuestion = currentSection.questions[currentQuestionIndex];
-  
+    
+    return false; // Indicate that no progress was loaded
+  };
+
+  // Clear progress from localStorage
+  const clearProgress = () => {
+    localStorage.removeItem('onboardingProgress');
+  };
+
+  // Check for existing progress on component mount
+  useEffect(() => {
+    // Check if progress exists but don't load it yet
+    const savedProgress = localStorage.getItem('onboardingProgress');
+    if (savedProgress) {
+      setHasExistingProgress(true);
+    }
+  }, []);
+
+  // Function to handle resuming saved progress
+  const handleResumeProgress = () => {
+    loadProgress();
+    setHasExistingProgress(false);
+  };
+
+  // Function to handle starting fresh
+  const handleStartFresh = () => {
+    clearProgress();
+    setHasExistingProgress(false);
+  };
+
   // Navigation functions
   const goToNextQuestion = () => {
     // If there are more questions in this section
@@ -229,6 +87,9 @@ function OnboardingFlow() {
       setCurrentSectionIndex(currentSectionIndex + 1);
       setCurrentQuestionIndex(0);
     }
+    
+    // Save progress after navigation
+    setTimeout(saveProgress, 0);
   };
   
   const goToPreviousQuestion = () => {
@@ -242,14 +103,55 @@ function OnboardingFlow() {
       // Go to the last question of the previous section
       setCurrentQuestionIndex(sections[currentSectionIndex - 1].questions.length - 1);
     }
+    
+    // Save progress after navigation
+    setTimeout(saveProgress, 0);
   };
+
+  // Handle submission
+  // In your OnboardingFlow component
+const handleSubmit = () => {
+  if (!isReviewMode) {
+    setIsReviewMode(true);
+    setTimeout(saveProgress, 0);
+    return;
+  }
   
-  // Handle different answer types
+  try {
+    // Generate a simple ID (timestamp + random string)
+    const submissionId = Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    
+    // Create submission object
+    const submission = {
+      id: submissionId,
+      answers,
+      createdAt: new Date().toISOString(),
+    };
+    
+    // Save to localStorage
+    localStorage.setItem(`submission_${submissionId}`, JSON.stringify(submission));
+    
+    // Clear progress since we're done
+    clearProgress();
+    
+    // Redirect to results page
+    window.location.href = `/results?id=${submissionId}`;
+    
+  } catch (error) {
+    console.error('Error saving submission:', error);
+    alert("There was an error saving your answers. Please try again.");
+  }
+};
+
+  // Handle different answer types with auto-save
   const handleSingleSelect = (questionId, value) => {
     setAnswers({
       ...answers,
       [questionId]: value
     });
+    
+    // Save progress after answer is updated
+    setTimeout(saveProgress, 0);
   };
   
   const handleMultiSelect = (questionId, value) => {
@@ -270,6 +172,9 @@ function OnboardingFlow() {
         [questionId]: [...currentSelections, value]
       });
     }
+    
+    // Save progress after answer is updated
+    setTimeout(saveProgress, 0);
   };
 
   const handleTagAdd = () => {
@@ -281,6 +186,9 @@ function OnboardingFlow() {
         [currentQuestion.id]: [...tags, inputValue.trim()]
       });
       setInputValue('');
+      
+      // Save progress after answer is updated
+      setTimeout(saveProgress, 0);
     }
   };
 
@@ -290,6 +198,9 @@ function OnboardingFlow() {
       ...answers,
       [currentQuestion.id]: tags.filter(t => t !== tag)
     });
+    
+    // Save progress after answer is updated
+    setTimeout(saveProgress, 0);
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -299,19 +210,29 @@ function OnboardingFlow() {
         ...answers,
         [currentQuestion.id]: [...tags, suggestion]
       });
+      
+      // Save progress after answer is updated
+      setTimeout(saveProgress, 0);
     }
   };
 
-  // Render different question types
+  // Get current section and question
+  const currentSection = sections[currentSectionIndex];
+  const currentQuestion = currentSection?.questions[currentQuestionIndex];
+
+  // Render question types with accessibility improvements
   const renderSingleSelect = () => {
     return (
-      <div className="flex flex-col space-y-3 ">
+      <div className="flex flex-col space-y-3" role="radiogroup" aria-labelledby={`question-${currentQuestion.id}`}>
+        <span id={`question-${currentQuestion.id}`} className="sr-only">{currentQuestion.question}</span>
         {currentQuestion.options.map((option, index) => {
           const isSelected = answers[currentQuestion.id] === option.value;
           
           return (
             <button 
               key={option.value}
+              role="radio"
+              aria-checked={isSelected}
               className={`flex items-center p-4 border rounded-lg text-left transition-colors
                 ${isSelected 
                   ? 'border-emerald-700 bg-emerald-50' 
@@ -335,18 +256,26 @@ function OnboardingFlow() {
     
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-500">
+        <p id={`multiselect-help-${currentQuestion.id}`} className="text-sm text-gray-500">
           {selectedValues.length} of {currentQuestion.maxSelections || 'unlimited'} selected
           {currentQuestion.minSelections && ` (minimum ${currentQuestion.minSelections})`}
         </p>
         
-        <div className="flex flex-col space-y-3">
+        <div 
+          className="flex flex-col space-y-3" 
+          role="group" 
+          aria-labelledby={`question-${currentQuestion.id}`}
+          aria-describedby={`multiselect-help-${currentQuestion.id}`}
+        >
+          <span id={`question-${currentQuestion.id}`} className="sr-only">{currentQuestion.question}</span>
           {currentQuestion.options.map((option, index) => {
             const isSelected = selectedValues.includes(option.value);
             
             return (
               <button 
                 key={option.value}
+                role="checkbox"
+                aria-checked={isSelected}
                 className={`flex items-center p-4 border rounded-lg text-left transition-colors
                   ${isSelected 
                     ? 'border-emerald-700 bg-emerald-50' 
@@ -370,40 +299,48 @@ function OnboardingFlow() {
 
   const renderTagInput = () => {
     const tags = answers[currentQuestion.id] || [];
+    const inputId = `tag-input-${currentQuestion.id}`;
+    const helpId = `tag-help-${currentQuestion.id}`;
     
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-500">
+        <p id={helpId} className="text-sm text-gray-500">
           {tags.length} of {currentQuestion.maxSelections || 'unlimited'} selected
           {currentQuestion.minSelections && ` (minimum ${currentQuestion.minSelections})`}
         </p>
         
         {/* Selected tags */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="mb-4">
+        <div className="flex flex-wrap gap-2" role="list" aria-label="Selected tags">
           {tags.map(tag => (
-            <div key={tag} className="flex items-center bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">
+            <div key={tag} className="flex items-center bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1" role="listitem">
               <span className="mr-1">{tag}</span>
               <button 
                 type="button"
                 onClick={() => handleTagRemove(tag)}
                 className="text-gray-500 hover:text-gray-700"
+                aria-label={`Remove ${tag}`}
               >
                 ×
               </button>
             </div>
           ))}
         </div>
+        </div>
         
         {/* Input field with suggestions */}
         {tags.length < (currentQuestion.maxSelections || Infinity) && (
           <div className="space-y-2">
             <div className="flex">
+              <label htmlFor={inputId} className="sr-only">Add a tag</label>
               <input
+                id={inputId}
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Type an expertise area..."
-                className="border border-gray-300 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-1 focus:ring-emerald-500 "
+                className="border border-gray-300 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                aria-describedby={helpId}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && inputValue.trim()) {
                     e.preventDefault();
@@ -415,6 +352,7 @@ function OnboardingFlow() {
                 type="button"
                 onClick={handleTagAdd}
                 className="bg-white border border-gray-300 border-l-1 rounded-r-lg px-4 py-2 ml-1 hover:bg-gray-50"
+                aria-label="Add tag"
               >
                 Add
               </button>
@@ -423,10 +361,10 @@ function OnboardingFlow() {
             {/* Suggestions */}
             <div className="mt-2">
               <p className="text-sm text-gray-500 mb-2">Suggestions:</p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" role="list" aria-label="Tag suggestions">
                 {currentQuestion.suggestions
                   .filter(suggestion => !tags.includes(suggestion))
-                  .slice(0, 8) // Show only a few suggestions to avoid overwhelming
+                  .slice(0, 8)
                   .map(suggestion => (
                     <button
                       key={suggestion}
@@ -434,6 +372,8 @@ function OnboardingFlow() {
                       onClick={() => handleSuggestionClick(suggestion)}
                       className="bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 text-sm"
                       disabled={tags.length >= (currentQuestion.maxSelections || Infinity)}
+                      aria-label={`Add suggestion: ${suggestion}`}
+                      role="listitem"
                     >
                       {suggestion}
                     </button>
@@ -448,6 +388,8 @@ function OnboardingFlow() {
   
   // Main render function that calls the appropriate render method
   const renderQuestion = () => {
+    if (!currentQuestion) return null;
+    
     switch (currentQuestion.type) {
       case 'singleSelect':
         return renderSingleSelect();
@@ -460,177 +402,105 @@ function OnboardingFlow() {
     }
   };
 
-  // Add this function to render answers based on question type
-const renderAnswer = (question, answer) => {
-  switch (question.type) {
-    case 'singleSelect':
-      // Find the label for the selected value
-      const selectedOption = question.options.find(opt => opt.value === answer);
-      return <p className="text-gray-700">{selectedOption?.label || answer}</p>;
-      
-    case 'multiSelect':
-      // Find labels for all selected values
-      return (
-        <ul className="list-disc pl-5">
-          {answer.map(value => {
-            const option = question.options.find(opt => opt.value === value);
-            return <li key={value} className="text-gray-700">{option?.label || value}</li>;
-          })}
-        </ul>
-      );
-      
-    case 'tagInput':
-      return (
-        <div className="flex flex-wrap gap-2">
-          {answer.map(tag => (
-            <span key={tag} className="bg-gray-100 rounded-full px-3 py-1 text-sm">
-              {tag}
-            </span>
-          ))}
-        </div>
-      );
-      
-    default:
-      return <p className="text-gray-700">{JSON.stringify(answer)}</p>;
-  }
-};
-// return (
-//   <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
-//     <SectionProgress 
-//       sections={sections} 
-//       currentSectionIndex={currentSectionIndex}
-//       currentQuestionIndex={currentQuestionIndex}
-//       isReviewMode={isReviewMode} 
-//     />
-
-//     {isReviewMode ? (
-//       <ReviewAnswers 
-//         sections={sections} 
-//         answers={answers} 
-//         onSubmit={handleSubmit} 
-//         onEdit={() => setIsReviewMode(false)}
-//       />
-//     ) : (
-//       <div className="w-full max-w-md mx-auto">
-//         <div className="mb-8">
-//           <p className="text-sm text-gray-500 mb-1">{currentSection.title}</p>
-//           <h2 className="text-xl font-medium mb-1 text-gray-700">
-//             {currentQuestionIndex + 1}→ {currentQuestion.question}
-//           </h2>
-//           <p className="text-sm text-gray-500">{currentSection.description}</p>
-//         </div>
-        
-//         <div className="min-h-[350px]"> {/* Adjust height based on your longest question */}
-//           {renderQuestion()}
-//         </div>
-        
-//         <div className="mt-8 flex justify-end">
-//           {(currentQuestionIndex > 0 || currentSectionIndex > 0) && (
-//             <button
-//               onClick={goToPreviousQuestion}
-//               className="px-4 py-2 border mr-2 border-gray-700 rounded-md text-gray-900 hover:bg-gray-100"
-//             >
-//               Back
-//             </button>
-//           )}
-        
-//           <button
-//             onClick={
-//               currentSectionIndex === sections.length - 1 && 
-//               currentQuestionIndex === currentSection.questions.length - 1
-//                 ? () => setIsReviewMode(true)
-//                 : goToNextQuestion
-//             }
-//             className={
-//               currentSectionIndex === sections.length - 1 && 
-//               currentQuestionIndex === currentSection.questions.length - 1
-//                 ? "px-4 py-2 bg-emerald-600 text-white border border-emerald-700 rounded-md hover:bg-emerald-700"
-//                 : "px-4 py-2 bg-white text-black border border-emerald-700 rounded-md hover:bg-emerald-100"
-//             }
-//           >
-//             {currentSectionIndex === sections.length - 1 && 
-//             currentQuestionIndex === currentSection.questions.length - 1
-//               ? "Review Answers"
-//               : "Next"
-//             }
-//           </button>
-//         </div>
-//       </div>
-//     )}
-//   </div>
-// );
-return (
-  <div className="min-h-screen bg-white p-4">
-    {/* Fixed top section */}
-    <div className="max-w-md mx-auto">
-      {/* Progress indicator always at the top */}
-      <SectionProgress 
-        sections={sections}
-        currentSectionIndex={currentSectionIndex}
-        currentQuestionIndex={currentQuestionIndex}
-        isReviewMode={isReviewMode}
-      />
-      
-      {isReviewMode ? (
-        <ReviewAnswers
-          sections={sections}
-          answers={answers}
-          onSubmit={handleSubmit}
-          onEdit={() => setIsReviewMode(false)}
-        />
-      ) : (
-        <>
-          {/* Question header - fixed at top */}
-          <div className="mb-8">
-            <p className="text-sm text-gray-500 mb-1">{currentSection.title}</p>
-            <h2 className="text-xl font-medium mb-1 text-gray-700">
-              {currentQuestionIndex + 1}→ {currentQuestion.question}
-            </h2>
-            <p className="text-sm text-gray-500">{currentSection.description}</p>
-          </div>
-          
-          {/* Question content - can expand downward */}
-          <div>
-            {renderQuestion()}
-          </div>
-          
-          {/* Navigation - fixed distance from the question header */}
-          <div className="mt-8 flex justify-end">
-            {(currentQuestionIndex > 0 || currentSectionIndex > 0) && (
-              <button
-                onClick={goToPreviousQuestion}
-                className="px-4 py-2 border mr-2 border-gray-700 rounded-md text-gray-900 hover:bg-gray-100"
-              >
-                Back
-              </button>
-            )}
-          
+  // Show resume progress dialog if applicable
+  if (hasExistingProgress) {
+    return (
+      <div className="min-h-screen bg-white p-4">
+        <div className="max-w-md mx-auto text-center p-6 bg-white rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold mb-4">Resume Your Progress?</h2>
+          <p className="mb-6">We found your previously saved answers. Would you like to continue where you left off?</p>
+          <div className="flex justify-center gap-4">
             <button
-              onClick={
-                currentSectionIndex === sections.length - 1 && 
-                currentQuestionIndex === currentSection.questions.length - 1
-                  ? () => setIsReviewMode(true)
-                  : goToNextQuestion
-              }
-              className={
-                currentSectionIndex === sections.length - 1 && 
-                currentQuestionIndex === currentSection.questions.length - 1
-                  ? "px-4 py-2 bg-emerald-600 text-white border border-emerald-700 rounded-md hover:bg-emerald-700"
-                  : "px-4 py-2 bg-white text-black border border-emerald-700 rounded-md hover:bg-emerald-100"
-              }
+              onClick={handleStartFresh}
+              className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
             >
-              {currentSectionIndex === sections.length - 1 && 
-              currentQuestionIndex === currentSection.questions.length - 1
-                ? "Review Answers"
-                : "Next"
-              }
+              Start Fresh
+            </button>
+            <button
+              onClick={handleResumeProgress}
+              className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
+            >
+              Resume Progress
             </button>
           </div>
-        </>
-      )}
+        </div>
+      </div>
+    );
+  }
+
+  // Main component render
+  return (
+    <div className="min-h-screen bg-white p-4">
+      {/* Fixed top section */}
+      <div className="max-w-md mx-auto">
+        {/* Progress indicator always at the top */}
+        <SectionProgress 
+          sections={sections}
+          currentSectionIndex={currentSectionIndex}
+          currentQuestionIndex={currentQuestionIndex}
+          isReviewMode={isReviewMode}
+        />
+        
+        {isReviewMode ? (
+          <ReviewAnswers
+            sections={sections}
+            answers={answers}
+            onSubmit={handleSubmit}
+            onEdit={() => setIsReviewMode(false)}
+          />
+        ) : (
+          <>
+            {/* Question header - fixed at top */}
+            <div className="mb-8">
+              <p className="text-sm text-gray-500 mb-1">{currentSection.title}</p>
+              <h2 className="text-xl font-medium mb-1 text-gray-700">
+                {currentQuestionIndex + 1}→ {currentQuestion.question}
+              </h2>
+              <p className="text-sm text-gray-500">{currentSection.description}</p>
+            </div>
+            
+            {/* Question content - can expand downward */}
+            <div>
+              {renderQuestion()}
+            </div>
+            
+            {/* Navigation - fixed distance from the question header */}
+            <div className="mt-8 flex justify-end">
+              {(currentQuestionIndex > 0 || currentSectionIndex > 0) && (
+                <button
+                  onClick={goToPreviousQuestion}
+                  className="px-4 py-2 border mr-2 border-gray-700 rounded-md text-gray-900 hover:bg-gray-100"
+                >
+                  Back
+                </button>
+              )}
+            
+              <button
+                onClick={
+                  currentSectionIndex === sections.length - 1 && 
+                  currentQuestionIndex === currentSection.questions.length - 1
+                    ? () => setIsReviewMode(true)
+                    : goToNextQuestion
+                }
+                className={
+                  currentSectionIndex === sections.length - 1 && 
+                  currentQuestionIndex === currentSection.questions.length - 1
+                    ? "px-4 py-2 bg-emerald-600 text-white border border-emerald-700 rounded-md hover:bg-emerald-700"
+                    : "px-4 py-2 bg-white text-black border border-emerald-700 rounded-md hover:bg-emerald-100"
+                }
+              >
+                {currentSectionIndex === sections.length - 1 && 
+                currentQuestionIndex === currentSection.questions.length - 1
+                  ? "Review Answers"
+                  : "Next"
+                }
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default OnboardingFlow;
