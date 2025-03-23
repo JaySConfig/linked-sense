@@ -4,11 +4,11 @@ function ReviewAnswers({ sections, answers, onSubmit, onEdit }) {
       if (!answer) return <p className="text-gray-500 italic">No answer provided</p>;
       
       switch (question.type) {
-        case 'singleSelect':
+        case 'singleSelect':{
           const selectedOption = question.options.find(opt => opt.value === answer);
           return <p className="text-gray-700">{selectedOption?.label || answer}</p>;
-          
-        case 'multiSelect':
+        }
+        case 'multiSelect':{
           return (
             <ul className="list-disc pl-5">
               {answer.map(value => {
@@ -16,9 +16,9 @@ function ReviewAnswers({ sections, answers, onSubmit, onEdit }) {
                 return <li key={value} className="text-gray-700">{option?.label || value}</li>;
               })}
             </ul>
-          );
+          );}
           
-        case 'tagInput':
+        case 'tagInput':{
           return (
             <div className="flex flex-wrap gap-2">
               {answer.map(tag => (
@@ -27,7 +27,7 @@ function ReviewAnswers({ sections, answers, onSubmit, onEdit }) {
                 </span>
               ))}
             </div>
-          );
+          );}
           
         default:
           return <p className="text-gray-700">{JSON.stringify(answer)}</p>;

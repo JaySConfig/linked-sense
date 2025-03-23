@@ -110,7 +110,7 @@ export const sections = [
         },
         {
           id: 'audienceFears',
-          question: 'What are your audience\’s biggest fears when it comes to their industry or career?',
+          question: 'What are your audience’s biggest fears when it comes to their industry or career?',
           type: 'tagInput',
           description: 'Recognize the concerns that may hold your audience back.',
           minSelections: 3,

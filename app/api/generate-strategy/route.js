@@ -136,7 +136,7 @@ function getReadableValue(value, questionId) {
     consulting: "Consulting & Professional Services",
     manufacturing: "Manufacturing & Engineering",
     media: "Media & Entertainment",
-    other: "Other",
+    industry_other: "Other",
     
     // Role values
     executive: "Executive/C-Suite",
@@ -144,7 +144,7 @@ function getReadableValue(value, questionId) {
     founder: "Founder/Entrepreneur",
     consultant: "Consultant/Advisor",
     specialist: "Specialist/Individual Contributor",
-    other: "Other",
+    role_other: "Other",
     
     // Primary goals
     thoughtLeadership: "Thought Leadership",
@@ -177,7 +177,7 @@ function getReadableValue(value, questionId) {
     professional: "Professional & Insightful",
     casual: "Casual & Conversational",
     authoritative: "Authoritative & Bold",
-    storytelling: "Storytelling & Relatable",
+    tone_storytelling: "Storytelling & Relatable",
     
     // Posting frequency
     "1-2": "1-2 times per week",
@@ -191,7 +191,7 @@ function getReadableValue(value, questionId) {
     live: "Hosting LinkedIn Live sessions",
     
     // Content types
-    storytelling: "Storytelling (Personal experiences & insights)",
+    content_storytelling: "Storytelling (Personal experiences & insights)",
     controversial: "Controversial Takes (Challenging industry norms)",
     educational: "Educational How-To Guides (Step-by-step breakdowns)",
     dataDriven: "Data-Driven Insights (Using research & stats)",
