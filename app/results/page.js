@@ -115,7 +115,7 @@ export default function Results() {
         )}
         
         <div className="mt-8">
-          <a href="/" className="px-4 py-2 bg-emerald-600 text-white rounded-md inline-block">
+          <a href="/test" className="px-4 py-2 bg-emerald-600 text-white rounded-md inline-block">
             Create New Strategy
           </a>
         </div>
