@@ -109,16 +109,17 @@ function OnboardingFlow() {
   };
 
   // Handle submission
-  // In your OnboardingFlow component
+// In your OnboardingFlow.js file
 const handleSubmit = () => {
   if (!isReviewMode) {
+    // If not in review mode, this function was called to enter review mode
     setIsReviewMode(true);
     setTimeout(saveProgress, 0);
     return;
   }
   
   try {
-    // Generate a simple ID (timestamp + random string)
+    // Generate a simple ID
     const submissionId = Date.now() + '-' + Math.random().toString(36).substr(2, 9);
     
     // Create submission object
@@ -132,7 +133,7 @@ const handleSubmit = () => {
     localStorage.setItem(`submission_${submissionId}`, JSON.stringify(submission));
     
     // Clear progress since we're done
-    clearProgress();
+    localStorage.removeItem('onboardingProgress');
     
     // Redirect to results page
     window.location.href = `/results?id=${submissionId}`;
