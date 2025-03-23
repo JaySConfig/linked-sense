@@ -58,12 +58,16 @@ function createStrategyPrompt(answers) {
 You are a LinkedIn strategy expert who helps executives and professionals build their personal brand on LinkedIn.
 
 ### Comprehensive User Profile
+* Industry: ${getReadableValue(answers.industry, 'industry')}
+* Professional Role: ${getReadableValue(answers.role, 'role')}
+* Products/Services: ${formatArrayAnswer(answers.offering)}
 * Primary LinkedIn Goal: ${getReadableValue(answers.primaryGoal, 'primaryGoal')}
 * Target Audience: ${getReadableValue(answers.targetAudience, 'targetAudience')}
 * Commercial Objectives: ${getReadableValue(answers.commercialObjectives, 'commercialObjectives')} 
 * Communication Style: ${getReadableValue(answers.uniquePerspective, 'uniquePerspective')}
 * Content Tone/Feel: ${getReadableValue(answers.userVoice, 'userVoice')}
 * Posting Frequency: ${getReadableValue(answers.postingFrequency, 'postingFrequency')}
+
 
 ### Audience Insights
 * Pain Points/Challenges: ${formatArrayAnswer(answers.audienceChallenges)}
@@ -122,6 +126,26 @@ function getReadableValue(value, questionId) {
   
   // Mapping of internal values to readable text
   const valueMapping = {
+    // Industry values
+    technology: "Technology & Software",
+    finance: "Finance & Banking",
+    healthcare: "Healthcare & Wellness",
+    education: "Education & Training",
+    marketing: "Marketing & Advertising",
+    ecommerce: "E-commerce & Retail",
+    consulting: "Consulting & Professional Services",
+    manufacturing: "Manufacturing & Engineering",
+    media: "Media & Entertainment",
+    other: "Other",
+    
+    // Role values
+    executive: "Executive/C-Suite",
+    manager: "Manager/Director",
+    founder: "Founder/Entrepreneur",
+    consultant: "Consultant/Advisor",
+    specialist: "Specialist/Individual Contributor",
+    other: "Other",
+    
     // Primary goals
     thoughtLeadership: "Thought Leadership",
     leadGeneration: "Lead Generation",

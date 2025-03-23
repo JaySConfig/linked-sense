@@ -1,5 +1,54 @@
 export const sections = [
     {
+        id: 'profile',
+        title: 'Your Profile',
+        description: "Let's start with some basic information about you and your work.",
+        questions: [
+          {
+            id: 'industry',
+            question: 'What industry do you work in?',
+            type: 'singleSelect',
+            options: [
+              { value: 'technology', label: 'Technology & Software' },
+              { value: 'finance', label: 'Finance & Banking' },
+              { value: 'healthcare', label: 'Healthcare & Wellness' },
+              { value: 'education', label: 'Education & Training' },
+              { value: 'marketing', label: 'Marketing & Advertising' },
+              { value: 'ecommerce', label: 'E-commerce & Retail' },
+              { value: 'consulting', label: 'Consulting & Professional Services' },
+              { value: 'manufacturing', label: 'Manufacturing & Engineering' },
+              { value: 'media', label: 'Media & Entertainment' },
+              { value: 'other', label: 'Other' }
+            ]
+          },
+          {
+            id: 'role',
+            question: 'What is your professional role?',
+            type: 'singleSelect',
+            options: [
+              { value: 'executive', label: 'Executive/C-Suite' },
+              { value: 'manager', label: 'Manager/Director' },
+              { value: 'founder', label: 'Founder/Entrepreneur' },
+              { value: 'consultant', label: 'Consultant/Advisor' },
+              { value: 'specialist', label: 'Specialist/Individual Contributor' },
+              { value: 'other', label: 'Other' }
+            ]
+          },
+          {
+            id: 'offering',
+            question: 'What products or services do you or your company offer?',
+            type: 'tagInput',
+            description: 'Enter key products, services or solutions you provide',
+            maxSelections: 5,
+            suggestions: [
+              'Software Solutions', 'Consulting Services', 'Financial Advice',
+              'Digital Marketing', 'Training Programs', 'Healthcare Services',
+              'E-commerce Platform', 'Manufacturing Solutions'
+            ]
+          }
+        ]
+      },
+    {
       id: 'goals',
       title: 'Goals',
       description: "Let's understand what you want to achieve on LinkedIn.",
