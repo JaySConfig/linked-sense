@@ -107,7 +107,7 @@ export default function Results() {
               Loading Your Strategy...
             </h2>
             <p>
-              We're preparing your personalized LinkedIn strategy based on your answers.
+              We&apos;re preparing your personalized LinkedIn strategy based on your answers.
             </p>
           </div>
         ) : (
@@ -115,7 +115,7 @@ export default function Results() {
         )}
         
         <div className="mt-8">
-          <a href="/test" className="px-4 py-2 bg-emerald-600 text-white rounded-md inline-block">
+          <a href="/test" className="px-4 py-2 bg-emerald-600 text-white rounded-md inline-block justify-center">
             Create New Strategy
           </a>
         </div>
