@@ -12,6 +12,7 @@
 // // You can also add custom static UI elements like a Navbar, Sidebar, Footer, etc..
 // // See https://shipfa.st/docs/tutorials/private-page
 
+import Image from "next/image";
 
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
@@ -84,11 +85,13 @@ export default async function LayoutPrivate({ children }) {
         <div className="hidden md:block border-t border-base-300 pt-4 mt-6">
           <div className="flex items-center mb-4">
             {session.user.image ? (
-              <img 
-                src={session.user.image} 
-                alt={session.user.name || "User"} 
-                className="w-8 h-8 rounded-full mr-3"
-              />
+              <Image
+              src={session.user.image}
+              alt={session.user.name || "User"}
+              width={32}
+              height={32}
+              className="rounded-full mr-3"
+            />
             ) : (
               <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content mr-3">
                 {session.user.name?.charAt(0) || session.user.email?.charAt(0)}
