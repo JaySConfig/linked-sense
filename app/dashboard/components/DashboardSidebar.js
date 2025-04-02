@@ -41,6 +41,14 @@ export default async function LayoutPrivate({ children }) {
             </li>
             <li>
               <Link 
+                href="/dashboard/generate" 
+                className="flex items-center p-3 rounded-lg hover:bg-base-300"
+              >
+                Generate Nuts
+              </Link>
+            </li>
+            <li>
+              <Link 
                 href="/dashboard/strategy" 
                 className="flex items-center p-3 rounded-lg hover:bg-base-300"
               >
