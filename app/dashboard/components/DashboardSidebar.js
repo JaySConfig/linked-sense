@@ -44,7 +44,7 @@ export default async function LayoutPrivate({ children }) {
                 href="/dashboard/strategy" 
                 className="flex items-center p-3 rounded-lg hover:bg-base-300"
               >
-                Generate Strategy
+                Generate Strategyyyyy
               </Link>
             </li>
             <li>
