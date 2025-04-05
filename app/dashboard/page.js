@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default function Dashboard() {
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl md:text-4xl font-extrabold">Dashboarddddddddd</h1>
+      <h1 className="text-3xl md:text-4xl font-extrabold">Dashboard</h1>
       
       {/* Welcome section with quick stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
