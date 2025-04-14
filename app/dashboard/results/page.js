@@ -144,6 +144,74 @@ function ResultsContent() {
         alert("Failed to copy post");
       });
   };
+  // For saving the strategy
+const saveStrategy = async () => {
+  if (!submission || !foundationStrategy || !calendarStrategy) return;
+  
+  try {
+    const response = await fetch('/api/profile/save-strategy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        submissionId: id,
+        answers: submission.answers,
+        foundation: foundationStrategy,
+        calendar: calendarStrategy,
+        contentCalendar
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to save strategy');
+    }
+    
+    // Show success message
+    alert('Your LinkedIn strategy has been saved to your profile!');
+  } catch (error) {
+    console.error('Error saving strategy:', error);
+    alert('Failed to save strategy. Please try again.');
+  }
+};
+
+// For saving a post
+const savePost = async () => {
+  if (!generatedPost || generatingPostId === null) return;
+  
+  try {
+    const calendarRow = contentCalendar.rows[generatingPostId];
+    
+    const response = await fetch('/api/posts/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: generatedPost,
+        postIndex: generatingPostId,
+        pillar: calendarRow.pillar,
+        topic: calendarRow.topic,
+        approach: calendarRow.approach,
+        contentType: calendarRow.contentType,
+        weekDay: calendarRow.weekDay
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to save post');
+    }
+    
+    // Show success message
+    alert('Post saved successfully!');
+    
+    // Close the modal
+    setShowPostModal(false);
+  } catch (error) {
+    console.error('Error saving post:', error);
+    alert('Failed to save post. Please try again.');
+  }
+};
 
   // Extract calendar data from markdown content
   const extractCalendarData = (markdownContent) => {
@@ -426,11 +494,19 @@ function ResultsContent() {
         
         {/* Action buttons */}
         <div className="mt-12 flex flex-wrap gap-4">
-          <a href="/linkedin-strategy" className="px-4 py-2 bg-emerald-600 text-white rounded-md inline-block hover:bg-emerald-700">
+          <button
+            onClick={saveStrategy}
+            className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
+            disabled={!foundationStrategy || !calendarStrategy}
+          >
+            Save Strategy to Profile
+          </button>
+          <a href="/linkedin-strategy" className="px-4 py-2 border border-emerald-600 text-emerald-600 rounded-md inline-block hover:bg-emerald-100">
             Create New Strategy
           </a>
         </div>
         
+        {/* Post Modal */}
         {/* Post Modal */}
         {showPostModal && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -450,9 +526,15 @@ function ResultsContent() {
                 </button>
                 <button 
                   onClick={() => copyToClipboard(generatedPost)}
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-md"
+                  className="px-4 py-2 border border-gray-600 text-gray-700 rounded-md"
                 >
                   Copy to Clipboard
+                </button>
+                <button 
+                  onClick={savePost}
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-md"
+                >
+                  Save Post
                 </button>
               </div>
             </div>
