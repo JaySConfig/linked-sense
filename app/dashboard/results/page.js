@@ -23,6 +23,9 @@ function ResultsContent() {
   const [generatingPostId, setGeneratingPostId] = useState(null);
   const [generatedPost, setGeneratedPost] = useState(null);
   const [showPostModal, setShowPostModal] = useState(false);
+
+  // Near your other useState calls
+const [modalPostIndex, setModalPostIndex] = useState(null);
   
   useEffect(() => {
     if (!id) return;
@@ -123,15 +126,26 @@ function ResultsContent() {
         throw new Error('Failed to generate post');
       }
       
-      const data = await response.json();
-      setGeneratedPost(data.post);
-      setShowPostModal(true);
-    } catch (error) {
-      console.error('Error generating post:', error);
-      alert('Failed to generate post. Please try again.');
-    } finally {
-      setGeneratingPostId(null);
-    }
+    //   const data = await response.json();
+    //   setGeneratedPost(data.post);
+    //   setShowPostModal(true);
+    // } catch (error) {
+    //   console.error('Error generating post:', error);
+    //   alert('Failed to generate post. Please try again.');
+    // } finally {
+    //   setGeneratingPostId(null);
+    // }
+
+    // Inside generatePost function, after getting response and data
+    const data = await response.json();
+    setGeneratedPost(data.post);
+    setModalPostIndex(index); // <-- ADD THIS to remember the index for the modal
+    setShowPostModal(true);
+  } catch (error) {
+    // ... error handling ...
+  } finally {
+    setGeneratingPostId(null); // <-- KEEP THIS (it's for the generate button state)
+  }
   };
   
   const copyToClipboard = (text) => {
@@ -176,43 +190,113 @@ const saveStrategy = async () => {
 };
 
 // For saving a post
-const savePost = async () => {
-  if (!generatedPost || generatingPostId === null) return;
+// const savePost = async () => {
+//   console.log("--- save post: Functions started ---")
+//   if (!generatedPost || generatingPostId === null) return;
+//   console.log("--- savePost: Aborted - missing generated post or generating post")
   
-  try {
-    const calendarRow = contentCalendar.rows[generatingPostId];
+//   try {
+//     const calendarRow = contentCalendar.rows[generatingPostId];
     
-    const response = await fetch('/api/posts/save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+//     const response = await fetch('/api/posts/save', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         content: generatedPost,
+//         postIndex: generatingPostId,
+//         pillar: calendarRow.pillar,
+//         topic: calendarRow.topic,
+//         approach: calendarRow.approach,
+//         contentType: calendarRow.contentType,
+//         weekDay: calendarRow.weekDay
+//       }),
+      
+//     });
+//     console.log("--- savePost: Sending this payload:", bodyPayload); // <-- ADD
+
+    
+//     if (!response.ok) {
+//       throw new Error('Failed to save post');
+//     }
+    
+//     // Show success message
+//     alert('Post saved successfully!');
+    
+//     // Close the modal
+//     setShowPostModal(false);
+//   } catch (error) {
+//     console.error('Error saving post:', error);
+//     alert('Failed to save post. Please try again.');
+//   }
+// };
+
+  // Replace your existing savePost function with this one:
+ // Replace your existing savePost function with this one:
+  const savePost = async () => {
+    console.log("--- savePost: Function started ---");
+    // Use modalPostIndex in the check
+    if (!generatedPost || modalPostIndex === null) {
+      console.log(`--- savePost: Aborted - generatedPost: ${!!generatedPost}, modalPostIndex: ${modalPostIndex} ---`);
+      return;
+    }
+
+    try {
+      // Use modalPostIndex to get the correct row
+      const calendarRow = contentCalendar.rows[modalPostIndex];
+
+      // Define payload
+      const bodyPayload = {
         content: generatedPost,
-        postIndex: generatingPostId,
+        postIndex: modalPostIndex, // Use modalPostIndex
         pillar: calendarRow.pillar,
         topic: calendarRow.topic,
         approach: calendarRow.approach,
         contentType: calendarRow.contentType,
         weekDay: calendarRow.weekDay
-      }),
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to save post');
-    }
-    
-    // Show success message
-    alert('Post saved successfully!');
-    
-    // Close the modal
-    setShowPostModal(false);
-  } catch (error) {
-    console.error('Error saving post:', error);
-    alert('Failed to save post. Please try again.');
-  }
-};
+      };
+      console.log("--- savePost: Sending this payload:", bodyPayload);
 
+      // --- MAKE SURE fetch options ARE PRESENT ---
+      const response = await fetch('/api/posts/save', {
+        method: 'POST', // Specify POST method
+        headers: {
+          'Content-Type': 'application/json' // Specify content type
+        },
+        body: JSON.stringify(bodyPayload) // Include the data in the body
+      });
+      // --- END OF FETCH OPTIONS ---
+
+      console.log("--- savePost: Received response - Status:", response.status, "OK:", response.ok);
+
+      if (!response.ok) {
+        console.log(`--- savePost: Response not OK (Status: ${response.status}). Parsing error body... ---`);
+        let errorBody = null;
+        try {
+            errorBody = await response.json();
+            console.error("--- savePost: Error response body:", errorBody);
+        } catch (e) {
+            console.error("--- savePost: Could not parse error response body. Response text might be:", await response.text().catch(() => "Could not read response text"));
+        }
+        throw new Error(`Failed to save post. Status: ${response.status}`);
+      }
+
+      // If response IS ok
+      console.log("--- savePost: Response OK. Showing success alert.");
+      alert('Post saved successfully!');
+      console.log("--- savePost: Closing modal and resetting modal index.");
+      setShowPostModal(false);
+      setModalPostIndex(null); // Reset modal index
+
+    } catch (error) {
+      console.error('--- savePost: Error caught in catch block:', error);
+      alert('Failed to save post. Please try again.');
+    } finally {
+      console.log("--- savePost: Finally block executing ---");
+      // setGeneratingPostId(null); // Optional
+    }
+  };
   // Extract calendar data from markdown content
   const extractCalendarData = (markdownContent) => {
     try {
@@ -518,12 +602,15 @@ const savePost = async () => {
                 </ReactMarkdown>
               </div>
               <div className="mt-4 flex justify-end gap-2">
-                <button 
-                  onClick={() => setShowPostModal(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md"
-                >
-                  Close
-                </button>
+              <button
+                onClick={() => {
+                  setShowPostModal(false);
+                  setModalPostIndex(null); // <-- ADD THIS
+                }}
+                className="px-4 py-2 border border-gray-300 rounded-md"
+              >
+                Close
+              </button>
                 <button 
                   onClick={() => copyToClipboard(generatedPost)}
                   className="px-4 py-2 border border-gray-600 text-gray-700 rounded-md"
@@ -531,6 +618,7 @@ const savePost = async () => {
                   Copy to Clipboard
                 </button>
                 <button 
+                  
                   onClick={savePost}
                   className="px-4 py-2 bg-emerald-600 text-white rounded-md"
                 >

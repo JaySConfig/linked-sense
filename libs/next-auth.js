@@ -118,34 +118,6 @@ export const authOptions = {
 
 
 
-
-  // // --- Ensure this callbacks block is UNCOMMENTED ---
-  // callbacks: {
-  //   // --- Ensure this jwt callback is ADDED ---
-  //   async jwt({ token, user }) {
-  //     // 'user' object comes from the adapter after sign-in/sign-up.
-  //     // It should contain the MongoDB _id.
-  //     if (user?.id) {
-  //       token.id = user.id; // Add the MongoDB user ID to the JWT token
-  //     }
-  //     // console.log("JWT Callback Token:", token); // Optional for debugging
-  //     return token;
-  //   },
-
-  //   // --- Ensure this session callback is MODIFIED to use token.id ---
-  //   async session({ session, token }) {
-  //     // The 'token' object comes from the jwt callback.
-  //     // Add the user ID from the token to the session.user object.
-  //     if (token?.id && session.user) {
-  //       session.user.id = token.id; // Add database ID to the session
-  //     } else {
-  //        // console.error("Session callback: token.id missing from token:", token); // Optional for debugging
-  //     }
-  //     // console.log("Session Callback Session:", session); // Optional for debugging
-  //     return session; // Return the session object with session.user.id populated
-  //   }
-  // }, // --- End of callbacks block ---
-
 // Inside your authOptions
   callbacks: {
     async jwt({ token, user }) {
