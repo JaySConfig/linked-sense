@@ -452,7 +452,7 @@ const saveStrategy = async () => {
     </div>
   );
   
-  // Calendar Table Component
+  // Calendar Table Component ////
   const ContentCalendarTable = ({ calendar, onGeneratePost, generatingPostId }) => {
     if (!calendar || !calendar.rows || calendar.rows.length === 0) {
       return <p>No calendar data available</p>;
@@ -468,7 +468,7 @@ const saveStrategy = async () => {
               <th className="px-4 py-2 bg-gray-100 border border-gray-300 text-left text-sm font-medium">Topic</th>
               <th className="px-4 py-2 bg-gray-100 border border-gray-300 text-left text-sm font-medium">Approach</th>
               <th className="px-4 py-2 bg-gray-100 border border-gray-300 text-left text-sm font-medium">Content Type</th>
-              <th className="px-4 py-2 bg-gray-100 border border-gray-300 text-left text-sm font-medium">Actions</th>
+              {/* <th className="px-4 py-2 bg-gray-100 border border-gray-300 text-left text-sm font-medium">Actions</th> */}
             </tr>
           </thead>
           <tbody>
@@ -479,15 +479,15 @@ const saveStrategy = async () => {
                 <td className="px-4 py-2 border border-gray-300 text-sm">{row.topic}</td>
                 <td className="px-4 py-2 border border-gray-300 text-sm">{row.approach}</td>
                 <td className="px-4 py-2 border border-gray-300 text-sm">{row.contentType}</td>
-                <td className="px-4 py-2 border border-gray-300 text-sm text-center">
-                  <button 
+                {/* <td className="px-4 py-2 border border-gray-300 text-sm text-center"> */}
+                  {/* <button 
                     onClick={() => onGeneratePost(row.pillar, row.topic, row.approach, row.contentType, index)}
                     className="px-3 py-1 bg-emerald-600 text-white text-xs rounded hover:bg-emerald-700 transition-colors"
                     disabled={generatingPostId === index}
                   >
                     {generatingPostId === index ? 'Generating...' : 'Generate Post'}
-                  </button>
-                </td>
+                  </button> */}
+                {/* </td> */}
               </tr>
             ))}
           </tbody>
@@ -495,6 +495,8 @@ const saveStrategy = async () => {
       </div>
     );
   };
+
+  ///// strategy
   
   return (
     <div className="min-h-screen bg-white p-8">
@@ -549,8 +551,8 @@ const saveStrategy = async () => {
               {/* Render our custom interactive table */}
               <ContentCalendarTable 
                 calendar={contentCalendar}
-                onGeneratePost={generatePost}
-                generatingPostId={generatingPostId}
+                // onGeneratePost={generatePost}
+                // generatingPostId={generatingPostId}
               />
             </>
           ) : foundationStrategy ? (
@@ -589,45 +591,6 @@ const saveStrategy = async () => {
             Create New Strategy
           </a>
         </div>
-        
-        {/* Post Modal */}
-        {/* Post Modal */}
-        {showPostModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-2xl max-h-[80vh] overflow-y-auto">
-              <h2 className="text-xl font-bold mb-4">Generated Post</h2>
-              <div className="prose prose-sm">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {generatedPost}
-                </ReactMarkdown>
-              </div>
-              <div className="mt-4 flex justify-end gap-2">
-              <button
-                onClick={() => {
-                  setShowPostModal(false);
-                  setModalPostIndex(null); // <-- ADD THIS
-                }}
-                className="px-4 py-2 border border-gray-300 rounded-md"
-              >
-                Close
-              </button>
-                <button 
-                  onClick={() => copyToClipboard(generatedPost)}
-                  className="px-4 py-2 border border-gray-600 text-gray-700 rounded-md"
-                >
-                  Copy to Clipboard
-                </button>
-                <button 
-                  
-                  onClick={savePost}
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-md"
-                >
-                  Save Post
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

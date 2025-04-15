@@ -879,6 +879,7 @@
 // app/dashboard/profile/page.js
 "use client";
 
+import { addDays, format, getDay, nextMonday, startOfDay } from 'date-fns'
 import { useEffect, useState, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link'; // Import Link
@@ -917,18 +918,40 @@ const MarkdownContent = ({ content, className = "prose prose-lg max-w-none" }) =
 // --- End Markdown Component ---
 
 // --- Calendar Table Component (or import) ---
-const ContentCalendarTable = ({ calendar, savedPosts, generatingPostId, handleGeneratePost, handleViewPost }) => {
+
+//// new version with dates /////// ///// // -----
+
+// --- Updated ContentCalendarTable definition using date-fns ---
+const ContentCalendarTable = ({ calendar, savedPosts, generatingPostId, handleGeneratePost, handleViewPost, startDate }) => {
   if (!calendar || !calendar.rows || calendar.rows.length === 0) {
-    return <p className="text-center text-gray-500 italic my-4">No calendar data available to display.</p>;
+      return <p className="text-center text-gray-500 italic my-4">No calendar data available to display.</p>;
   }
   const postsLookup = savedPosts || [];
+
+  // Helper function moved inside or defined above component
+  const addWeekdays = (date, daysToAdd) => {
+    if (!date) return null;
+    let currentDate = date;
+    let addedDays = 0;
+    // Loop until we have added the required number of weekdays
+    while (addedDays < daysToAdd) {
+      currentDate = addDays(currentDate, 1); // Add one calendar day
+      const dayOfWeek = getDay(currentDate); // 0=Sun, 1=Mon... 6=Sat
+      // Only count it if it's not Sunday (0) or Saturday (6)
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+        addedDays++;
+      }
+    }
+    return currentDate;
+  };
 
   return (
     <div className="overflow-x-auto my-6 shadow border border-base-300 rounded-lg">
       <table className="w-full border-collapse table-auto">
         <thead className="bg-base-200">
           <tr>
-            <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Week - Day</th>
+            {/* Updated Header */}
+            <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Date</th>
             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Pillar</th>
             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Topic</th>
             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Approach</th>
@@ -939,26 +962,33 @@ const ContentCalendarTable = ({ calendar, savedPosts, generatingPostId, handleGe
         <tbody className="bg-base-100 divide-y divide-base-200">
           {calendar.rows.map((row, index) => {
             const isPostSaved = postsLookup.some(post => post.postIndex === index);
+
+            // Calculate the date for this row using the helper
+            const currentDate = addWeekdays(startDate, index);
+
+            // Format the date using date-fns format function
+            const formattedDate = currentDate
+              ? format(currentDate, 'EEE, MMM d') // Example: "Mon, Apr 21"
+              : 'Calculating...'; // Fallback while loading/calculating startDate
+
             return (
               <tr key={index} className="hover:bg-base-200/50">
-                <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content whitespace-nowrap">{row.weekDay || '-'}</td>
+                {/* Use formattedDate */}
+                <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content whitespace-nowrap">{formattedDate}</td>
+                {/* Other cells */}
                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.pillar || '-'}</td>
                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.topic || '-'}</td>
                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.approach || '-'}</td>
                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.contentType || '-'}</td>
                 <td className="px-4 py-3 border-b border-base-300 text-sm text-center whitespace-nowrap">
+                  {/* Conditional Button Logic */}
                   {isPostSaved ? (
-                    <Button size="xs" variant="info" onClick={() => handleViewPost(index)}>View Post</Button>
+                     <Button size="xs" variant="info" onClick={() => handleViewPost(index)}>View Post</Button>
                   ) : (
-                    <Button
-                      size="xs"
-                      variant="success"
-                      onClick={() => handleGeneratePost(row.pillar, row.topic, row.approach, row.contentType, index)}
-                      disabled={generatingPostId === index}
-                    >
-                      {generatingPostId === index ? 'Generating...' : 'Generate Post'}
-                    </Button>
-                  )}
+                     <Button size="xs" variant="success" onClick={() => handleGeneratePost(row.pillar, row.topic, row.approach, row.contentType, index)} disabled={generatingPostId === index}>
+                       {generatingPostId === index ? 'Generating...' : 'Generate Post'}
+                     </Button>
+                   )}
                 </td>
               </tr>
             );
@@ -968,6 +998,67 @@ const ContentCalendarTable = ({ calendar, savedPosts, generatingPostId, handleGe
     </div>
   );
 };
+
+//// ------- end -------- //////
+
+
+
+
+
+
+
+
+// const ContentCalendarTable = ({ calendar, savedPosts, generatingPostId, handleGeneratePost, handleViewPost }) => {
+//   if (!calendar || !calendar.rows || calendar.rows.length === 0) {
+//     return <p className="text-center text-gray-500 italic my-4">No calendar data available to display.</p>;
+//   }
+//   const postsLookup = savedPosts || [];
+
+//   return (
+//     <div className="overflow-x-auto my-6 shadow border border-base-300 rounded-lg">
+//       <table className="w-full border-collapse table-auto">
+//         <thead className="bg-base-200">
+//           <tr>
+//             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Week - Day</th>
+//             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Pillar</th>
+//             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Topic</th>
+//             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Approach</th>
+//             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Content Type</th>
+//             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Actions</th>
+//           </tr>
+//         </thead>
+//         <tbody className="bg-base-100 divide-y divide-base-200">
+//           {calendar.rows.map((row, index) => {
+//             const isPostSaved = postsLookup.some(post => post.postIndex === index);
+//             return (
+//               <tr key={index} className="hover:bg-base-200/50">
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content whitespace-nowrap">{row.weekDay || '-'}</td>
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.pillar || '-'}</td>
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.topic || '-'}</td>
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.approach || '-'}</td>
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.contentType || '-'}</td>
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-center whitespace-nowrap">
+//                   {isPostSaved ? (
+//                     <Button size="xs" variant="info" onClick={() => handleViewPost(index)}>View Post</Button>
+//                   ) : (
+//                     <Button
+//                       size="xs"
+//                       variant="success"
+//                       onClick={() => handleGeneratePost(row.pillar, row.topic, row.approach, row.contentType, index)}
+//                       disabled={generatingPostId === index}
+//                     >
+//                       {generatingPostId === index ? 'Generating...' : 'Generate Post'}
+//                     </Button>
+//                   )}
+//                 </td>
+//               </tr>
+//             );
+//           })}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
 // --- End Calendar Table Component ---
 
 
@@ -976,6 +1067,7 @@ export default function SavedStrategyPage() {
   const { data: session, status: sessionStatus } = useSession();
 
   // State
+  const [calendarStartDate, setCalendarStartDate] = useState(null); // State for start date
   const [strategyData, setStrategyData] = useState(null); // Holds the fetched linkedinStrategy object
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -1026,9 +1118,64 @@ export default function SavedStrategyPage() {
 
 
   // Initial Data Load
+  // useEffect(() => {
+  //   fetchProfileData();
+  // }, [sessionStatus]); // Re-run only when session status changes
+
   useEffect(() => {
-    fetchProfileData();
-  }, [sessionStatus]); // Re-run only when session status changes
+    const fetchProfileData = async () => {
+      // Only fetch if session is loaded and authenticated
+      if (sessionStatus === 'authenticated') {
+        let fetchedStrategyData = null;
+        let fetchError = null;
+        try {
+          console.log('Fetching profile data...');
+          setIsLoading(true);
+          const response = await fetch('/api/profile');
+          console.log('Profile fetch response status:', response.status);
+          if (!response.ok) throw new Error(`Failed to fetch profile (${response.status})`);
+          const data = await response.json();
+          console.log('Profile data received:', data);
+
+          if (data.profile?.linkedinStrategy) {
+            console.log('Saved strategy found.');
+            // Set the main strategy data state
+            setStrategyData(data.profile.linkedinStrategy);
+
+            // --- Calculate and Set Start Date RIGHT HERE ---
+            const today = startOfDay(new Date()); // Use startOfDay from date-fns
+            const nextMon = getDay(today) === 1 ? today : nextMonday(today); // Use getDay and nextMonday from date-fns
+            setCalendarStartDate(nextMon); // Set the dedicated state for the start date
+            console.log('Calculated Calendar Start Date:', nextMon);
+            // --- End Calculate Start Date ---
+
+            setError(null); // Clear previous errors
+          } else {
+            console.log('No saved LinkedIn strategy found in profile.');
+            fetchedStrategyData = null; // Set strategy data to null
+            // No redirect needed here based on our last discussion
+          }
+        } catch (err) {
+           console.error('Error fetching profile:', err);
+           fetchError = err.message || 'An error occurred while fetching data.';
+           fetchedStrategyData = null; // Ensure data is null on error
+        } finally {
+            // Set state based on fetch results
+            // Note: setStrategyData is already handled inside the if/else/catch
+            setError(fetchError);
+            setIsLoading(false);
+        }
+      } else if (sessionStatus === 'loading') {
+        setIsLoading(true);
+      } else { // Unauthenticated
+        setIsLoading(false);
+        setError('Please log in to view your saved strategy.');
+      }
+    }; // End of fetchProfileData function definition
+
+    fetchProfileData(); // Call the function
+
+  }, [sessionStatus]); // Dependency array
 
   // Extracted data (handle potential null state during render)
   const foundation = strategyData?.foundation;
@@ -1221,6 +1368,8 @@ export default function SavedStrategyPage() {
                    generatingPostId={generatingPostId}
                    handleGeneratePost={handleGeneratePost}
                    handleViewPost={handleViewPost}
+                   startDate={calendarStartDate} // <-- PASS THE START DATE PROP
+
                  />
              </div></div>
         )}
