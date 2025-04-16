@@ -123,6 +123,7 @@ const userSchema = mongoose.Schema(
         calendar: String,
         contentCalendar: mongoose.Schema.Types.Mixed,
         savedAt: Date,
+        calendarStartDate: Date,
         // Array to store saved posts
         savedPosts: [
           {

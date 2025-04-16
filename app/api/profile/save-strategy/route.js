@@ -56,6 +56,7 @@
 // app/api/profile/save-strategy/route.js
 // app/api/profile/save-strategy/route.js
 
+import { getDay, nextMonday, startOfDay } from 'date-fns';
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/libs/next-auth";
@@ -86,11 +87,18 @@ export async function POST(req) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+     // --- Calculate the Start Date ---
+     const now = startOfDay(new Date());
+     const calculatedStartDate = getDay(now) === 1 ? now : nextMonday(now); // Next Monday (or today if Monday)
+     console.log("Calculated startDate during save:", calculatedStartDate);
+     // --- End Calculation ---
+
     // 5. Prepare and Update Profile Data
     // Initialize the profile object if it doesn't exist
-    if (!user.profile) {
-      user.profile = {};
-    }
+     // Initialize profile/strategy if they don't exist
+     if (!user.profile) user.profile = {};
+     if (!user.profile.linkedinStrategy) user.profile.linkedinStrategy = {};
+ 
 
     // Set the linkedinStrategy data (overwriting previous strategy if exists)
     user.profile.linkedinStrategy = {
@@ -100,6 +108,7 @@ export async function POST(req) {
       calendar, // The raw markdown calendar
       contentCalendar, // The parsed calendar data object
       savedAt: new Date(),
+      calendarStartDate: calculatedStartDate,
       // Preserve any saved posts that might have been added separately
       // If posts are only saved *within* a strategy save, this might always be empty initially
       savedPosts: user.profile.linkedinStrategy?.savedPosts || []
