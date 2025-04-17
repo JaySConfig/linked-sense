@@ -1450,33 +1450,38 @@ import remarkGfm from 'remark-gfm';
 import clsx from 'clsx'; // For conditional classes (npm install clsx)
 import { addDays, format, getDay, nextMonday, startOfDay } from 'date-fns'; // For date calculations (npm install date-fns)
 
+// components
+import MarkdownContent from '@/components/MarkDownContent';
+import Button from '@/components/Button';
+
+
 // --- Reusable Button Component (Consider moving to components/Button.jsx) ---
-const Button = ({
-  children, onClick, type = 'button', variant = 'primary', size = 'md', disabled = false, className = '', ...props
-}) => {
-  const baseStyles = 'inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed';
-  const variants = {
-    primary: 'bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500',
-    secondary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-    info: 'bg-sky-600 text-white hover:bg-sky-700 focus:ring-sky-500', // Using sky for 'info'
-    success: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500',
-    ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 focus:ring-indigo-500 border-none shadow-none',
-    outline: 'bg-transparent border border-slate-300 text-slate-700 hover:bg-slate-50 focus:ring-indigo-500',
-  };
-  const sizes = {
-    xs: 'px-2.5 py-1.5 text-xs',
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-sm',
-    lg: 'px-5 py-2.5 text-base',
-  };
-  const combinedClassName = clsx( baseStyles, variants[variant] || variants.primary, sizes[size] || sizes.md, className );
-  return ( <button type={type} onClick={onClick} disabled={disabled} className={combinedClassName} {...props}> {children} </button> );
-};
+// const Button = ({
+//   children, onClick, type = 'button', variant = 'primary', size = 'md', disabled = false, className = '', ...props
+// }) => {
+//   const baseStyles = 'inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed';
+//   const variants = {
+//     primary: 'bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500',
+//     secondary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
+//     info: 'bg-sky-600 text-white hover:bg-sky-700 focus:ring-sky-500', // Using sky for 'info'
+//     success: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500',
+//     ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 focus:ring-indigo-500 border-none shadow-none',
+//     outline: 'bg-transparent border border-slate-300 text-slate-700 hover:bg-slate-50 focus:ring-indigo-500',
+//   };
+//   const sizes = {
+//     xs: 'px-2.5 py-1.5 text-xs',
+//     sm: 'px-3 py-1.5 text-sm',
+//     md: 'px-4 py-2 text-sm',
+//     lg: 'px-5 py-2.5 text-base',
+//   };
+//   const combinedClassName = clsx( baseStyles, variants[variant] || variants.primary, sizes[size] || sizes.md, className );
+//   return ( <button type={type} onClick={onClick} disabled={disabled} className={combinedClassName} {...props}> {children} </button> );
+// };
 
 // --- Markdown Component (Consider moving to components/MarkdownContent.jsx) ---
-const MarkdownContent = ({ content, className = "prose prose-lg max-w-none" }) => (
-    content ? <div className={className}><ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown></div> : <p className="italic text-gray-500">No content available.</p>
-);
+// const MarkdownContent = ({ content, className = "prose prose-lg max-w-none" }) => (
+//     content ? <div className={className}><ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown></div> : <p className="italic text-gray-500">No content available.</p>
+// );
 
 // --- Calendar Table Component (Consider moving to components/ContentCalendarTable.jsx) ---
 const ContentCalendarTable = ({ calendar, savedPosts, generatingPostId, handleGeneratePost, handleViewPost, startDate }) => {

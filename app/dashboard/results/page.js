@@ -698,6 +698,7 @@ function ResultsContent() {
           const response = await fetch('/api/generate-foundation', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(submissionData)});
           if (!response.ok) throw new Error('Failed to generate strategy foundation');
           const data = await response.json();
+          
           setFoundationStrategy(data.foundation);
           generateCalendar(submissionData, data.foundation);
       } catch (err) { setError(err.message || 'Failed to generate foundation.'); console.error('Error generating foundation:', err); }
@@ -710,6 +711,9 @@ function ResultsContent() {
           const response = await fetch('/api/generate-calendar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({...submissionData, foundation})});
           if (!response.ok) throw new Error('Failed to generate content calendar');
           const data = await response.json();
+          console.log("--- Raw Markdown from API (/api/generate-calendar): ---");
+          console.log(data.calendar); // Log the raw markdown string
+          console.log("--- End Raw Markdown from API ---");
           setCalendarStrategy(data.calendar);
           const parsedCalendar = extractCalendarData(data.calendar);
           setContentCalendar(parsedCalendar);
@@ -718,11 +722,79 @@ function ResultsContent() {
   };
 
   // Utility Functions (remain)
+  // Corrected extractCalendarData function for results/page.js
+
+  // Corrected extractCalendarData with flexible separator regex
+
+// Corrected extractCalendarData with 'let' for headerMatch
+
   const extractCalendarData = (markdownContent) => {
-       if (!markdownContent) return null;
-       try { /* ... same implementation ... */ return { headers: [], rows: [] }; } // Simplified return
-       catch (error) { console.error("Error parsing calendar table:", error); return null; }
+    // console.log("--- Raw Markdown Input for Calendar Parsing (Results Page): ---");
+    // console.log(markdownContent);
+    // console.log("--- End Raw Markdown Input ---");
+
+    if (!markdownContent || typeof markdownContent !== 'string') {
+      console.log("extractCalendarData: Invalid markdownContent received.");
+      return null;
+    }
+    try {
+      const tableHeaderRegex = /\|\s*Week - Day\s*\|.*?\n\|.*?-{3,}.*\|/;
+      // --- CHANGE CONST TO LET HERE ---
+      let headerMatch = markdownContent.match(tableHeaderRegex); // Use 'let' instead of 'const'
+
+      if (!headerMatch) {
+          console.log("extractCalendarData: Could not find table header row like '| Week - Day |...' followed by a separator line containing '---'.");
+          // Fallback attempt
+          const simpleTableHeaderRegex = /\|\s*Week - Day\s*\|.*?\n\|.*?-{3,}.*\|/; // Fallback regex seems identical? Ensure it's needed/different if kept. Maybe remove fallback for now? Or ensure regex is different. Let's assume it might be needed for slightly different markdown.
+          // Now this reassignment is allowed because headerMatch is declared with 'let'
+          headerMatch = markdownContent.match(simpleTableHeaderRegex);
+          if (!headerMatch) {
+              console.log("extractCalendarData: Fallback regex also failed. Cannot find table start.");
+              return null;
+          }
+          console.log("extractCalendarData: Found table via fallback regex.");
+      }
+
+      // Get the text from the header match onwards
+      const tableStartIndex = headerMatch.index;
+      const tableContent = markdownContent.substring(tableStartIndex);
+
+      // Extract table rows
+      const tableRows = tableContent.split('\n')
+        .map(line => line.trim())
+        .filter(line => line.startsWith('|') && line.includes('|', 1))
+        .map(line => line.substring(1, line.endsWith('|') ? line.length - 1 : line.length)
+          .split('|')
+          .map(cell => cell.trim())
+        );
+
+      // Check for header/separator rows
+      if (tableRows.length < 2 || !tableRows[1].some(cell => cell.includes('---'))) {
+          console.log("extractCalendarData: Did not find valid header/separator rows after splitting.");
+          return null;
+      }
+
+      // Extract headers and rows
+      const headers = tableRows[0];
+      const rows = tableRows.slice(2).map(row => ({
+        weekDay: row[0] || '', pillar: row[1] || '', topic: row[2] || '',
+        approach: row[3] || '', contentType: row[4] || ''
+      })).filter(row => row.weekDay && !row.weekDay.includes('--'));
+
+      if (rows.length === 0) {
+          console.log("extractCalendarData: No valid data rows found after header/separator.");
+          return null;
+      }
+
+      console.log(`extractCalendarData: Successfully parsed ${rows.length} rows.`);
+      return { headers, rows };
+
+    } catch (error) {
+      console.error("Error parsing calendar table in extractCalendarData:", error);
+      return null;
+    }
   };
+
   const getProcessedCalendarContent = () => { /* ... same implementation ... */ }; // Returns text before table
   const retryFoundation = () => { if (submission) generateFoundation(submission); };
   const retryCalendar = () => { if (submission && foundationStrategy) generateCalendar(submission, foundationStrategy); };
