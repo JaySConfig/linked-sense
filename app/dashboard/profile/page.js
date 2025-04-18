@@ -1612,12 +1612,34 @@ export default function SavedStrategyPage() {
     fetchProfileData();
   }, [sessionStatus]);
 
+  console.log('--- Render Check ---');
+  console.log('isLoading:', isLoading);
+  console.log('error:', error);
+  console.log('strategyData exists?:', !!strategyData);
+
   // Extracted data & Saved Start Date
   const foundation = strategyData?.foundation;
   const contentCalendar = strategyData?.contentCalendar;
+
   const savedPosts = strategyData?.savedPosts || [];
   // Get startDate from fetched data, convert string back to Date object
   const savedStartDate = strategyData?.calendarStartDate ? new Date(strategyData.calendarStartDate) : null;
+
+
+
+
+  console.log('contentCalendar object:', contentCalendar); // What does this show?
+  console.log('contentCalendar has rows?:', !!contentCalendar?.rows); // Does it have rows?
+  console.log('contentCalendar rows length:', contentCalendar?.rows?.length ?? 'N/A'); // How many rows?
+  console.log('savedStartDate (raw from DB):', strategyData?.calendarStartDate); // What's the raw date string?
+  console.log('savedStartDate (parsed Date object):', savedStartDate); // Did it parse correctly?
+  console.log('savedStartDate is valid Date?:', savedStartDate instanceof Date && !isNaN(savedStartDate)); // Is it a valid JS Date?
+  console.log('Condition to render table (calendar && date):', !!(contentCalendar?.rows && savedStartDate instanceof Date && !isNaN(savedStartDate))); // Did the condition pass?
+  // --- END NEEDED LOGS ---
+
+
+
+
 
   // --- Handlers ---
   const handleGeneratePost = async (pillar, topic, approach, contentType, index) => {
