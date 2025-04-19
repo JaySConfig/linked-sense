@@ -117,13 +117,22 @@ const userSchema = mongoose.Schema(
       uniquePerspective: String,
       // New fields for LinkedIn strategy
       linkedinStrategy: {
-        submissionId: String,
-        answers: mongoose.Schema.Types.Mixed,
-        foundation: String,
-        calendar: String,
-        contentCalendar: mongoose.Schema.Types.Mixed,
-        savedAt: Date,
-        calendarStartDate: Date,
+        submissionId: String, // ID of the submission that generated the foundation/first calendar
+        answers: mongoose.Schema.Types.Mixed, // Answers used for the foundation
+        foundation: String, // The core strategy foundation text
+        savedAt: Date, // When the overall strategy object was last updated
+    
+        // Array to store multiple calendar instances
+        savedCalendars: [ // <-- NEW ARRAY FIELD
+          {
+            calendar: String, // Raw markdown calendar for this period
+            contentCalendar: mongoose.Schema.Types.Mixed, // Parsed calendar object for this period
+            startDate: Date, // Calculated start date for this period
+            endDate: Date,   // Calculated end date for this period
+            savedAt: Date    // When this specific calendar instance was saved
+          }
+        ],
+  
         // Array to store saved posts
         savedPosts: [
           {

@@ -389,13 +389,13 @@ function createStrategyPrompt(answers) {
 You are a LinkedIn strategy expert who helps executives and professionals build their personal brand on LinkedIn.
 
 ### Comprehensive User Profile
+* Industry: ${getReadableValue(answers.industry, 'industry')}
 * Professional Role: ${getReadableValue(answers.role, 'role')}
 * Primary LinkedIn Goal: ${getReadableValue(answers.primaryGoal, 'primaryGoal')}
 * Target Audience: ${getReadableValue(answers.targetAudience, 'targetAudience')}
 * Commercial Objectives: ${getReadableValue(answers.commercialObjectives, 'commercialObjectives')}
 * Communication Style: ${getReadableValue(answers.uniquePerspective, 'uniquePerspective')}
 * Content Tone/Feel: ${getReadableValue(answers.userVoice, 'userVoice')}
-* Posting Frequency: ${getReadableValue(answers.postingFrequency, 'postingFrequency')}
 
 ### Audience Insights
 * Pain Points/Challenges: ${formatArrayAnswer(answers.audienceChallenges)}
@@ -404,7 +404,8 @@ You are a LinkedIn strategy expert who helps executives and professionals build 
 ### Content Strategy Foundation
 * Content Pillars: ${formatArrayAnswer(answers.contentPillars)}
 * Preferred Content Types: ${formatContentTypes(answers.contentTypes)}
-* Engagement Preferences: ${formatArrayAnswer(answers.engagementStyle)}
+* Posting Frequency: ${getReadableValue(answers.postingFrequency, 'postingFrequency')}
+
 
 ### Task
 Based on this user profile, create a comprehensive LinkedIn strategy in two main parts:
@@ -418,12 +419,27 @@ Based on this user profile, create a comprehensive LinkedIn strategy in two main
  - How this pillar supports their primary goal
  - 3 specific content ideas for this pillar
 
-3. **Engagement Strategy**: Tactical recommendations for how they should engage with their audience based on their preferences.
+3. **Engagement Strategy:** Provide 2-4 tactical recommendations for how this user should generally engage on LinkedIn to effectively reach their target audience (${getReadableValue(answers.targetAudience, 'targetAudience')}) and achieve their primary goal (${getReadableValue(answers.primaryGoal, 'primaryGoal')}). Recommend common effective methods (e.g., strategic commenting on relevant content, asking engaging questions in posts, participating in relevant groups) tailored to their role (${getReadableValue(answers.role, 'role')}) and objectives. Do NOT base this on specific user preferences for engagement methods like DMs vs Polls vs Live. // <-- Modified Instruction
 
 4. **Growth & Measurement Plan**: Specific metrics to track based on their primary goals and realistic growth targets.
 
+5.  **People & Pages to Follow:** Suggest 2-3 specific, well-known LinkedIn accounts relevant to the user's industry ('${industry}') and pillars (${pillars}). These could be individual thought leaders (provide full name) or relevant Company Pages (provide name). For each, briefly explain (1 sentence) the value of following them. **Do NOT suggest software tools or platforms.** If you cannot identify suitable specific accounts, list 2-3 *types* of accounts relevant to their field to search for (e.g., 'Keynote speakers at [Industry] conferences', 'Research publications for [Pillar Topic]', 'Relevant industry associations on LinkedIn'). // <-- Simplified & Reinforced Instruction
+
 ## PART 2: FOUR-WEEK CONTENT CALENDAR
-Create a detailed 4-week content plan with ${getPostingFrequencyCount(answers.postingFrequency)} posts per week (Monday-Friday).
+
+**SCHEDULING & CONTENT INSTRUCTIONS:**
+* Schedule exactly ${postingCount} posts for each of the 4 weeks on weekdays (Monday-Friday only).
+* **Spread these ${postingCount} posts out across the work week.** Do NOT schedule multiple posts on the same day.
+* **Good Distribution Examples:**
+    * If scheduling 2 posts: Use days like Monday & Thursday, OR Tuesday & Friday.
+    * If scheduling 3 posts: Use days like Monday, Wednesday, & Friday.
+    * If scheduling 4 posts: Use days like Monday, Tuesday, Thursday, & Friday OR Monday, Wednesday, Thursday, & Friday.
+    * If scheduling 5 posts: Use Monday, Tuesday, Wednesday, Thursday, Friday.
+* **Bad Distribution Examples:** Do not schedule posts on consecutive days like Monday & Tuesday if only posting twice per week. Do not schedule all posts clustered at the start or end of the week (e.g., Monday & Friday is better than Monday & Tuesday for 2 posts).
+* Topics should primarily derive from the user's Content Pillars... (rest of topic instructions remain same) ...
+* Avoid focusing heavily on specific seasons... (rest of topic instructions remain same) ...
+* Include at least one promotional post per week and one value-add resource per week...
+
 Format the content plan as a clear markdown table with these columns:
 | Week - Day | Pillar | Topic | Approach | Content Type |
 | ---------- | ------ | ----- | -------- | ------------ |

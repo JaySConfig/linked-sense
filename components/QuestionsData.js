@@ -7,23 +7,23 @@ export const sections = [
       title: 'Your Profile',
       description: "Let's start with some basic information about you and your work.",
       questions: [
-        // {
-        //   id: 'industry',
-        //   question: 'What industry do you work in?',
-        //   type: 'singleSelect',
-        //   options: [
-        //     { value: 'technology', label: 'Technology & Software' },
-        //     { value: 'finance', label: 'Finance & Banking' },
-        //     { value: 'healthcare', label: 'Healthcare & Wellness' },
-        //     { value: 'education', label: 'Education & Training' },
-        //     { value: 'marketing', label: 'Marketing & Advertising' },
-        //     { value: 'ecommerce', label: 'E-commerce & Retail' },
-        //     { value: 'consulting', label: 'Consulting & Professional Services' },
-        //     { value: 'manufacturing', label: 'Manufacturing & Engineering' },
-        //     { value: 'media', label: 'Media & Entertainment' },
-        //     { value: 'other', label: 'Other' }
-        //   ]
-        // },
+        {
+          id: 'industry',
+          question: 'What industry do you work in?',
+          type: 'singleSelect',
+          options: [
+            { value: 'technology', label: 'Technology & Software' },
+            { value: 'finance', label: 'Finance & Banking' },
+            { value: 'healthcare', label: 'Healthcare & Wellness' },
+            { value: 'education', label: 'Education & Training' },
+            { value: 'marketing', label: 'Marketing & Advertising' },
+            { value: 'ecommerce', label: 'E-commerce & Retail' },
+            { value: 'consulting', label: 'Consulting & Professional Services' },
+            { value: 'manufacturing', label: 'Manufacturing & Engineering' },
+            { value: 'media', label: 'Media & Entertainment' },
+            { value: 'other', label: 'Other' }
+          ]
+        },
         {
           id: 'role',
           question: 'What is your professional role?',
@@ -226,19 +226,19 @@ export const sections = [
           { value: 'storytelling', label: 'Storytelling & Relatable' }
         ]
       },
-      {
-        id: 'engagementStyle',
-        question: ' How do you prefer to engage with your LinkedIn audience?',
-        type: 'multiSelect',
-        description: 'Pick at least one engagement type that matches your style.',
-        minSelections: 1,
-        options: [ // Load saved progress when component mounts
-          { value: 'commenting', label: 'Commenting on industry posts' },
-          { value: 'polls', label: 'Running polls & discussions' },
-          { value: 'DMs', label: 'Building connections through DMs' },
-          { value: 'live', label: 'Hosting LinkedIn Live sessions' }
-        ]
-      },
+      // {
+      //   id: 'engagementStyle',
+      //   question: ' How do you prefer to engage with your LinkedIn audience?',
+      //   type: 'multiSelect',
+      //   description: 'Pick at least one engagement type that matches your style.',
+      //   minSelections: 1,
+      //   options: [ // Load saved progress when component mounts
+      //     // { value: 'commenting', label: 'Commenting on industry posts' },
+      //     // { value: 'polls', label: 'Running polls & discussions' },
+      //     // { value: 'DMs', label: 'Building connections through DMs' },
+      //     // { value: 'live', label: 'Hosting LinkedIn Live sessions' }
+      //   ]
+      // },
     ]
   }
 ];
