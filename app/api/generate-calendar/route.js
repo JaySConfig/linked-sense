@@ -221,7 +221,7 @@ You are a LinkedIn strategy expert creating timely, relevant content plans.
 * Year: ${currentYear}
 * Month: ${currentMonthName}
 * Quarter: Q${currentQuarter}
-* Season: ${season} (Northern Hemisphere)
+* Season: ${season}
 
 ### Content Strategy Foundation
 * Pillars: ${formatArrayAnswer(answers.contentPillars)}
@@ -240,8 +240,7 @@ Create a detailed 4-week content plan with ${postsPerWeekText} (Monday-Friday).
 **IMPORTANT SCHEDULING & CONTENT INSTRUCTIONS:**
 * Schedule exactly ${postingCount} posts for each of the 4 weeks.
 * Distribute these ${postingCount} posts across **different weekdays (Monday to Friday)** each week evenly. Do NOT schedule multiple posts on the same day within the same week.
-* **CRUCIAL FOR TOPICS:** Ensure all generated topics, advice, predictions, or examples are **highly relevant and timely for the current month (${currentMonthName}), quarter (Q${currentQuarter}), season (${season}), and year (${currentYear})**.
-* Consider typical business cycles, holidays (if any relevant ones are upcoming), or seasonal themes appropriate for ${currentMonthName} / ${season}.
+**CRUCIAL FOR TOPICS:** Ensure generated topics, advice, or examples are **generally timely for the current period ${currentMonthName} ${currentYear}, Q${currentQuarter})**. Consider common business cycles or themes relevant now based on the user's industry and goals, but avoid over-focusing on a single narrow theme (like a specific season) across all posts. Aim for a balanced mix of relevant evergreen and timely topics. Avoid topics clearly dated to past years. * Consider typical business cycles, holidays (if any relevant ones are upcoming), or seasonal themes appropriate for ${currentMonthName} / ${season}.
 * Avoid generic or outdated topics (e.g., "Predictions for ${currentYear - 1}").
 * Include at least one promotional post per week and one value-add resource (checklist, template, guide, etc.) per week, tailoring them to the current context if possible.
 

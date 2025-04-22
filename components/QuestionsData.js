@@ -13,7 +13,9 @@ export const sections = [
           type: 'singleSelect',
           options: [
             { value: 'technology', label: 'Technology & Software' },
-            { value: 'finance', label: 'Finance & Banking' },
+            { value: 'banking', label: 'Banking' },
+            { value: 'finance', label: 'Finance' },
+            { value: 'insurance', label: 'Insurance' },
             { value: 'healthcare', label: 'Healthcare & Wellness' },
             { value: 'education', label: 'Education & Training' },
             { value: 'marketing', label: 'Marketing & Advertising' },

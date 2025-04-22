@@ -899,6 +899,316 @@
 
 
 
+
+
+
+
+// /// --- new code with fixed saveStrategy function --- /////
+
+
+// // results/page.js (Corrected: Cleaned up + Refactored Buttons + Full saveStrategy)
+// "use client";
+
+// import { useSearchParams } from 'next/navigation';
+// import { useEffect, useState, Suspense } from 'react';
+// import clsx from 'clsx';
+
+// // --- Import Reusable Components ---
+// // Adjust paths if your components folder is different
+// import Button from '@/components/Button';
+// import MarkdownContent from '@/components/MarkdownContent'; // Assuming PascalCase now
+
+// // Simplified Calendar Table Component for display only on this page
+// const ResultsCalendarTable = ({ calendar }) => {
+//     if (!calendar || !calendar.rows || calendar.rows.length === 0) {
+//       return <p className="italic text-gray-500 my-4">No calendar data available.</p>;
+//     }
+//     return (
+//       <div className="overflow-x-auto my-6 shadow border border-base-300 rounded-lg">
+//         <table className="w-full border-collapse table-auto">
+//           <thead className="bg-base-200">
+//             <tr>
+//               <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Week - Day</th>
+//               <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Pillar</th>
+//               <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Topic</th>
+//               <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Approach</th>
+//               <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Content Type</th>
+//               {/* Actions column removed */}
+//             </tr>
+//           </thead>
+//           <tbody className="bg-base-100 divide-y divide-base-200">
+//             {calendar.rows.map((row, index) => (
+//               <tr key={index} className="hover:bg-base-200/50">
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.weekDay || '-'}</td>
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.pillar || '-'}</td>
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.topic || '-'}</td>
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.approach || '-'}</td>
+//                 <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.contentType || '-'}</td>
+//                 {/* Actions cell removed */}
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+//     );
+// };
+
+
+// function ResultsContent() {
+//   const searchParams = useSearchParams();
+//   const id = searchParams.get('id');
+
+//   // State for Strategy/Calendar Data ONLY
+//   const [submission, setSubmission] = useState(null);
+//   const [foundationStrategy, setFoundationStrategy] = useState(null);
+//   const [calendarStrategy, setCalendarStrategy] = useState(null); // Raw markdown
+//   const [contentCalendar, setContentCalendar] = useState(null); // Parsed object
+//   const [foundationLoading, setFoundationLoading] = useState(false);
+//   const [calendarLoading, setCalendarLoading] = useState(false);
+//   const [error, setError] = useState(null);
+//   const [isSavingStrategy, setIsSavingStrategy] = useState(false); // Loading state for save button
+//   const [saveMessage, setSaveMessage] = useState(''); // Message after saving
+
+//   // useEffect and Generation Functions
+//   useEffect(() => {
+//      if (!id) { setError('No submission ID found.'); return; };
+//      let parsedSubmission;
+//      try {
+//          const savedSubmission = localStorage.getItem(`submission_${id}`);
+//          if (!savedSubmission) { setError('Submission not found. It may have been deleted or expired.'); return; }
+//          parsedSubmission = JSON.parse(savedSubmission);
+//          setSubmission(parsedSubmission);
+//      } catch (err) {
+//          console.error('Error loading/parsing submission:', err);
+//          setError('Failed to load your submission data. It might be corrupted.');
+//          return;
+//      }
+//      if (parsedSubmission) {
+//         generateFoundation(parsedSubmission);
+//      }
+//   }, [id]);
+
+//   const generateFoundation = async (submissionData) => {
+//       setFoundationLoading(true); setError(null); setSaveMessage('');
+//       try {
+//           const response = await fetch('/api/generate-foundation', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(submissionData)});
+//           if (!response.ok) throw new Error('Failed to generate strategy foundation');
+//           const data = await response.json();
+//           setFoundationStrategy(data.foundation);
+//           generateCalendar(submissionData, data.foundation);
+//       } catch (err) { setError(err.message || 'Failed to generate foundation.'); console.error('Error generating foundation:', err); }
+//       finally { setFoundationLoading(false); }
+//   };
+
+//   const generateCalendar = async (submissionData, foundation) => {
+//       setCalendarLoading(true);
+//       try {
+//           const response = await fetch('/api/generate-calendar', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({...submissionData, foundation})});
+//           if (!response.ok) throw new Error('Failed to generate content calendar');
+//           const data = await response.json();
+//           // console.log("--- Raw Markdown from API (/api/generate-calendar): ---"); // Keep logs if needed
+//           // console.log(data.calendar);
+//           // console.log("--- End Raw Markdown from API ---");
+//           setCalendarStrategy(data.calendar); // Save raw calendar markdown
+//           const parsedCalendar = extractCalendarData(data.calendar); // Parse table data
+//           setContentCalendar(parsedCalendar);
+//       } catch (err) { setError(err.message || 'Failed to generate calendar.'); console.error('Error generating calendar:', err); }
+//       finally { setCalendarLoading(false); }
+//   };
+
+//   // --- Utility Functions ---
+//   const extractCalendarData = (markdownContent) => {
+//        // Using the last corrected version
+//        if (!markdownContent || typeof markdownContent !== 'string') { console.log("extractCalendarData: Invalid markdownContent received."); return null; }
+//        try {
+//          const tableHeaderRegex = /\|\s*Week - Day\s*\|.*?\n\|.*?-{3,}.*\|/;
+//          let headerMatch = markdownContent.match(tableHeaderRegex);
+//          if (!headerMatch) {
+//              console.log("extractCalendarData: Could not find table header row like '| Week - Day |...' followed by separator line.");
+//              return null; // Simplified: if main regex fails, assume no table for now
+//          }
+//          const tableStartIndex = headerMatch.index;
+//          const tableContent = markdownContent.substring(tableStartIndex);
+//          const tableRows = tableContent.split('\n').map(line => line.trim()).filter(line => line.startsWith('|') && line.includes('|', 1)).map(line => line.substring(1, line.endsWith('|') ? line.length - 1 : line.length).split('|').map(cell => cell.trim()));
+//          if (tableRows.length < 2 || !tableRows[1].some(cell => cell.includes('---'))) { console.log("extractCalendarData: Did not find valid header/separator rows."); return null; }
+//          const headers = tableRows[0];
+//          const rows = tableRows.slice(2).map(row => ({ weekDay: row[0] || '', pillar: row[1] || '', topic: row[2] || '', approach: row[3] || '', contentType: row[4] || '' })).filter(row => row.weekDay && !row.weekDay.includes('--'));
+//          if (rows.length === 0) { console.log("extractCalendarData: No valid data rows extracted."); return null; }
+//          console.log(`extractCalendarData: Successfully parsed ${rows.length} rows.`);
+//          return { headers, rows };
+//        } catch (error) { console.error("Error parsing calendar table in extractCalendarData:", error); return null; }
+//   };
+
+//   // This is optional - only needed if you want to display the text *before* the calendar table
+//   const getProcessedCalendarContent = () => {
+//      if (!calendarStrategy) return '';
+//      const parts = calendarStrategy.split('## FOUR-WEEK CONTENT CALENDAR');
+//      // If you want NO text description, just return empty string: return '';
+//      // If you want text description, return parts[0]:
+//      return parts[0]?.trim() || ''; // Return text before heading, or empty string
+//   };
+
+//   const retryFoundation = () => { if (submission) { setCalendarStrategy(null); setContentCalendar(null); generateFoundation(submission); }};
+//   const retryCalendar = () => { if (submission && foundationStrategy) { setCalendarStrategy(null); setContentCalendar(null); generateCalendar(submission, foundationStrategy);} };
+
+//   // --- Save Strategy Function (Full Implementation) ---
+//   const saveStrategy = async () => {
+//     console.log("--- saveStrategy: Function started ---");
+//     if (!submission || !foundationStrategy || !calendarStrategy || !contentCalendar) {
+//       console.log("--- saveStrategy: Aborted - data incomplete ---", { submission: !!submission, foundationStrategy: !!foundationStrategy, calendarStrategy: !!calendarStrategy, contentCalendar: !!contentCalendar });
+//       setSaveMessage("Error: Strategy data is incomplete.");
+//       alert("Cannot save - strategy data is incomplete.");
+//       return;
+//     };
+//     setIsSavingStrategy(true);
+//     setSaveMessage('Saving strategy...'); // Indicate saving started
+//     try {
+//       const payload = {
+//         submissionId: id,
+//         answers: submission.answers,
+//         foundation: foundationStrategy,
+//         calendar: calendarStrategy, // Raw markdown
+//         contentCalendar // Parsed object
+//       };
+//       console.log("--- saveStrategy: Sending Payload:", payload);
+//       const response = await fetch('/api/profile/save-strategy', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(payload)
+//       });
+//       console.log("--- saveStrategy: Received Response - Status:", response.status, "OK:", response.ok);
+
+//       if (!response.ok) {
+//         let errorDetails = `Failed to save strategy. Status: ${response.status}`;
+//         try {
+//           const errData = await response.json();
+//           console.log("--- saveStrategy: Error response body:", errData);
+//           errorDetails = errData.details || errData.error || errorDetails;
+//         } catch (e) {
+//             const errorText = await response.text().catch(() => "Could not read response text.");
+//             console.log("--- saveStrategy: Could not parse error response body. Raw text:", errorText);
+//         }
+//         throw new Error(errorDetails);
+//       }
+
+//       // If response IS ok:
+//       const resultData = await response.json(); // Get success data if needed
+//       console.log("--- saveStrategy: Response OK.", resultData);
+//       setSaveMessage('Strategy saved successfully!');
+//       alert('Your LinkedIn strategy has been saved to your profile!'); // Confirmation
+
+//     } catch (error) {
+//       console.error('--- saveStrategy: Error caught:', error);
+//       setSaveMessage(`Error: ${error.message}`);
+//       alert(`Failed to save strategy: ${error.message}`);
+//     } finally {
+//       console.log("--- saveStrategy: Finally block executing. ---");
+//       setIsSavingStrategy(false);
+//     }
+//   };
+
+
+//   // --- Main Return JSX (using Button component) ---
+
+//   if (!id) { return <div className="p-8 text-center text-error">Invalid request: Missing submission ID.</div>; }
+//   if (error && (!foundationStrategy || !calendarStrategy)) {
+//       // ... (Error display using Button components) ...
+//        return ( <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-base-200"> <div className="card bg-base-100 shadow-xl max-w-lg w-full"> <div className="card-body items-center text-center"> <h2 className="card-title text-error">Error Generating Strategy</h2> <p>{error}</p> <div className="card-actions justify-center mt-4 gap-4"> <Button variant="primary" onClick={retryFoundation}>Retry</Button> <Button variant="outline" href="/linkedin-strategy">Start Over</Button> </div> </div> </div> </div> );
+//   }
+
+//   // Main display
+//   return (
+//     <div className="min-h-screen bg-base-200 p-4 md:p-8">
+//       <div className="max-w-5xl mx-auto space-y-8">
+//         <h1 className="text-3xl md:text-4xl font-extrabold text-base-content">Your Generated LinkedIn Strategy</h1>
+
+//         {/* Message area */}
+//         {saveMessage && (
+//              <div className={clsx("alert shadow-lg", {
+//                  "alert-success": saveMessage.includes("success"),
+//                  "alert-error": saveMessage.includes("Error"),
+//                  "alert-info": !saveMessage.includes("success") && !saveMessage.includes("Error"),
+//              })}>
+//                  <div><span>{saveMessage}</span></div>
+//              </div>
+//          )}
+
+//         {/* Strategic Foundation Section */}
+//         <div className="card bg-base-100 shadow-xl">
+//            <div className="card-body">
+//               <div className="flex justify-between items-start gap-4">
+//                 <h2 className="card-title mb-4">Strategic Foundation</h2>
+//                 {!foundationLoading && foundationStrategy && ( <Button variant="outline" size="sm" onClick={retryFoundation}>Regenerate</Button> )}
+//               </div>
+//               {foundationLoading ? ( <div className="text-center p-10"><span className="loading loading-dots loading-lg"></span><p className="mt-2">Generating foundation...</p></div> )
+//                : foundationStrategy ? ( <MarkdownContent content={foundationStrategy} /> )
+//                : ( <div className="text-center p-10 italic text-base-content/70">Waiting for generation...</div> )}
+//            </div>
+//         </div>
+
+//         {/* Content Calendar Section */}
+        
+//         {/* <div className="card bg-base-100 shadow-xl"> */}
+//            {/* <div className="card-body"> */}
+//               {/* <div className="flex justify-between items-start gap-4"> */}
+//                  {/* <h2 className="card-title mb-4">Content Calendar Preview</h2> */}
+//                  {/* {!calendarLoading && foundationStrategy && calendarStrategy && ( <Button variant="outline" size="sm" onClick={retryCalendar}>Regenerate</Button> )} */}
+//               {/* </div> */}
+//               {/* {calendarLoading ? ( <div className="text-center p-10"><span className="loading loading-dots loading-lg"></span><p className="mt-2">Generating calendar...</p></div> ) */}
+//                {/* : calendarStrategy ? ( */}
+//                 <>
+//                   {/* Optional: Display text part of calendar markdown */}
+//                   {/* <MarkdownContent content={getProcessedCalendarContent()} className="prose prose-lg max-w-none mb-6"/> */}
+//                   {/* <p className="text-sm mt-4 mb-2 text-base-content/70">Review the generated calendar table below. Save the strategy to view/generate posts later.</p> */}
+//                   {/* Render the simplified display table */}
+//                   {/* <ResultsCalendarTable calendar={contentCalendar} /> */}
+//                 </>
+//               {/* ) : foundationStrategy ? ( <div className="text-center p-10 italic text-base-content/70">Waiting for generation...</div> ) */}
+//                {/* : ( <div className="text-center p-10 italic text-base-content/70">Waiting for foundation to complete...</div> )} */}
+//            {/* </div> */}
+//        {/* / </div>  */}
+
+//         {/* Action buttons */}
+//         <div className="mt-12 flex flex-wrap justify-center gap-4">
+//           <Button
+//             variant="primary"
+//             size="lg" // Make primary action larger
+//             onClick={saveStrategy}
+//             disabled={!foundationStrategy || !calendarStrategy || !contentCalendar || isSavingStrategy || foundationLoading || calendarLoading}
+//             // Add isLoading prop if your Button component supports it
+//             // isLoading={isSavingStrategy}
+//           >
+//             {isSavingStrategy ? <span className="loading loading-spinner loading-sm mr-2"></span> : null}
+//             {isSavingStrategy ? 'Saving...' : 'Save Strategy & View in Profile'}
+//           </Button>
+//           <Button variant="ghost" href="/linkedin-strategy">
+//             Generate New Strategy
+//           </Button>
+//         </div>
+
+//       </div>
+//     </div>
+//   );
+// }
+
+// // Main component export with Suspense
+// export default function Results() {
+//   return (
+//     <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><span className="loading loading-lg"></span></div>}>
+//       <ResultsContent />
+//     </Suspense>
+//   );
+// }
+ 
+
+
+
+//// ----- /////// new code with calendar section deleted ----- ///
+
+
+
+
+
 /// --- new code with fixed saveStrategy function --- /////
 
 
@@ -1143,25 +1453,26 @@ function ResultsContent() {
         </div>
 
         {/* Content Calendar Section */}
-        <div className="card bg-base-100 shadow-xl">
-           <div className="card-body">
-              <div className="flex justify-between items-start gap-4">
-                 <h2 className="card-title mb-4">Content Calendar Preview</h2>
-                 {!calendarLoading && foundationStrategy && calendarStrategy && ( <Button variant="outline" size="sm" onClick={retryCalendar}>Regenerate</Button> )}
-              </div>
-              {calendarLoading ? ( <div className="text-center p-10"><span className="loading loading-dots loading-lg"></span><p className="mt-2">Generating calendar...</p></div> )
-               : calendarStrategy ? (
+        
+        {/* <div className="card bg-base-100 shadow-xl"> */}
+           {/* <div className="card-body"> */}
+              {/* <div className="flex justify-between items-start gap-4"> */}
+                 {/* <h2 className="card-title mb-4">Content Calendar Preview</h2> */}
+                 {/* {!calendarLoading && foundationStrategy && calendarStrategy && ( <Button variant="outline" size="sm" onClick={retryCalendar}>Regenerate</Button> )} */}
+              {/* </div> */}
+              {/* {calendarLoading ? ( <div className="text-center p-10"><span className="loading loading-dots loading-lg"></span><p className="mt-2">Generating calendar...</p></div> ) */}
+               {/* : calendarStrategy ? ( */}
                 <>
                   {/* Optional: Display text part of calendar markdown */}
                   {/* <MarkdownContent content={getProcessedCalendarContent()} className="prose prose-lg max-w-none mb-6"/> */}
-                  <p className="text-sm mt-4 mb-2 text-base-content/70">Review the generated calendar table below. Save the strategy to view/generate posts later.</p>
+                  {/* <p className="text-sm mt-4 mb-2 text-base-content/70">Review the generated calendar table below. Save the strategy to view/generate posts later.</p> */}
                   {/* Render the simplified display table */}
-                  <ResultsCalendarTable calendar={contentCalendar} />
+                  {/* <ResultsCalendarTable calendar={contentCalendar} /> */}
                 </>
-              ) : foundationStrategy ? ( <div className="text-center p-10 italic text-base-content/70">Waiting for generation...</div> )
-               : ( <div className="text-center p-10 italic text-base-content/70">Waiting for foundation to complete...</div> )}
-           </div>
-        </div>
+              {/* ) : foundationStrategy ? ( <div className="text-center p-10 italic text-base-content/70">Waiting for generation...</div> ) */}
+               {/* : ( <div className="text-center p-10 italic text-base-content/70">Waiting for foundation to complete...</div> )} */}
+           {/* </div> */}
+       {/* / </div>  */}
 
         {/* Action buttons */}
         <div className="mt-12 flex flex-wrap justify-center gap-4">
