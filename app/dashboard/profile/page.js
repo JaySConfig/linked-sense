@@ -1058,20 +1058,69 @@ const ContentCalendarTable = ({ calendar, savedPosts, generatingPostId, handleGe
   }
   // Ensure savedPosts is treated as an array for the .some() check
   const postsLookup = Array.isArray(savedPosts) ? savedPosts : [];
+  const postsPerWeek = Math.ceil(calendar.rows.length / 4);
+
 
   // Helper to add weekdays using date-fns
-  const addWeekdays = (date, daysToAdd) => {
-    if (!date || !(date instanceof Date) || isNaN(date)) return null; // Added validation for startDate
-    let currentDate = date;
-    let addedDays = 0;
-    while (addedDays < daysToAdd) {
-      currentDate = addDays(currentDate, 1);
-      const dayOfWeek = getDay(currentDate); // 0=Sun, 6=Sat
-      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-        addedDays++;
-      }
+  // const addWeekdays = (date, daysToAdd) => {
+  //   if (!date || !(date instanceof Date) || isNaN(date)) return null; // Added validation for startDate
+  //   let currentDate = date;
+  //   let addedDays = 0;
+  //   while (addedDays < daysToAdd) {
+  //     currentDate = addDays(currentDate, 1);
+  //     const dayOfWeek = getDay(currentDate); // 0=Sun, 6=Sat
+  //     if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+  //       addedDays++;
+  //     }
+  //   }
+  //   return currentDate;
+  // };
+
+  // Replace your current addWeekdays function with this one
+  // New function to calculate post dates properly
+  const calculatePostDate = (startDate, index, postsPerWeek) => {
+
+    let startDateObj = startDate;
+    if (typeof startDate === 'string') {
+      startDateObj = new Date(startDate);
     }
-    return currentDate;
+    if (!startDate || !(startDate instanceof Date) || isNaN(startDate)) return null;
+    
+    // Calculate which week this post belongs to (0-indexed)
+    const weekIndex = Math.floor(index / postsPerWeek);
+    
+    // Calculate which post it is within that week (0-indexed)
+    const postWithinWeek = index % postsPerWeek;
+    
+    // Get the first day of the week (should be Monday)
+    let weekStart = addDays(startDate, weekIndex * 7);
+    
+    // Map each post in a week to different weekdays
+    // This creates a simple distribution pattern based on postsPerWeek
+    let dayOffset = 0;
+    
+    // Create a distribution pattern that spaces out the posts
+    // For example, if postsPerWeek = 3, posts will be on Mon, Wed, Fri
+    // If postsPerWeek = 4, posts will be on Mon, Tue, Thu, Fri
+    switch(postsPerWeek) {
+      case 2: // Mon, Thu
+        dayOffset = postWithinWeek === 0 ? 0 : 3;
+        break;
+      case 3: // Mon, Wed, Fri
+        dayOffset = postWithinWeek * 2; // 0, 2, 4
+        break;
+      case 4: // Mon, Tue, Thu, Fri
+        dayOffset = postWithinWeek < 2 ? postWithinWeek : postWithinWeek + 1;
+        break;
+      case 5: // Mon through Fri
+        dayOffset = postWithinWeek;
+        break;
+      default: // Fallback - evenly space within the week
+        dayOffset = Math.floor(postWithinWeek * (5 / postsPerWeek));
+    }
+    
+    // Add the appropriate number of days based on the pattern
+    return addDays(weekStart, dayOffset);
   };
 
   return (
@@ -1087,7 +1136,7 @@ const ContentCalendarTable = ({ calendar, savedPosts, generatingPostId, handleGe
             <th className="px-4 py-3 border-b border-base-300 text-left text-xs font-semibold text-base-content uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-base-100 divide-y divide-base-200">
+        {/* <tbody className="bg-base-100 divide-y divide-base-200">
           {calendar.rows.map((row, index) => {
             const isPostSaved = postsLookup.some(post => post.postIndex === index);
             const currentDate = addWeekdays(startDate, index);
@@ -1109,6 +1158,34 @@ const ContentCalendarTable = ({ calendar, savedPosts, generatingPostId, handleGe
                      <Button size="xs" variant="success" onClick={() => handleGeneratePost(row.pillar, row.topic, row.approach, row.contentType, index)} disabled={generatingPostId === index}>
                        {generatingPostId === index ? 'Generating...' : 'Generate Post'}
                      </Button>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody> */}
+        <tbody className="bg-base-100 divide-y divide-base-200">
+          {calendar.rows.map((row, index) => {
+            const isPostSaved = postsLookup.some(post => post.postIndex === index);
+            const postDate = calculatePostDate(startDate, index, postsPerWeek);
+            const formattedDate = postDate
+              ? format(postDate, 'EEE, MMM d') // e.g., "Mon, Apr 21"
+              : 'Invalid Start Date'; // Indicate if startDate wasn't valid
+
+            return (
+              <tr key={index} className="hover:bg-base-200/50">
+                <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content whitespace-nowrap">{formattedDate}</td>
+                <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.pillar || '-'}</td>
+                <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.topic || '-'}</td>
+                <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.approach || '-'}</td>
+                <td className="px-4 py-3 border-b border-base-300 text-sm text-base-content">{row.contentType || '-'}</td>
+                <td className="px-4 py-3 border-b border-base-300 text-sm text-center whitespace-nowrap">
+                  {isPostSaved ? (
+                    <Button size="xs" variant="info" onClick={() => handleViewPost(index)}>View Post</Button>
+                  ) : (
+                    <Button size="xs" variant="success" onClick={() => handleGeneratePost(row.pillar, row.topic, row.approach, row.contentType, index)} disabled={generatingPostId === index}>
+                      {generatingPostId === index ? 'Generating...' : 'Generate Post'}
+                    </Button>
                   )}
                 </td>
               </tr>
@@ -1395,6 +1472,9 @@ export default function SavedStrategyPage() {
       setIsGeneratingNewCalendar(false);
     }
   };
+
+  ////
+  
 
   const handleDeleteCalendar = async (indexToDelete) => {
     console.log("About to delete calendar at index:", indexToDelete, "with type:", typeof indexToDelete);

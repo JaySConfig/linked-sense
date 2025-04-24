@@ -499,15 +499,97 @@ export async function POST(req) {
     // console.log("Current profile structure:", JSON.stringify(currentUser.profile, null, 2));
     
     // Calculate dates as before
-    let newStartDate;
+    // let newStartDate;
+    // const now = startOfDay(new Date());
+    // newStartDate = getDay(now) === 1 ? now : nextMonday(now);
+    // console.log("Using start date:", newStartDate);
+    
+    // // Calculate the correct number of weekdays based on posting frequency and weeks
+    // let numberOfWeekdaysInPlan;
+
+    // // First check if we can determine this from the content calendar
+    // if (contentCalendar && contentCalendar.rows && contentCalendar.rows.length > 0) {
+    //   // Use the actual number of rows/posts from the calendar data
+    //   numberOfWeekdaysInPlan = contentCalendar.rows.length - 1;
+    // } else {
+    //   // As a fallback, determine posts per week from answers
+    //   const postsPerWeek = answers.postingFrequency === "1-2" ? 2 :
+    //                       answers.postingFrequency === "3-4" ? 4 :
+    //                       answers.postingFrequency === "5" ? 5 : 3; // Default to 3
+      
+    //   // For a 4-week calendar
+    //   numberOfWeekdaysInPlan = (postsPerWeek * 4) - 1;
+    // }
+
+    // // Ensure it's not a negative number
+    // if (numberOfWeekdaysInPlan < 0) numberOfWeekdaysInPlan = 19; // Default fallback
+
+    // const newEndDate = addWeekdays(newStartDate, numberOfWeekdaysInPlan);
+    // console.log(`Calculated endDate (${numberOfWeekdaysInPlan} weekdays after start):`, newEndDate);
+    
+    // new code for future calendars
+
+    // Calculate start date for the new calendar based on existing calendars
+  // Calculate start date for the new calendar based on existing calendars
+  let newStartDate;
+
+  // Check if there are existing calendars
+  if (currentUser.profile?.linkedinStrategy?.savedCalendars?.length > 0) {
+    // Get the most recent calendar by sorting them by end date
+    const existingCalendars = currentUser.profile.linkedinStrategy.savedCalendars;
+    
+    // Ensure we're working with Date objects for comparison
+    const calendarsWithDates = existingCalendars.map(cal => ({
+      ...cal,
+      endDate: cal.endDate instanceof Date ? cal.endDate : new Date(cal.endDate)
+    }));
+    
+    // Sort calendars by end date (newest last)
+    calendarsWithDates.sort((a, b) => a.endDate - b.endDate);
+    
+    // Get the latest end date
+    const latestEndDate = calendarsWithDates[calendarsWithDates.length - 1].endDate;
+    console.log("Latest calendar end date:", latestEndDate);
+    
+    // Find the next Monday after this end date
+    if (getDay(latestEndDate) === 1) { // If the end date is already a Monday
+      newStartDate = addDays(latestEndDate, 7); // Start one week later
+    } else {
+      newStartDate = nextMonday(latestEndDate); // Get the next Monday
+    }
+    
+    console.log("New calendar will start on:", newStartDate);
+  } else {
+    // This is the first calendar, start from next Monday
     const now = startOfDay(new Date());
     newStartDate = getDay(now) === 1 ? now : nextMonday(now);
-    console.log("Using start date:", newStartDate);
+    console.log("First calendar starting on:", newStartDate);
+  }
+
+  // Calculate the end date based on the content calendar or posting frequency
+  let numberOfWeekdaysInPlan;
+
+  // First check if we can determine this from the content calendar
+  if (contentCalendar && contentCalendar.rows && contentCalendar.rows.length > 0) {
+    // Use the actual number of rows/posts from the calendar data
+    numberOfWeekdaysInPlan = contentCalendar.rows.length - 1;
+  } else {
+    // As a fallback, determine posts per week from answers
+    const postsPerWeek = answers.postingFrequency === "1-2" ? 2 :
+                        answers.postingFrequency === "3-4" ? 4 :
+                        answers.postingFrequency === "5" ? 5 : 3; // Default to 3
     
-    const numberOfWeekdaysInPlan = 7;
-    const newEndDate = addWeekdays(newStartDate, numberOfWeekdaysInPlan);
-    console.log("Using end date:", newEndDate);
-    
+    // For a 4-week calendar
+    numberOfWeekdaysInPlan = (postsPerWeek * 4) - 1;
+  }
+
+  // Ensure it's not a negative number
+  if (numberOfWeekdaysInPlan < 0) numberOfWeekdaysInPlan = 19; // Default fallback
+
+  const newEndDate = addWeekdays(newStartDate, numberOfWeekdaysInPlan);
+  console.log(`Calculated endDate (${numberOfWeekdaysInPlan} weekdays after start):`, newEndDate);
+
+
     // Create a new document from scratch with atomic update operations
     const updateResult = await mongoose.connection.db.collection('users').updateOne(
       { _id: new mongoose.Types.ObjectId(userId) },
