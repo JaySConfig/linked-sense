@@ -129,23 +129,24 @@ const userSchema = mongoose.Schema(
             contentCalendar: mongoose.Schema.Types.Mixed, // Parsed calendar object for this period
             startDate: Date, // Calculated start date for this period
             endDate: Date,   // Calculated end date for this period
-            savedAt: Date    // When this specific calendar instance was saved
+            savedAt: Date,
+            posts: [
+              {
+                postIndex: Number,
+                content: String,
+                pillar: String,
+                topic: String,
+                approach: String,
+                contentType: String,
+                weekDay: String,
+                savedAt: Date
+              }
+            ]    // When this specific calendar instance was saved
           }
         ],
   
         // Array to store saved posts
-        savedPosts: [
-          {
-            postIndex: Number,
-            content: String,
-            pillar: String,
-            topic: String,
-            approach: String,
-            contentType: String,
-            weekDay: String,
-            savedAt: Date
-          }
-        ]
+        
       }
     }
   },
