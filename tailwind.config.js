@@ -1,3 +1,5 @@
+const { corporate } = require("daisyui/src/theming/themes");
+
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -66,6 +68,6 @@ module.exports = {
     // You can add another theme among the list of 30+
     // Add "data-theme='theme_name" to any HTML tag to enable the 'theme_name' theme.
     // https://daisyui.com/
-    themes: ["light", "dark"],
+    themes: ["light", "dark", "cupcake", "business", "lemonade", "lofi", "corporate", "nord"],
   },
 };
