@@ -31,14 +31,26 @@ export default function Page() {
         <Problem />
         </section>
 
-        <section className="flex flex-col items-center justify-center text-center gap-12 px-8 ">
-        <FeaturesCard/>
-        <ButtonSignin />
+        <section className="flex flex-col items-center justify-center text-center gap-2 px-8 ">
+        <FeaturesCard/>    
         </section>
 
-        <section className="flex flex-col items-center justify-center text-center gap-12 px-8 pb-24">
+        <section className="flex flex-col items-center justify-center text-center px-8  pb-20 bg-base-100">
+        <h2 className="font-extrabold text-3xl md:text-4xl mb-4">
+          Ready to Grow Your LinkedIn?
+        </h2>
+        <p className="text-lg opacity-80 leading-relaxed mb-8 max-w-xl">
+          Create your personal LinkedIn strategy and start building your audience — without the guesswork.
+        </p>
+         <ButtonSignin />  
+       </section>
+
+
+        
+
+        {/* <section className="flex flex-col items-center justify-center text-center gap-12 px-8 pb-24">
         <FAQ />
-        </section>
+        </section> */}
 
         <section>
           <Footer/>

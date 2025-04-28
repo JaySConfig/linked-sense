@@ -6,9 +6,9 @@ import Image from "next/image";
 // Streamlined features array for MVP
 const features = [
   {
-    title: "Content Analysis",
+    title: "Personalized LinkedIn Strategy",
     description:
-      "Discover which types of posts drive engagement for you. We analyse if your audience prefers long-form content vs. short updates, professional insights vs. personal stories, or serious topics vs. lighter content.",
+      "Define your voice, your audience, and your content pillars — so every post builds your personal brand with purpose.",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -27,10 +27,10 @@ const features = [
     ),
   },
   {
-    title: "Audience Insights",
+    title: "4-Week Content Calendar",
     description:
-      "Understand exactly who engages with your content and why. Learn which topics, questions, or conversation starters resonate most with your specific LinkedIn network, helping you build stronger connections.",
-    icon: (
+      "Turn your strategy into a clear, actionable calendar. Stay consistent without ever wondering what to post.",
+     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -48,9 +48,8 @@ const features = [
     ),
   },
   {
-    title: "Posting Strategy",
-    description:
-      "Get personalized recommendations on when to post and what content to create. Identify optimal posting times when your audience is most active, along with content ideas tailored to what performs best for your network.",
+    title: "AI-Powered Post Generator",
+    description:  "Instantly create LinkedIn posts based on your unique strategy — not random prompts or cookie-cutter templates.",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -135,9 +134,9 @@ const FeaturesVertical = () => {
     >
       <div className="px-8">
         <h2 className="font-extrabold text-4xl lg:text-6xl tracking-tight mb-12 md:mb-16">
-          Optimize your LinkedIn content
+        Grow on LinkedIn With a Strategy - 
           <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">
-            with data-driven insights
+          Not Guesswork.
           </span>
         </h2>
         

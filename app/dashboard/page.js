@@ -18,9 +18,6 @@ export default function Dashboard() {
   const [checkingAPI, setCheckingAPI] = useState(true);
 
   useEffect(() => {
-    console.log("Dashboard mounted");
-    console.log("localStorage hasStrategy value:", localStorage.getItem('hasStrategy'));
-    
     // Check if strategy exists via API
     const checkStrategyViaAPI = async () => {
       try {
@@ -28,7 +25,6 @@ export default function Dashboard() {
         if (response.ok) {
           const data = await response.json();
           const hasLinkedInStrategy = !!data?.profile?.linkedinStrategy;
-          console.log("Strategy found via API:", hasLinkedInStrategy);
           
           // Update both the hook state and localStorage
           setStrategyStatus(hasLinkedInStrategy);
@@ -77,7 +73,6 @@ export default function Dashboard() {
           <p className="text-base-content/70">
             Start by creating your strategy — everything else gets built from there!
           </p>
-          {console.log(hasStrategy, "has strategy")}
           <Link href="/dashboard/strategy" className="btn btn-primary">
             Generate My Strategy
           </Link>

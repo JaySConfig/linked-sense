@@ -44,6 +44,8 @@ export default async function LayoutPrivate({ children }) {
           </div>
         </div>
         
+{/* SIDE BAR */}
+
         <nav className="md:flex-1">
           <ul className="flex md:flex-col space-x-2 md:space-x-0 md:space-y-1 overflow-x-auto md:overflow-visible">
             <li>
@@ -88,6 +90,8 @@ export default async function LayoutPrivate({ children }) {
             </li>
           </ul>
         </nav>
+
+        {/* end of side bar */}
         
         {/* User info - hidden on mobile */}
         <div className="hidden md:block border-t border-base-300 pt-4 mt-6">

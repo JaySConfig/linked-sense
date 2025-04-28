@@ -1,6 +1,7 @@
 import Image from "next/image";
 import TestimonialsAvatars from "./TestimonialsAvatars";
 import config from "@/config";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -9,16 +10,17 @@ const Hero = () => {
     
 
         <h1 className="font-extrabold text-4xl lg:text-6xl tracking-tight md:-mb-4">
-         <span className="block">Stop Guessing.</span>
-         <span className="underline underline-offset-4">Start Growing</span>  
-          <span> with AI-Powered LinkedIn Insights. </span>   
+         <span className="block">Stop Posting Blind.</span>
+         <span className="underline underline-offset-4">Start Building Your Audience.</span>  
+          {/* <span> with AI-Powered LinkedIn Insights. </span>    */}
         </h1>
         <p className="text-lg opacity-80 leading-relaxed">
-        LinkedSense analyses your LinkedIn content and delivers clear, actionable insights to boost engagement.
-        </p>
+        Thinkd.In helps you craft a personal LinkedIn strategy and generate posts that grow your reputation, not just your feed.        </p>
+        <Link href="/api/auth/signin">
         <button className="btn btn-primary btn-wide">
           Get {config.appName}
         </button>
+      </Link>
 
         {/* <TestimonialsAvatars priority={true} /> */}
       </div>
