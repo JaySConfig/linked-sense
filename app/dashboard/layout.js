@@ -58,36 +58,37 @@ export default async function LayoutPrivate({ children }) {
             </li>
             <li>
               <Link 
-                href="/dashboard/generate" 
+                href="/dashboard/strategy" 
                 className="flex items-center p-3 rounded-lg hover:bg-base-300 whitespace-nowrap"
               >
-                Generate Content
+                Strategy
               </Link>
             </li>
             <li>
               <Link 
-                href="/dashboard/strategy" 
+                href="/dashboard/calendar" 
                 className="flex items-center p-3 rounded-lg hover:bg-base-300 whitespace-nowrap"
               >
-                Generate Strategy
+                Content Calendar
               </Link>
             </li>
-            <li>
+            
+            {/* <li>
               <Link 
                 href="/dashboard/write" 
                 className="flex items-center p-3 rounded-lg hover:bg-base-300 whitespace-nowrap"
               >
                 Write Content
               </Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link 
                 href="/dashboard/profile" 
                 className="flex items-center p-3 rounded-lg hover:bg-base-300 whitespace-nowrap"
               >
                 My Profile
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
 

@@ -56,13 +56,13 @@ export default function Dashboard() {
         <div className="space-y-6">
           <p className="text-lg">🎯 Your strategy is ready!</p>
           <div className="flex flex-wrap gap-4">
-            <Link href="/dashboard/profile" className="btn btn-primary">
-              View Profile
+            <Link href="/dashboard/strategy" className="btn btn-primary">
+              View Strategy
             </Link>
-            <Link href="/dashboard/posts" className="btn btn-secondary">
+            {/* <Link href="/dashboard/posts" className="btn btn-secondary">
               View Your Posts
-            </Link>
-            <Link href="/dashboard/calendar" className="btn btn-accent">
+            </Link> */}
+            <Link href="/dashboard/calendar" className="btn btn-secondary">
               View Your Calendar
             </Link>
           </div>

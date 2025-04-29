@@ -5,7 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
-import  useStrategyStatus from '@/app/hooks/useStrategyStatus';
+import useStrategyStatus from '@/app/hooks/useStrategyStatus';
+import StrategicFoundationDisplay from '../components/StrategicFoundationDisplay';
 
 // --- Import Reusable Components ---
 import MarkdownContent from '@/components/MarkdownContent';
@@ -247,8 +248,9 @@ function ResultsContent() {
           </div>
         )}
 
+
         {/* Strategic Foundation Section */}
-        <div className="card bg-base-100 shadow-xl">
+        {/* <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
             <div className="flex justify-between items-start gap-4">
               <h2 className="card-title mb-4">Strategic Foundation</h2>
@@ -272,7 +274,13 @@ function ResultsContent() {
               <div className="text-center p-10 italic text-base-content/70">Waiting for generation...</div>
             )}
           </div>
-        </div>
+        </div> */}
+
+        <StrategicFoundationDisplay
+        loading={foundationLoading}
+        strategy={foundationStrategy}
+        onRetry={retryFoundation}
+        />
 
         {/* Action buttons */}
         <div className="mt-12 flex flex-wrap justify-center gap-4">
