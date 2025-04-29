@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import useStrategyStatus from '@/app/hooks/useStrategyStatus';
+import { userAgent } from 'next/server';
+import { useSession } from 'next-auth/react';
+
 
 
 export const dynamic = "force-dynamic";
@@ -16,6 +19,8 @@ export const dynamic = "force-dynamic";
 export default function Dashboard() {
   const { hasStrategy, isLoading, setStrategyStatus } = useStrategyStatus();
   const [checkingAPI, setCheckingAPI] = useState(true);
+  const { data: session } = useSession();
+
 
   useEffect(() => {
     // Check if strategy exists via API
@@ -54,7 +59,8 @@ export default function Dashboard() {
 
       {hasStrategy ? (
         <div className="space-y-6">
-          <p className="text-lg">🎯 Your strategy is ready!</p>
+        
+          <p className="text-lg"> {session?.user?.name && <h1>Welcome back, {session.user.name} 👋</h1>}</p>
           <div className="flex flex-wrap gap-4">
             <Link href="/dashboard/strategy" className="btn btn-primary">
               View Strategy
