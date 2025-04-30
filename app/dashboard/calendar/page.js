@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { format, addDays } from 'date-fns';
 
 // components
-import MarkdownContent from '@/components/MarkDownContent';
+import MarkdownContent from '@/components/MarkdownContent';
 
 // First, let's extract the calculatePostDate function since it's used by the calendar
 const calculatePostDate = (startDate, index, postsPerWeek) => {
@@ -45,6 +45,8 @@ const calculatePostDate = (startDate, index, postsPerWeek) => {
   
   return addDays(weekStart, dayOffset);
 };
+
+/// ----------------
 
 // ContentCalendarTable Component
 const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handleGeneratePost, handleViewPost, startDate }) => {
@@ -111,6 +113,9 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
       </div>
     );
   };
+
+
+  //// calendar page component
 
   export default function CalendarPage() {
     const { data: session, status: sessionStatus } = useSession();

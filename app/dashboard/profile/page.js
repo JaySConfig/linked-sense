@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import { addDays, format, getDay, nextMonday, startOfDay } from 'date-fns';
 
 // components
-import MarkdownContent from '@/components/MarkDownContent';
+import MarkdownContent from '@/components/MarkdownContent';
 import Button from '@/components/Button';
 
 // --- Calculate Post Date Function (moved outside components) ---
