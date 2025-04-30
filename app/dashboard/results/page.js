@@ -9,7 +9,7 @@ import useStrategyStatus from '@/app/hooks/useStrategyStatus';
 import StrategicFoundationDisplay from '../components/StrategicFoundationDisplay';
 
 // --- Import Reusable Components ---
-// import MarkdownContent from '@/components/MarkdownContent';
+import MarkdownContent from '@/components/MarkdownContent';
 
 // Simplified Calendar Table Component for display only on this page
 // const ResultsCalendarTable = ({ calendar }) => {
