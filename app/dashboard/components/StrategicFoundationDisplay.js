@@ -1,7 +1,7 @@
 "use client";
 
 // React & Next.js Hooks
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
@@ -10,7 +10,7 @@ import StrategicFoundationDisplay from '../components/StrategicFoundationDisplay
 
 // --- Main Page Component ---
 export default function SavedStrategyPage() {
-  const { data: session, status: sessionStatus } = useSession();
+  const { status: sessionStatus } = useSession();
 
   // Basic state for foundation data
   const [foundationStrategy, setFoundationStrategy] = useState(null);
@@ -18,7 +18,7 @@ export default function SavedStrategyPage() {
   const [error, setError] = useState(null);
   const [isRetry, setIsRetry] = useState(false); // To prevent infinite loop
 
-  const fetchFoundationData = async () => {
+  const fetchFoundationData = useCallback(async () => {
     if (sessionStatus === 'authenticated') {
       try {
         setIsLoading(true);
@@ -43,7 +43,7 @@ export default function SavedStrategyPage() {
       setIsLoading(false);
       setError('Please log in to view your saved strategy.');
     }
-  };
+  }, [sessionStatus]);
 
   const retryFoundation = () => {
     setIsRetry(true);
@@ -55,7 +55,7 @@ export default function SavedStrategyPage() {
     if (!isRetry) {
       fetchFoundationData();
     }
-  }, [sessionStatus, isRetry]);
+  }, [sessionStatus, isRetry, fetchFoundationData]);
 
   // --- Main Render Logic ---
   if (isLoading) {
@@ -93,7 +93,7 @@ export default function SavedStrategyPage() {
     return (
       <div className="space-y-6 p-4 md:p-8 text-center max-w-md mx-auto">
         <h1 className="text-2xl md:text-3xl font-bold">No Strategy Found</h1>
-        <p className="text-base-content/80">You haven't generated and saved your LinkedIn strategy yet. Get started now!</p>
+        <p className="text-base-content/80">You haven&apos;t generated and saved your LinkedIn strategy yet. Get started now!</p>
         <Link href="/dashboard/strategy" className="btn btn-primary mt-4">Generate Your Strategy</Link>
       </div>
     );

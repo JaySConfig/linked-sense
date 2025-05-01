@@ -1,19 +1,21 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import MarkdownContent from '@/components/MarkdownContent';
 import OnboardingFlow from '@/components/OnboardingFlow';
 
 const StrategyPage = () => {
-    const { data: session, status: sessionStatus } = useSession();
+    // Change to remove unused session variable
+    const { status: sessionStatus } = useSession();
     const [strategyData, setStrategyData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [initialLoadComplete, setInitialLoadComplete] = useState(false); // New state
 
-    const fetchStrategyData = async () => {
+    // Wrap fetchStrategyData in useCallback
+    const fetchStrategyData = useCallback(async () => {
         if (sessionStatus === 'authenticated') {
             try {
                 setIsLoading(true);
@@ -42,11 +44,12 @@ const StrategyPage = () => {
             setError('Please log in to view or create your strategy.');
             setInitialLoadComplete(true); // Also set to true if not authenticated
         }
-    };
+    }, [sessionStatus]);
 
+    // Add fetchStrategyData as a dependency
     useEffect(() => {
         fetchStrategyData();
-    }, [sessionStatus]);
+    }, [sessionStatus, fetchStrategyData]);
 
     const handleStartNewStrategy = () => {
         setShowConfirmation(true);
@@ -124,7 +127,7 @@ const StrategyPage = () => {
                 <div className="space-y-6">
                     <h1 className="text-2xl font-bold">Get Started With Your Strategy</h1>
                     <p className="text-base-content/80">
-                        It looks like you haven't created your LinkedIn strategy yet. Let's get started!
+                        It looks like you haven&apos;t created your LinkedIn strategy yet. Let&apos;s get started!
                     </p>
                     <OnboardingFlow />
                 </div>

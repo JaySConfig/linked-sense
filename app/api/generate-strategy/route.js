@@ -101,7 +101,7 @@ Based on this user profile, create a comprehensive LinkedIn strategy:
 
 4. **Growth & Measurement Plan**: Specific metrics to track based on their primary goals and realistic growth targets.
 
-5.  **People & Pages to Follow:** Suggest 2-3 specific, well-known LinkedIn accounts relevant to the user's industry ('${industry}') and pillars (${pillars}). These could be individual thought leaders (provide full name) or relevant Company Pages (provide name). For each, briefly explain (1 sentence) the value of following them. **Do NOT suggest software tools or platforms.** If you cannot identify suitable specific accounts, list 2-3 *types* of accounts relevant to their field to search for (e.g., 'Keynote speakers at [Industry] conferences', 'Research publications for [Pillar Topic]', 'Relevant industry associations on LinkedIn'). // <-- Simplified & Reinforced Instruction
+5.  **People & Pages to Follow:** Suggest 2-3 specific, well-known LinkedIn accounts relevant to the user's industry ('${getReadableValue(answers.industry, 'industry')}') and pillars (${getReadableValue(answers.contentPillars, 'contentPillars')}). These could be individual thought leaders (provide full name) or relevant Company Pages (provide name). For each, briefly explain (1 sentence) the value of following them. **Do NOT suggest software tools or platforms.** If you cannot identify suitable specific accounts, list 2-3 *types* of accounts relevant to their field to search for (e.g., 'Keynote speakers at [Industry] conferences', 'Research publications for [Pillar Topic]', 'Relevant industry associations on LinkedIn'). // <-- Simplified & Reinforced Instruction
 
 ### IMPORTANT INSTRUCTIONS
 - DO NOT use placeholders like [SPECIFY INDUSTRY] or ask for more information in your response.
@@ -119,7 +119,7 @@ Make this strategy both strategic and practical - something the user can impleme
 }
 
 // Helper function to get readable values for option-based answers
-function getReadableValue(value, questionId) {
+function getReadableValue(value) {
   if (!value) return "Not specified";
   
   // Mapping of internal values to readable text
@@ -214,14 +214,14 @@ function formatArrayAnswer(array) {
   return array.map(item => `- ${item}`).join('\n');
 }
 
-// Helper function to format content pillars
-function formatContentPillars(contentPillars, expertiseAreas) {
-  // Use content pillars if available, otherwise fall back to expertise areas
-  const pillars = contentPillars || expertiseAreas || [];
-  if (pillars.length === 0) return "Not specified";
+// // Helper function to format content pillars
+// function formatContentPillars(contentPillars, expertiseAreas) {
+//   // Use content pillars if available, otherwise fall back to expertise areas
+//   const pillars = contentPillars || expertiseAreas || [];
+//   if (pillars.length === 0) return "Not specified";
   
-  return pillars.map((pillar, index) => `${index + 1}. ${pillar}`).join('\n');
-}
+//   return pillars.map((pillar, index) => `${index + 1}. ${pillar}`).join('\n');
+// }
 
 // Helper function to format content types
 function formatContentTypes(contentTypes) {
@@ -243,10 +243,10 @@ function formatContentTypes(contentTypes) {
   }).join('\n');
 }
 
-// Helper function to get the number of posts per week
-function getPostingFrequencyCount(frequency) {
-  if (frequency === "1-2") return "2";
-  if (frequency === "3-4") return "4";
-  if (frequency === "5") return "5";
-  return "3"; // Default
-}
+// // Helper function to get the number of posts per week
+// function getPostingFrequencyCount(frequency) {
+//   if (frequency === "1-2") return "2";
+//   if (frequency === "3-4") return "4";
+//   if (frequency === "5") return "5";
+//   return "3"; // Default
+// }

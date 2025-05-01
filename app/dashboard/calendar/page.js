@@ -1,7 +1,7 @@
 "use client";
 
 // React & Next.js Hooks
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
@@ -189,7 +189,7 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
     };
   
     // Data fetching function
-    const fetchStrategyData = async () => {
+    const fetchStrategyData = useCallback(async () => {
       if (sessionStatus === 'authenticated') {
         try {
           setIsLoading(true);
@@ -216,12 +216,12 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
         setIsLoading(false);
         setError('Please log in to view your saved strategy.');
       }
-    };
+    }, [sessionStatus]);
   
     // Initial Data Load
     useEffect(() => {
       fetchStrategyData();
-    }, [sessionStatus]);
+    }, [sessionStatus, fetchStrategyData]);
   
     // Post generation/view handlers
     const handleGeneratePost = async (pillar, topic, approach, contentType, index) => {
@@ -458,7 +458,7 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
       return (
         <div className="space-y-6 p-4 md:p-8 text-center max-w-md mx-auto">
            <h1 className="text-2xl md:text-3xl font-bold">No Strategy Found</h1>
-           <p className="text-base-content/80">You haven't generated and saved your LinkedIn strategy yet. Get started now!</p>
+           <p className="text-base-content/80">You haven&apos;t generated and saved your LinkedIn strategy yet. Get started now!</p>
            <Link href="/dashboard/strategy" className="btn btn-primary mt-4">Generate Your Strategy</Link>
         </div>
       );

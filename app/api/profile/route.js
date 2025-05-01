@@ -54,7 +54,7 @@ import User from "@/models/User";
 //     }
 //   }
 // api/profile/route.js (GET endpoint)
-  export async function GET(req) {
+  export async function GET() {
     const session = await getServerSession(authOptions);
     
     if (!session || !session.user?.id) {

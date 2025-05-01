@@ -263,7 +263,7 @@ In the 'Approach' and 'Content Type' columns, provide specific, actionable detai
 
 
 // Include all the helper functions here - same as in the foundation route
-function getReadableValue(value, questionId) {
+function getReadableValue(value) {
   // Copy from foundation route
   if (!value) return "Not specified";
   

@@ -109,7 +109,7 @@ Make this strategic foundation something the user can implement immediately to b
 }
 
 // Helper function to get readable values for option-based answers
-function getReadableValue(value, questionId) {
+function getReadableValue(value) {
   if (!value) return "Not specified";
   
   // Mapping of internal values to readable text
@@ -224,10 +224,10 @@ function formatContentTypes(contentTypes) {
   }).join('\n');
 }
 
-// Helper function to get the number of posts per week
-function getPostingFrequencyCount(frequency) {
-  if (frequency === "1-2") return "2";
-  if (frequency === "3-4") return "4";
-  if (frequency === "5") return "5";
-  return "3"; // Default
-}
+// // Helper function to get the number of posts per week
+// function getPostingFrequencyCount(frequency) {
+//   if (frequency === "1-2") return "2";
+//   if (frequency === "3-4") return "4";
+//   if (frequency === "5") return "5";
+//   return "3"; // Default
+// }

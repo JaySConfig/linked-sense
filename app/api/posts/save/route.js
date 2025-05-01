@@ -325,7 +325,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/libs/next-auth"; // Ensure this path is correct
 import connectMongo from "@/libs/mongoose";   // Ensure this path is correct
 import User from "@/models/User";           // Ensure this path is correct
-import mongoose from "mongoose"; // Import mongoose if needed for ObjectId, etc.
+// import mongoose from "mongoose"; // Import mongoose if needed for ObjectId, etc.
 
 export async function POST(req) {
   const session = await getServerSession(authOptions);

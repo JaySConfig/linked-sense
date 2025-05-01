@@ -13,8 +13,8 @@ import { authOptions } from "@/libs/next-auth";
 import connectMongo from "@/libs/mongoose";
 import User from "@/models/User";
 // Ensure all needed date-fns functions are imported
-import { addDays, getDay, startOfDay, isBefore, isAfter, parseISO, nextMonday, startOfWeek, isValid } from 'date-fns';
-import mongoose from "mongoose";
+import { addDays, getDay, startOfDay, isBefore, nextMonday, startOfWeek, isValid } from 'date-fns';
+// import mongoose from "mongoose";
 
 // --- BACKEND IMPLEMENTATION of calculatePostDate ---
 // Calculates the specific date for a post based on its index

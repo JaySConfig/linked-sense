@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
 
-import FAQ from "@/components/FAQ";
+// import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import FeaturesCard from "@/components/FeaturesCard";
 import ButtonSignin from "@/components/ButtonSignin";

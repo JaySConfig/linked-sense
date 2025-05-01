@@ -157,7 +157,7 @@ export default function Dashboard() {
               {session?.user?.name ? `Welcome back, ${session.user.name} 👋` : 'Welcome back 👋'}
             </p>
             <p className="text-base-content/70 mb-4">
-              Here's an overview of your upcoming content and strategy.
+              Here&apos;s an overview of your upcoming content and strategy.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/dashboard/strategy" className="btn btn-primary">
@@ -205,7 +205,7 @@ export default function Dashboard() {
         </div>
       ) : (
         <div className="space-y-6">
-          <p className="text-lg">🚀 You haven't generated a strategy yet.</p>
+          <p className="text-lg">🚀 You haven&apos;t generated a strategy yet.</p>
           <p className="text-base-content/70">
             Start by creating your strategy — everything else gets built from there!
           </p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+// import { useRef } from "react";
 import Image from "next/image";
 
 // Streamlined features array for MVP
@@ -86,44 +86,44 @@ const FeatureCard = ({ feature }) => {
   );
 };
 
-// Optional media component if you want to keep that capability
-const Media = ({ feature }) => {
-  const { type, path, format, alt } = feature;
-  const style = "rounded-2xl aspect-square w-full sm:w-[26rem]";
-  const size = {
-    width: 500,
-    height: 500,
-  };
+// // Optional media component if you want to keep that capability
+// const Media = ({ feature }) => {
+//   const { type, path, format, alt } = feature;
+//   const style = "rounded-2xl aspect-square w-full sm:w-[26rem]";
+//   const size = {
+//     width: 500,
+//     height: 500,
+//   };
 
-  if (type === "video") {
-    return (
-      <video
-        className={style}
-        autoPlay
-        muted
-        loop
-        playsInline
-        controls
-        width={size.width}
-        height={size.height}
-      >
-        <source src={path} type={format} />
-      </video>
-    );
-  } else if (type === "image") {
-    return (
-      <Image
-        src={path}
-        alt={alt}
-        className={`${style} object-cover object-center`}
-        width={size.width}
-        height={size.height}
-      />
-    );
-  } else {
-    return <div className={`${style} !border-none`}></div>;
-  }
-};
+//   if (type === "video") {
+//     return (
+//       <video
+//         className={style}
+//         autoPlay
+//         muted
+//         loop
+//         playsInline
+//         controls
+//         width={size.width}
+//         height={size.height}
+//       >
+//         <source src={path} type={format} />
+//       </video>
+//     );
+//   } else if (type === "image") {
+//     return (
+//       <Image
+//         src={path}
+//         alt={alt}
+//         className={`${style} object-cover object-center`}
+//         width={size.width}
+//         height={size.height}
+//       />
+//     );
+//   } else {
+//     return <div className={`${style} !border-none`}></div>;
+//   }
+// };
 
 // Main component with a vertical layout with three core features
 const FeaturesVertical = () => {
