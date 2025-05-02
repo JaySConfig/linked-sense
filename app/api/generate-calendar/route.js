@@ -7,13 +7,56 @@ export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
 export async function POST(request) {
+  // try {
+  //   // Get the submission data from the request
+  //   const submissionData = await request.json();
+    
+  //   if (!foundation) {
+  //     return res.status(400).json({ error: 'Missing foundation in request body' });
+  //   }
+    
+  //   if (!submissionData || !submissionData.answers) {
+  //     return res.status(400).json({ error: 'Missing submission data in request body' });
+  //   }
+    
+  //   console.log("Received submission data for calendar generation");
+    
+  //   // Get API key
+  //   const apiKey = process.env.GOOGLE_API;
+  //   if (!apiKey) {
+  //     console.error("API key is undefined or empty");
+  //     return Response.json(
+  //       { error: "API key configuration error" },
+  //       { status: 500 }
+  //     );
+  //   }
   try {
-    // Get the submission data from the request
-    const submissionData = await request.json();
+    // Parse the request body ONCE
+    const requestData = await request.json();
+    
+    // Destructure correctly
+    const { foundation, ...submissionData } = requestData;
+    
+    // Validate inputs
+    if (!foundation) {
+      console.error("Missing foundation in request body");
+      return Response.json(
+        { error: 'Missing foundation in request body' },
+        { status: 400 }
+      );
+    }
+
+    if (!submissionData || !submissionData.answers) {
+      console.error("Missing or invalid submission data", submissionData);
+      return Response.json(
+        { error: 'Missing submission data in request body' },
+        { status: 400 }
+      );
+    }
     
     console.log("Received submission data for calendar generation");
     
-    // Get API key
+    // Get API key - THIS IS THE FIX - GET API KEY CORRECTLY
     const apiKey = process.env.GOOGLE_API;
     if (!apiKey) {
       console.error("API key is undefined or empty");
@@ -23,13 +66,13 @@ export async function POST(request) {
       );
     }
     
+    
     // Initialize the API
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
     // Get answers and foundation from submission
     const answers = submissionData.answers || {};
-    const foundation = submissionData.foundation || "";
 
      // --- Get Current Date Info ---
      const now = new Date();
@@ -40,7 +83,7 @@ export async function POST(request) {
  
     
     // Format the prompt for calendar only
-    const prompt = createCalendarPrompt(answers, foundation);
+    const prompt = createCalendarPrompt(answers, foundation, currentYear, currentMonthName);
     
     console.log("Sending calendar generation prompt to Gemini API...");
     console.log("Prompt Data:", { currentYear, currentMonthName, currentQuarter, postingFrequency: answers.postingFrequency }); // Log context
