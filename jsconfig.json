@@ -1,7 +1,11 @@
+// In jsconfig.json or tsconfig.json
 {
   "compilerOptions": {
+    "baseUrl": ".", // <-- ADD THIS LINE
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"] // This now correctly means "project root/*"
     }
+    // ... any other options you have
   }
+  // ... include/exclude etc.
 }

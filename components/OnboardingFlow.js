@@ -1,6 +1,6 @@
 "use client"
 
-// export default OnboardingFlow;
+// export default OnboardingFlow used to gather info about user.
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; // Import useRouter
