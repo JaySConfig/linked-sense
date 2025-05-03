@@ -1,4 +1,4 @@
-javascript// app/dashboard/profile/page.js
+// app/dashboard/profile/page.js
 
 // import MarkdownContent from '@/components/MarkdownContent';
 // import MarkdownContent from '../components/MarkdownContent';
