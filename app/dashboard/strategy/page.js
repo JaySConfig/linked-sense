@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import MarkdownContent from '@/components/MarkdownContent';
+import MarkdownContent from '../../../components/MarkdownContent';
 import OnboardingFlow from '@/components/OnboardingFlow';
 
 const StrategyPage = () => {
