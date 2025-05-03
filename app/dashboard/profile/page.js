@@ -1,3 +1,25 @@
+javascript// app/dashboard/profile/page.js
+
+// import MarkdownContent from '@/components/MarkdownContent';
+// import MarkdownContent from '../components/MarkdownContent';
+
+export default function ProfilePage() {
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Profile Page</h1>
+      
+      <div className="bg-white rounded-lg shadow p-6">
+        <p className="text-gray-500 italic">
+          This profile page is currently under development. 
+          Check back soon for more features!
+        </p>
+        
+        {/* Example of using MarkdownContent if needed later */}
+        {/* <MarkdownContent content="## Profile Content\nThis will display markdown content." /> */}
+      </div>
+    </div>
+  );
+}
 
 // "use client";
 
