@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { format, addDays } from 'date-fns';
 
 // components
-import MarkdownContent from '@/components/MarkdownContent';
+import MarkdownContent from '../components/MarkdownContent';
 
 // First, let's extract the calculatePostDate function since it's used by the calendar
 const calculatePostDate = (startDate, index, postsPerWeek) => {
