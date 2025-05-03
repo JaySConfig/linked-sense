@@ -1,0 +1,21 @@
+{
+    "builds": [
+      {
+        "src": "package.json",
+        "use": "@vercel/next",
+        "config": {
+          "buildCommand": "next build"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/results(.*)",
+        "dest": "/results"
+      },
+      {
+        "src": "/api/get-submission(.*)",
+        "dest": "/api/get-submission"
+      }
+    ]
+  }

@@ -739,7 +739,7 @@ function ResultsContent() {
               disabled={!submission || !foundationStrategy || !calendarStrategy || !contentCalendar || isSavingStrategy || foundationLoading || calendarLoading}
             >
               {isSavingStrategy ? <span className="loading loading-spinner loading-sm mr-2"></span> : null}
-              {isSavingStrategy ? 'Saving...' : hasStrategy ? 'Update Strategy' : 'Save Strategy to Profile'}
+              {isSavingStrategy ? 'Saving...' : hasStrategy ? 'Save Strategy' : 'Save Strategy to Profile'}
             </button>
 
             {/* Show the View Calendar button if hasStrategy is true */}
