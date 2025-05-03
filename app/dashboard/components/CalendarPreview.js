@@ -362,6 +362,9 @@ const CalendarPreview = () => {
                 ? `Viewing Saved Post (Row ${modalPostIndex !== null ? modalPostIndex + 1 : 'N/A'})` 
                 : `Generated Post (Row ${modalPostIndex !== null ? modalPostIndex + 1 : 'N/A'})`}
             </h2>
+
+                {/* commented out markdown for error testing */}
+
             <div className="flex-grow overflow-y-auto mb-6 pr-2 border rounded-md bg-white p-4">
               {postToShowInModal === "Generating..." 
                 ? <div className="text-center p-10"><span className="loading loading-dots loading-md"></span></div> 

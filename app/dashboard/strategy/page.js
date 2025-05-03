@@ -1,8 +1,11 @@
+// dashboard/strategy/page.js
+
 'use client'
 import { useEffect, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import MarkdownContent from '../../../components/MarkdownContent';
+import MarkdownContent from '@/components/MarkdownContent';
+
 import OnboardingFlow from '@/components/OnboardingFlow';
 
 const StrategyPage = () => {
@@ -88,6 +91,8 @@ const StrategyPage = () => {
                     <div className="card bg-base-100 shadow-xl">
                         <div className="card-body">
                             <h2 className="card-title mb-4">Strategy Foundation</h2>
+
+                            {/* commented out for error testing */}
                             <MarkdownContent content={strategyData.foundation} />
                             <button className='btn btn-primary' onClick={handleStartNewStrategy}>Create a New Strategy</button>
                         </div>
