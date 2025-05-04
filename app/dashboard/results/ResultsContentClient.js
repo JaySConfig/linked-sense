@@ -371,7 +371,7 @@ function ResultsContent() {
                     Retry
                   </button>
                 )}
-                <Link href="/linkedin-strategy" className="btn btn-outline"> 
+                <Link href="/dashboard/strategy" className="btn btn-outline"> 
                   Start Over {/* Always allow starting over */}
                 </Link>
               </div>

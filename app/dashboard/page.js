@@ -288,10 +288,10 @@ export default function Dashboard() {
   if (!hasStrategy) {
     return (
       <div className="max-w-5xl mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+        {/* <h1 className="text-3xl font-bold mb-8">Dashboard</h1> */}
         
         <div className="bg-base-100 p-8 rounded-lg shadow-sm text-center">
-          <h2 className="text-2xl font-semibold mb-4">Welcome to Thinkd.In!</h2>
+          <h1 className="text-2xl font-semibold mb-4">Welcome to Thinkd.In!</h1>
           <p className="text-lg mb-6">
             Your strategic LinkedIn content journey begins with creating a strategy.
           </p>
