@@ -49,16 +49,19 @@ const calculatePostDate = (startDate, index, postsPerWeek) => {
 /// ----------------
 
 // ContentCalendarTable Component
+// ContentCalendarTable Component
 const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handleGeneratePost, handleViewPost, startDate }) => {
-    if (!calendar || !calendar.rows || calendar.rows.length === 0) {
-      return <p className="text-center text-gray-500 italic my-4">No calendar data available to display.</p>;
-    }
-    
-    const postsLookup = Array.isArray(calendarPosts) ? calendarPosts : [];
-    const postsPerWeek = Math.ceil(calendar.rows.length / 4);
+  if (!calendar || !calendar.rows || calendar.rows.length === 0) {
+    return <p className="text-center text-gray-500 italic my-4">No calendar data available to display.</p>;
+  }
   
-    return (
-      <div className="overflow-x-auto my-6 shadow border border-base-300 rounded-lg">
+  const postsLookup = Array.isArray(calendarPosts) ? calendarPosts : [];
+  const postsPerWeek = Math.ceil(calendar.rows.length / 4);
+
+  return (
+    <div className="my-6">
+      {/* For desktop: Table view */}
+      <div className="hidden md:block overflow-x-auto shadow border border-base-300 rounded-lg">
         <table className="w-full border-collapse table-auto">
           <thead className="bg-base-200">
             <tr>
@@ -111,8 +114,62 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
           </tbody>
         </table>
       </div>
-    );
-  };
+       
+      {/* For mobile: Card view */}
+      <div className="md:hidden space-y-4">
+        {calendar.rows.map((row, index) => {
+          const isPostSaved = postsLookup.some(post => post.postIndex === index);
+          const postDate = calculatePostDate(startDate, index, postsPerWeek);
+          const formattedDate = postDate ? format(postDate, 'EEE, MMM d') : 'Invalid Date';
+          
+          return (
+            <div key={index} className="card bg-base-100 shadow border border-base-300">
+              <div className="card-body p-4">
+                <h3 className="font-medium">{formattedDate}</h3>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <div className="font-bold text-xs uppercase opacity-70">Pillar</div>
+                    <div>{row.pillar || '-'}</div>
+                  </div>
+                  <div>
+                    <div className="font-bold text-xs uppercase opacity-70">Content Type</div>
+                    <div>{row.contentType || '-'}</div>
+                  </div>
+                  <div className="col-span-2">
+                    <div className="font-bold text-xs uppercase opacity-70">Topic</div>
+                    <div>{row.topic || '-'}</div>
+                  </div>
+                  <div className="col-span-2">
+                    <div className="font-bold text-xs uppercase opacity-70">Approach</div>
+                    <div>{row.approach || '-'}</div>
+                  </div>
+                </div>
+                <div className="card-actions justify-end mt-2">
+                  {isPostSaved ? (
+                    <button
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => handleViewPost(index)}
+                    >
+                      View Post
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => handleGeneratePost(row.pillar, row.topic, row.approach, row.contentType, index)}
+                      disabled={generatingPostId === index}
+                    >
+                      {generatingPostId === index ? 'Generating...' : 'Generate Post'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
 
   //// calendar page component
@@ -501,7 +558,7 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
             {strategyData?.savedCalendars?.length > 0 ? (
               <>
                 {/* Calendar selector tabs */}
-                <div className="tabs tabs-boxed mb-4">
+                <div className="flex flex-wrap gap-2 mb-4">
                   {strategyData.savedCalendars.map((calendar, index) => {
                     // Get the start date
                     const startDate = new Date(calendar.startDate);
@@ -527,7 +584,7 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
                     return (
                       <button
                         key={index}
-                        className={`tab ${selectedCalendarIndex === index ? 'tab-active' : ''}`}
+                        className={`btn ${selectedCalendarIndex === index ? 'btn-active' : 'btn-outline'} btn-sm flex-1`}
                         onClick={() => setSelectedCalendarIndex(index)}
                       >
                         {dateLabel}

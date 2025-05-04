@@ -466,28 +466,44 @@ function ResultsContent() {
           {/* --- End Calendar Display Section --- */}
 
           {/* --- Action buttons --- */}
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
-            {/* Show the Save button regardless of hasStrategy state */}
-            <button
-              className="btn btn-primary"
-              onClick={saveStrategy}
-              disabled={!submission || !foundationStrategy || !calendarStrategy || !contentCalendar || isSavingStrategy || foundationLoading || calendarLoading}
-            >
-              {isSavingStrategy ? <span className="loading loading-spinner loading-sm mr-2"></span> : null}
-              {isSavingStrategy ? 'Saving...' : hasStrategy ? 'Save Strategy' : 'Save Strategy to Profile'}
-            </button>
+        {/* --- Action buttons with updated logic --- */}
+        <div className="mt-12 flex flex-col items-center gap-4">
+          {/* Primary action - Save Strategy (made more prominent) */}
+          <button
+            className="btn btn-primary  md:w-auto"
+            onClick={saveStrategy}
+            disabled={!submission || !foundationStrategy || !calendarStrategy || !contentCalendar || isSavingStrategy || foundationLoading || calendarLoading}
+          >
+            {isSavingStrategy ? <span className="loading loading-spinner loading-sm mr-2"></span> : null}
+            {isSavingStrategy ? 'Saving...' : 'Save Strategy to Profile'}
+          </button>
 
-            {/* Show the View Calendar button if hasStrategy is true */}
-            {hasStrategy && (
-              <a href="/dashboard/calendar" className="btn btn-secondary"> 
+          {/* Information alert to emphasize the importance of saving */}
+          {!isSavingStrategy && !saveMessage.includes("success") && (
+            <div className="alert alert-warning shadow-lg">
+              <div className="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span>You must save your strategy before you can view or access your content calendar.</span>
+              </div>
+            </div>
+          )}
+
+          {/* Secondary actions - Only show View Calendar if strategy was successfully saved */}
+          <div className="flex flex-wrap justify-center gap-4">
+            {saveMessage.includes("success") && (
+              <Link href="/dashboard/calendar" className="btn btn-secondary">
                 View Calendar
-              </a>
+              </Link>
             )}
 
+            {/* Generate New Strategy - always available */}
             <Link href="/dashboard/strategy" className="btn btn-ghost">
               Generate New Strategy
             </Link>
           </div>
+        </div>
   
         </div>
       </div>

@@ -95,24 +95,25 @@ export default async function LayoutPrivate({ children }) {
         {/* end of side bar */}
         
         {/* User info - hidden on mobile */}
+        {/* User info - hidden on mobile */}
         <div className="hidden md:block border-t border-base-300 pt-4 mt-6">
           <div className="flex items-center mb-4">
             {session.user.image ? (
               <Image
-              src={session.user.image}
-              alt={session.user.name || "User"}
-              width={32}
-              height={32}
-              className="rounded-full mr-3"
-            />
+                src={session.user.image}
+                alt={session.user.name || "User"}
+                width={32}
+                height={32}
+                className="rounded-full mr-3 shrink-0"
+              />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content mr-3">
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content mr-3 shrink-0">
                 {session.user.name?.charAt(0) || session.user.email?.charAt(0)}
               </div>
             )}
-            <div>
-              <p className="font-medium">{session.user.name}</p>
-              <p className="text-xs opacity-70">{session.user.email}</p>
+            <div className="min-w-0"> {/* Added min-width to contain the text */}
+              <p className="font-medium truncate">{session.user.name}</p>
+              <p className="text-xs opacity-70 truncate">{session.user.email}</p>
             </div>
           </div>
           
