@@ -436,8 +436,8 @@ function OnboardingFlow() {
   // Show resume progress dialog if applicable
   if (hasExistingProgress) {
     return (
-      <div className="min-h-screen bg-base-100 p-4">
-        <div className="max-w-md mx-auto text-center p-6 bg-base-100 rounded-lg shadow-lg">
+      <div className="bg-base-100 mx-auto max-w-xl rounded-lg">
+        <div className="text-center p-6 bg-base-100 rounded-lg shadow-lg">
           <h2 className="text-xl font-bold mb-4 text-base-content">Resume Your Progress?</h2>
           <p className="mb-6 text-base-content/80">We found your previously saved answers. Would you like to continue where you left off?</p>
           <div className="flex justify-center gap-4">
@@ -461,9 +461,9 @@ function OnboardingFlow() {
 
   // Main component render
   return (
-    <div className="min-h-screen bg-base-100 p-4">
+    <div className="bg-base-100 mx-auto max-w-xl rounded-lg">
       {/* Fixed top section */}
-      <div className="max-w-md mx-auto">
+      <div className="w-full px-4 py-6">
         {/* Progress indicator always at the top */}
         <SectionProgress 
           sections={sections}

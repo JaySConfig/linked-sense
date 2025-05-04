@@ -22,17 +22,23 @@ export default function Page() {
         </Suspense>
         
       </header>
-      <main>
-        <section className="flex flex-col items-center justify-center text-center gap-12 px-8 pt-12">
-          <Hero/>
+      <main>{/* Hero Section */}
+        <section className="w-full py-12 md:py-16">
+          <div className="container mx-auto px-4 sm:px-8">
+            <Hero />
+          </div>
         </section>
 
-        <section className="flex flex-col items-center justify-center text-center gap-12 px-8 ">
-        <Problem />
+        {/* Problem Section */}
+        <section className="w-full py-8 md:py-12">
+          <div className="container mx-auto px-4 sm:px-8">
+            <Problem />
+          </div>
         </section>
 
-        <section className="flex flex-col items-center justify-center text-center gap-2 px-8 ">
-        <FeaturesCard/>    
+        {/* Features Section */}
+        <section className="w-full py-8 md:py-12">
+          <FeaturesCard />
         </section>
 
         <section className="flex flex-col items-center justify-center text-center px-8  pb-20 bg-base-100">

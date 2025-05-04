@@ -47,7 +47,7 @@ export async function POST(req) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   const userId = session.user.id;
-  console.log(`\n--- API /save-strategy: Request for user ${userId} ---`);
+  // console.log(`\n--- API /save-strategy: Request for user ${userId} ---`);
 
   try {
     const { submissionId, answers, foundation, calendar, contentCalendar } = await req.json();
@@ -66,18 +66,18 @@ export async function POST(req) {
 
     if (isStrategyOnlySave) {
       // Handle strategy-only save (from results page)
-      console.log("API /save-strategy: Processing strategy-only save");
+      // console.log("API /save-strategy: Processing strategy-only save");
       currentUser.profile.linkedinStrategy = {
           foundation: foundation, answers: answers, submissionId: submissionId,
           savedAt: new Date(), savedCalendars: []
       };
       await currentUser.save();
-      console.log("API /save-strategy: Strategy-only save complete.");
+      // console.log("API /save-strategy: Strategy-only save complete.");
       return NextResponse.json({ success: true, message: "Strategy foundation saved!" });
 
     } else {
       // Handle calendar save (from profile page)
-      console.log("API /save-strategy: Processing calendar save");
+      // console.log("API /save-strategy: Processing calendar save");
       if (!foundation || !calendar || !contentCalendar?.rows?.length) {
         return NextResponse.json({ error: "Incomplete calendar data received" }, { status: 400 });
       }
@@ -95,30 +95,30 @@ export async function POST(req) {
       if (savedCalendars.length === 0) {
         const now = startOfDay(new Date());
         newStartDate = getDay(now) === 1 ? now : nextMonday(now);
-        console.log("API /save-strategy: First calendar starting on:", newStartDate?.toISOString());
+        // console.log("API /save-strategy: First calendar starting on:", newStartDate?.toISOString());
       } else {
         // Sort ASCENDING to get the last element (latest end date)
         const calendarsWithDates = savedCalendars.map(cal => ({ endDate: cal.endDate instanceof Date ? cal.endDate : new Date(cal.endDate) })).filter(d => isValid(d.endDate));
         if (calendarsWithDates.length === 0) throw new Error("No valid end dates in existing calendars");
         calendarsWithDates.sort((a, b) => a.endDate.getTime() - b.endDate.getTime());
         const latestEndDate = calendarsWithDates[calendarsWithDates.length - 1].endDate;
-        console.log("API /save-strategy: Latest calendar end date:", latestEndDate?.toISOString());
+        // console.log("API /save-strategy: Latest calendar end date:", latestEndDate?.toISOString());
 
         // Find next Monday STRICTLY AFTER latest end date
         newStartDate = nextMonday(latestEndDate);
         if (isBefore(newStartDate, latestEndDate) || startOfDay(newStartDate).getTime() === startOfDay(latestEndDate).getTime()) {
             newStartDate = addDays(newStartDate, 7);
         }
-        console.log("API /save-strategy: New calendar will start on:", newStartDate?.toISOString());
+        // console.log("API /save-strategy: New calendar will start on:", newStartDate?.toISOString());
       }
 
       // --- *** CORRECTED End Date Calculation *** ---
       const postsPerWeek = Math.ceil(calendarRows.length / 4); // Assuming 4 weeks
       const lastPostIndex = calendarRows.length - 1;
-      console.log(`API /save-strategy: Calculating endDate: lastPostIndex=${lastPostIndex}, postsPerWeek=${postsPerWeek}`);
+      // console.log(`API /save-strategy: Calculating endDate: lastPostIndex=${lastPostIndex}, postsPerWeek=${postsPerWeek}`);
       // Use calculatePostDateBackend to find the date of the LAST post
       const newEndDate = calculatePostDateBackend(newStartDate, lastPostIndex, postsPerWeek);
-      console.log(`API /save-strategy: Calculated newEndDate using calculatePostDateBackend:`, newEndDate?.toISOString());
+      // console.log(`API /save-strategy: Calculated newEndDate using calculatePostDateBackend:`, newEndDate?.toISOString());
       // --- *** End CORRECTED End Date Calculation *** ---
 
       if (!newStartDate || !newEndDate || isNaN(newStartDate) || isNaN(newEndDate)) {
@@ -144,9 +144,9 @@ export async function POST(req) {
       currentUser.profile.linkedinStrategy.savedAt = new Date();
       currentUser.markModified('profile.linkedinStrategy');
 
-      console.log(`API /save-strategy: Attempting save with ${currentUser.profile.linkedinStrategy.savedCalendars.length} calendars`);
+      // console.log(`API /save-strategy: Attempting save with ${currentUser.profile.linkedinStrategy.savedCalendars.length} calendars`);
       await currentUser.save();
-      console.log("API /save-strategy: Calendar save complete.");
+      // console.log("API /save-strategy: Calendar save complete.");
 
       return NextResponse.json({ success: true, message: "Calendar saved successfully!" });
     }
@@ -154,6 +154,6 @@ export async function POST(req) {
     console.error('API /save-strategy: Error:', error);
     return NextResponse.json({ error: error.message, details: error.stack }, { status: 500 });
   } finally {
-      console.log(`--- API /save-strategy: END Request for user ${userId} ---\n`);
+      // console.log(`--- API /save-strategy: END Request for user ${userId} ---\n`);
   }
 }

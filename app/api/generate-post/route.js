@@ -5,9 +5,9 @@ export const POST = async (request) => {
     const { contentCategory, contentQuestion, postTone, callToAction, answerText } = await request.json();
     
     // Debug: Print all environment variables (be careful with sensitive info)
-    console.log("Available env vars:", Object.keys(process.env));
-    console.log("GOOGLE_API_KEY exists:", !!process.env.GOOGLE_API);
-    console.log("GOOGLE_API_KEY first 5 chars:", process.env.GOOGLE_API ? process.env.GOOGLE_API.substring(0, 5) : "undefined");
+    // console.log("Available env vars:", Object.keys(process.env));
+    // console.log("GOOGLE_API_KEY exists:", !!process.env.GOOGLE_API);
+    // console.log("GOOGLE_API_KEY first 5 chars:", process.env.GOOGLE_API ? process.env.GOOGLE_API.substring(0, 5) : "undefined");
     
     // Debug: Check if API key is being loaded
     const apiKey = process.env.GOOGLE_API;
@@ -70,14 +70,14 @@ export const POST = async (request) => {
 
     `;
     
-    console.log("Sending prompt to Gemini API...");
+    // console.log("Sending prompt to Gemini API...");
     
     // Generate content
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const generatedPost = response.text();
     
-    console.log("Successfully received response from Gemini API");
+    // console.log("Successfully received response from Gemini API");
     
     return Response.json({ post: generatedPost });
   } catch (error) {

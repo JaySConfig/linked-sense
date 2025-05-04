@@ -54,7 +54,7 @@ export async function POST(request) {
       );
     }
     
-    console.log("Received submission data for calendar generation");
+    // console.log("Received submission data for calendar generation");
     
     // Get API key - THIS IS THE FIX - GET API KEY CORRECTLY
     const apiKey = process.env.GOOGLE_API;
@@ -85,8 +85,8 @@ export async function POST(request) {
     // Format the prompt for calendar only
     const prompt = createCalendarPrompt(answers, foundation, currentYear, currentMonthName);
     
-    console.log("Sending calendar generation prompt to Gemini API...");
-    console.log("Prompt Data:", { currentYear, currentMonthName, currentQuarter, postingFrequency: answers.postingFrequency }); // Log context
+    // console.log("Sending calendar generation prompt to Gemini API...");
+    // console.log("Prompt Data:", { currentYear, currentMonthName, currentQuarter, postingFrequency: answers.postingFrequency }); // Log context
 
 
     
@@ -95,7 +95,7 @@ export async function POST(request) {
     const response = await result.response;
     const calendar = response.text();
     
-    console.log("Successfully received calendar from Gemini API");
+    // console.log("Successfully received calendar from Gemini API");
     
     return Response.json({ calendar });
     

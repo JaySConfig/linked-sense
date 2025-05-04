@@ -339,10 +339,10 @@ export async function POST(req) {
     const { content, postIndex, pillar, topic, approach, contentType, weekDay, calendarIndex } = await req.json();
 
     // Log received data
-    console.log(`--- /api/posts/save: Received request ---`);
-    console.log(`User ID: ${userId}`);
-    console.log(`Calendar Index: ${calendarIndex}, Post Index: ${postIndex}`);
-    console.log(`Pillar: ${pillar}, Topic: ${topic ? topic.substring(0, 30) + '...' : 'N/A'}`);
+    // console.log(`--- /api/posts/save: Received request ---`);
+    // console.log(`User ID: ${userId}`);
+    // console.log(`Calendar Index: ${calendarIndex}, Post Index: ${postIndex}`);
+    // console.log(`Pillar: ${pillar}, Topic: ${topic ? topic.substring(0, 30) + '...' : 'N/A'}`);
     // console.log(`Content Snippet: ${content ? content.substring(0, 50) + '...' : 'N/A'}`); // Be cautious logging full content if sensitive
 
     if (typeof calendarIndex !== 'number' || typeof postIndex !== 'number') {
@@ -350,7 +350,7 @@ export async function POST(req) {
     }
 
     await connectMongo();
-    console.log("MongoDB connected.");
+    // console.log("MongoDB connected.");
 
     const user = await User.findById(userId);
 
@@ -379,7 +379,7 @@ export async function POST(req) {
 
     // Ensure posts array exists within the target calendar (important safeguard)
     if (!Array.isArray(user.profile.linkedinStrategy.savedCalendars[calendarIndex].posts)) {
-      console.log(`Initializing posts array for calendar ${calendarIndex}`);
+      // console.log(`Initializing posts array for calendar ${calendarIndex}`);
       user.profile.linkedinStrategy.savedCalendars[calendarIndex].posts = [];
     }
 
@@ -400,17 +400,17 @@ export async function POST(req) {
     const existingPostIndexInArray = calendarPosts.findIndex(post => post.postIndex === postIndex);
 
     if (existingPostIndexInArray >= 0) {
-      console.log(`Updating existing post at internal array index ${existingPostIndexInArray} (postIndex ${postIndex}) in calendar ${calendarIndex}`);
+      // console.log(`Updating existing post at internal array index ${existingPostIndexInArray} (postIndex ${postIndex}) in calendar ${calendarIndex}`);
       // Preserve the original MongoDB _id if updating
       const originalId = calendarPosts[existingPostIndexInArray]._id;
       calendarPosts[existingPostIndexInArray] = { ...postData, _id: originalId }; // Keep original _id
     } else {
-      console.log(`Adding new post with postIndex ${postIndex} to calendar ${calendarIndex}`);
+      // console.log(`Adding new post with postIndex ${postIndex} to calendar ${calendarIndex}`);
       calendarPosts.push(postData); // Mongoose will add _id upon save
     }
 
-    console.log(`--- Before user.save() ---`);
-    console.log(`Target Calendar Posts Array Length: ${calendarPosts.length}`);
+    // console.log(`--- Before user.save() ---`);
+    // console.log(`Target Calendar Posts Array Length: ${calendarPosts.length}`);
     // Optional: Log the post being saved/updated
     // console.log("Post data being saved/updated:", JSON.stringify(postData));
 
@@ -423,15 +423,15 @@ export async function POST(req) {
     await user.save();
     // --- Save operation finished ---
 
-    console.log(`--- After user.save() ---`);
-    console.log(`User document for ${userId} saved successfully.`);
+    // console.log(`--- After user.save() ---`);
+    // console.log(`User document for ${userId} saved successfully.`);
 
     // Optional but recommended: Re-fetch immediately AFTER save to check persistence
     const userAfterSave = await User.findById(userId).lean(); // Use .lean() for plain JS object
     const updatedPostsArray = userAfterSave?.profile?.linkedinStrategy?.savedCalendars?.[calendarIndex]?.posts || [];
-    console.log(`Post-Save Check: Posts array length in calendar ${calendarIndex}: ${updatedPostsArray.length}`);
+    // console.log(`Post-Save Check: Posts array length in calendar ${calendarIndex}: ${updatedPostsArray.length}`);
     const savedPostCheck = updatedPostsArray.find(p => p.postIndex === postIndex);
-    console.log(`Post-Save Check: Post with index ${postIndex} found in re-fetched data:`, !!savedPostCheck);
+    // console.log(`Post-Save Check: Post with index ${postIndex} found in re-fetched data:`, !!savedPostCheck);
     // Optional: Log the content snippet of the saved post from re-fetched data
     // if (savedPostCheck) {
     //    console.log(`Post-Save Check Content Snippet: ${savedPostCheck.content ? savedPostCheck.content.substring(0,50)+'...' : 'N/A'}`);

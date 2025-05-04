@@ -66,6 +66,10 @@
 
 /// ---- claude version ///
 
+export const dynamic = 'force-dynamic';  // Add this line here, at the top level
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
+
 // File: app/api/get-submission/route.js// app/api/get-submission/route.js
 import { NextResponse } from 'next/server';
 import connectMongo from '@/libs/mongoose';
@@ -74,10 +78,10 @@ import TemporarySubmission from '@/models/TemporarySubmission';
 export async function GET(request) {
   try {
     // Get the ID from the URL parameters
-    const { searchParams } = new URL(request.url);
+    const searchParams = new URL(request.url).searchParams;
     const id = searchParams.get('id');
     
-    console.log(`API: [/api/get-submission] - Request received for ID: ${id}`);
+    // console.log(`API: [/api/get-submission] - Request received for ID: ${id}`);
     
     if (!id) {
       return NextResponse.json({ error: 'Missing submission ID' }, { status: 400 });
@@ -85,13 +89,13 @@ export async function GET(request) {
     
     // Connect to the database
     await connectMongo();
-    console.log(`API: [/api/get-submission] - Database connected.`);
+    // console.log(`API: [/api/get-submission] - Database connected.`);
     
     // Find the submission by ID
     const submission = await TemporarySubmission.findById(id);
     
     if (!submission) {
-      console.log(`API: [/api/get-submission] - Submission ID not found: ${id}`);
+      // console.log(`API: [/api/get-submission] - Submission ID not found: ${id}`);
       return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
     }
     
@@ -99,13 +103,13 @@ export async function GET(request) {
     const shouldDelete = searchParams.get('delete') === 'true';
     
     if (shouldDelete) {
-      console.log(`API: [/api/get-submission] - Deleting temporary submission: ${id}`);
+      // console.log(`API: [/api/get-submission] - Deleting temporary submission: ${id}`);
       await TemporarySubmission.findByIdAndDelete(id);
     } else {
-      console.log(`API: [/api/get-submission] - Keeping temporary submission: ${id}`);
+      // console.log(`API: [/api/get-submission] - Keeping temporary submission: ${id}`);
     }
     
-    console.log(`API: [/api/get-submission] - Found data for ${id}. Returning submissionData.`);
+    // console.log(`API: [/api/get-submission] - Found data for ${id}. Returning submissionData.`);
     
     // Return the submission data
     return NextResponse.json({

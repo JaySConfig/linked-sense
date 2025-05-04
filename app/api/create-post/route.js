@@ -131,7 +131,7 @@ export async function POST(request) {
     // Extract all parameters including user voice and perspective
     const { pillar, topic, approach, contentType, userVoice, uniquePerspective } = await request.json();
     
-    console.log("Generating post for:", { pillar, topic, approach, contentType, userVoice, uniquePerspective });
+    // console.log("Generating post for:", { pillar, topic, approach, contentType, userVoice, uniquePerspective });
     
     // Get API key
     const apiKey = process.env.GOOGLE_API;
@@ -182,7 +182,7 @@ Format the response as a complete LinkedIn post, ready to copy and paste.
     const response = await result.response;
     const post = response.text();
     
-    console.log("Successfully generated post");
+    // console.log("Successfully generated post");
     
     return Response.json({ post });
     

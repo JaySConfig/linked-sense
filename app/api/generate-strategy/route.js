@@ -15,7 +15,7 @@ export async function POST(request) {
     const submissionData = await request.json();
     
     // Debug logging
-    console.log("Received submission data for strategy generation");
+    // console.log("Received submission data for strategy generation");
     
     // Get API key
     const apiKey = process.env.GOOGLE_API;
@@ -37,14 +37,14 @@ export async function POST(request) {
     // Format the prompt with the answers
     const prompt = createStrategyPrompt(answers);
     
-    console.log("Sending strategy generation prompt to Gemini API...");
+    // console.log("Sending strategy generation prompt to Gemini API...");
     
     // Generate content
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const strategy = response.text();
     
-    console.log("Successfully received strategy from Gemini API");
+    // console.log("Successfully received strategy from Gemini API");
     
     return Response.json({ strategy });
     

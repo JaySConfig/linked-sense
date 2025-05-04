@@ -39,78 +39,114 @@ const Step = ({ emoji, text }) => {
 // - Hero: "ShipFast helps developers launch startups fast"
 // - Problem Agitation: "Developers spend too much time adding features, get overwhelmed, and quit." (not about ShipFast at all)
 // - Features: "ShipFast has user auth, Stripe, emails all set up for you"
+// const Problem = () => {
+//   return (
+//     // <section className="bg-neutral text-neutral-content">
+//     //   <div className="max-w-7xl mx-auto px-8 py-8 md:py-32 text-center flex flex-col">
+        
+//     //     {/* Header */}
+//     //     <h2 className="max-w-3xl mx-auto font-extrabold text-4xl md:text-5xl tracking-tight mb-6 md:mb-8">
+//     //     The Hidden Risk of Guesswork
+
+//     //     </h2>
+
+//     //     {/* Subtext */}
+//     //     <div className="max-w-xl mx-auto text-lg opacity-90 leading-relaxed mb-8 md:mb-12">
+//     //       <p className="mb-4">Most LinkedIn creators rely on guesswork.</p>
+//     //       <p className="mb-4">
+//     //         LinkedSense removes the uncertainty by providing clear, AI-powered content insights.
+//     //       </p>
+//     //     </div>
+
+//     //     {/* Benefits Section with `flex-grow` */}
+//     //     <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 flex-grow">
+//     //       <Step emoji="✅" text="Discover What Works Best" />
+//     //       <Step emoji="✅" text="Get real-time engagement analysis" />
+//     //       <Step emoji="✅" text="Optimise your content strategy" />
+//     //     </div>
+
+//     //     {/* CTA - Kept at bottom without increasing section size */}
+//     //     <div className="max-w-xl mx-auto text-lg leading-relaxed mt-auto pt-12">
+//     //       <p className="font-bold text-2xl">Start making data-driven LinkedIn posts today.</p>
+//     //     </div>
+
+//     //   </div>
+//     // </section>
+//     <section className="bg-neutral text-neutral-content">
+//       <div className="max-w-7xl mx-auto px-8 py-8 md:py-32 text-center flex flex-col">
+        
+//         {/* Header */}
+//         <h2 className="max-w-3xl mx-auto font-extrabold text-4xl md:text-5xl tracking-tight mb-6 md:mb-8">
+//           The Hidden Risk of Guesswork
+//         </h2>
+
+//         {/* Subtext */}
+//         <div className="max-w-xl mx-auto text-lg opacity-90 leading-relaxed mb-8 md:mb-12">
+//           <p className="mb-4">
+//             Most LinkedIn creators don&apos;t fail because they&apos;re bad writers — they fail because they post without a clear strategy.
+//           </p>
+//           <p className="mb-4">
+//             When you guess what to post, your audience feels it, your growth stalls, and opportunities pass you by.
+//           </p>
+//           <p className="mb-4">
+//             Inconsistent, scattered content doesn&apos;t just slow you down — it actively damages your reputation over time.
+//           </p>
+//         </div>
+
+//         {/* Benefits Section with `flex-grow` */}
+//         <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 flex-grow">
+//           <Step emoji="✅" text="Discover What Resonates" />
+//           <Step emoji="✅" text="Get Smarter Post Insights" />
+//           <Step emoji="✅" text="Grow With Confidence" />
+//         </div>
+
+//         {/* CTA - Kept at bottom without increasing section size */}
+//         <div className="max-w-xl mx-auto text-lg leading-relaxed mt-auto pt-12">
+//           <p className="font-bold text-2xl">Start building a strategic LinkedIn presence today.</p>
+//         </div>
+
+//       </div>
+//     </section>
+
 const Problem = () => {
   return (
-    // <section className="bg-neutral text-neutral-content">
-    //   <div className="max-w-7xl mx-auto px-8 py-8 md:py-32 text-center flex flex-col">
-        
-    //     {/* Header */}
-    //     <h2 className="max-w-3xl mx-auto font-extrabold text-4xl md:text-5xl tracking-tight mb-6 md:mb-8">
-    //     The Hidden Risk of Guesswork
+    <section className="w-full bg-neutral text-neutral-content py-12 md:py-24">
+      <div className="container mx-auto px-4 sm:px-8">
+        <div className="text-center flex flex-col max-w-4xl mx-auto">
+          {/* Header */}
+          <h2 className="font-extrabold text-4xl md:text-5xl tracking-tight mb-6 md:mb-8">
+            The Hidden Risk of Guesswork
+          </h2>
 
-    //     </h2>
+          {/* Subtext */}
+          <div className="text-lg opacity-90 leading-relaxed mb-8 md:mb-12">
+            <p className="mb-4">
+              Most LinkedIn creators don&apos;t fail because they&apos;re bad writers — they fail because they post without a clear strategy.
+            </p>
+            <p className="mb-4">
+              When you guess what to post, your audience feels it, your growth stalls, and opportunities pass you by.
+            </p>
+            <p className="mb-4">
+              Inconsistent, scattered content doesn&apos;t just slow you down — it actively damages your reputation over time.
+            </p>
+          </div>
 
-    //     {/* Subtext */}
-    //     <div className="max-w-xl mx-auto text-lg opacity-90 leading-relaxed mb-8 md:mb-12">
-    //       <p className="mb-4">Most LinkedIn creators rely on guesswork.</p>
-    //       <p className="mb-4">
-    //         LinkedSense removes the uncertainty by providing clear, AI-powered content insights.
-    //       </p>
-    //     </div>
+          {/* Benefits Section */}
+          <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-6 md:gap-8 mb-12">
+            <Step emoji="✅" text="Discover What Resonates" />
+            <Step emoji="✅" text="Get Smarter Post Insights" />
+            <Step emoji="✅" text="Grow With Confidence" />
+          </div>
 
-    //     {/* Benefits Section with `flex-grow` */}
-    //     <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 flex-grow">
-    //       <Step emoji="✅" text="Discover What Works Best" />
-    //       <Step emoji="✅" text="Get real-time engagement analysis" />
-    //       <Step emoji="✅" text="Optimise your content strategy" />
-    //     </div>
-
-    //     {/* CTA - Kept at bottom without increasing section size */}
-    //     <div className="max-w-xl mx-auto text-lg leading-relaxed mt-auto pt-12">
-    //       <p className="font-bold text-2xl">Start making data-driven LinkedIn posts today.</p>
-    //     </div>
-
-    //   </div>
-    // </section>
-    <section className="bg-neutral text-neutral-content">
-      <div className="max-w-7xl mx-auto px-8 py-8 md:py-32 text-center flex flex-col">
-        
-        {/* Header */}
-        <h2 className="max-w-3xl mx-auto font-extrabold text-4xl md:text-5xl tracking-tight mb-6 md:mb-8">
-          The Hidden Risk of Guesswork
-        </h2>
-
-        {/* Subtext */}
-        <div className="max-w-xl mx-auto text-lg opacity-90 leading-relaxed mb-8 md:mb-12">
-          <p className="mb-4">
-            Most LinkedIn creators don&apos;t fail because they&apos;re bad writers — they fail because they post without a clear strategy.
-          </p>
-          <p className="mb-4">
-            When you guess what to post, your audience feels it, your growth stalls, and opportunities pass you by.
-          </p>
-          <p className="mb-4">
-            Inconsistent, scattered content doesn&apos;t just slow you down — it actively damages your reputation over time.
-          </p>
+          {/* CTA */}
+          <div className="mt-8">
+            <p className="font-bold text-2xl">Start building a strategic LinkedIn presence today.</p>
+          </div>
         </div>
-
-        {/* Benefits Section with `flex-grow` */}
-        <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 flex-grow">
-          <Step emoji="✅" text="Discover What Resonates" />
-          <Step emoji="✅" text="Get Smarter Post Insights" />
-          <Step emoji="✅" text="Grow With Confidence" />
-        </div>
-
-        {/* CTA - Kept at bottom without increasing section size */}
-        <div className="max-w-xl mx-auto text-lg leading-relaxed mt-auto pt-12">
-          <p className="font-bold text-2xl">Start building a strategic LinkedIn presence today.</p>
-        </div>
-
       </div>
     </section>
-
-
-
   );
 };
+
 
 export default Problem;
