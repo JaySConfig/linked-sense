@@ -159,8 +159,8 @@ export const authOptions = {
     }
   }, // --- End of callbacks block ---
   // Optional theme settings (keeping commented as in your code)
-  // theme: {
-  //   brandColor: config.colors.main,
-  //   logo: `https://${config.domainName}/logoAndName.png`,
-  // },
+  theme: {
+    brandColor: config.colors.main,
+    logo: `https://${config.domainName}/logoAndName.png`,
+  },
 };

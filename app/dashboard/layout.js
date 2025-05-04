@@ -122,6 +122,34 @@ export default async function LayoutPrivate({ children }) {
           </Link>
         </div>
       </div>
+      {/* Mobile user info - visible only on small screens */}
+      <div className="flex md:hidden items-center justify-left pl-6 mb-4">
+      <div className="flex items-center p-4">
+        {session.user.image ? (
+          <Image
+            src={session.user.image}
+            alt={session.user.name || "User"}
+            width={32}
+            height={32}
+            className="rounded-full mr-3 shrink-0"
+          />
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content mr-3 shrink-0">
+            {session.user.name?.charAt(0) || session.user.email?.charAt(0)}
+          </div>
+        )}
+        <span className="font-medium">{session.user.name}</span>
+      </div>
+  
+
+          <Link 
+            href="/api/auth/signout" 
+            className="btn btn-outline md:btn-sm"
+          >
+            Sign Out
+          </Link>
+      </div>
+    
       
       {/* Main content */}
       <div className="flex-1 p-4 md:p-8">

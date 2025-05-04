@@ -17,16 +17,16 @@ import MarkdownContent from '@/components/MarkdownContent';
 
 // --- Component Definition ---
 function ResultsContent() {
-    console.log("ResultsContent component rendering");
+    // console.log("ResultsContent component rendering");
 
     // In your ResultsContentClient.js, at the beginning:
     const searchParams = useSearchParams();
-    console.log("searchParams is:", searchParams);
-    console.log("searchParams type:", typeof searchParams);
-    console.log("searchParams methods:", Object.getOwnPropertyNames(Object.getPrototypeOf(searchParams)));
+    // console.log("searchParams is:", searchParams);
+    // console.log("searchParams type:", typeof searchParams);
+    // console.log("searchParams methods:", Object.getOwnPropertyNames(Object.getPrototypeOf(searchParams)));
     
     const id = searchParams.get('id');
-    console.log("ID from URL:", id);
+    // console.log("ID from URL:", id);
   
     // --- State ---
     const [submission, setSubmission] = useState(null); // Stores fetched submission answers
@@ -96,7 +96,7 @@ function ResultsContent() {
       /// ////// new claude fetchSubmissionData
       const fetchSubmissionData = async () => {
         try {
-          console.log(`Fetching submission data for ID: ${id}`);
+          // console.log(`Fetching submission data for ID: ${id}`);
           setFoundationLoading(true);
           
           const response = await fetch(`/api/get-submission?id=${id}`);
@@ -113,7 +113,7 @@ function ResultsContent() {
           
           // Only parse the JSON response once
           const result = await response.json();
-          console.log("Raw API response:", result);
+          // console.log("Raw API response:", result);
           
           // Validate the result structure properly
           if (!result) {
@@ -127,13 +127,13 @@ function ResultsContent() {
           if (result.submission) {
             // If answers are directly in submission
             if (result.submission.answers) {
-              console.log("Using answers from result.submission");
+              // console.log("Using answers from result.submission");
               setSubmission(result.submission);
               generateFoundation(result.submission);
             } 
             // If answers are nested in submissionData
             else if (result.submission.submissionData && result.submission.submissionData.answers) {
-              console.log("Using nested answers from result.submission.submissionData");
+              // console.log("Using nested answers from result.submission.submissionData");
               setSubmission(result.submission.submissionData);
               generateFoundation(result.submission.submissionData);
             } 
@@ -146,13 +146,13 @@ function ResultsContent() {
           } 
           // Alternative: Data might be directly in the result without a 'submission' field
           else if (result.answers) {
-            console.log("Using answers directly from result");
+            // console.log("Using answers directly from result");
             setSubmission(result);
             generateFoundation(result);
           }
           // If we can't find answers anywhere in the response
           else {
-            console.error("No valid submission structure found in response:", result);
+            // console.error("No valid submission structure found in response:", result);
             setError('Invalid submission data structure - cannot locate answers.');
             setFoundationLoading(false);
           }
@@ -161,7 +161,7 @@ function ResultsContent() {
           setTimeout(async () => {
             try {
               await fetch(`/api/get-submission?id=${id}&delete=true`);
-              console.log("Temporary submission cleaned up");
+              // console.log("Temporary submission cleaned up");
             } catch (err) {
               console.error("Failed to clean up temporary submission:", err);
             }
@@ -207,7 +207,7 @@ function ResultsContent() {
     }
     setCalendarLoading(true);
     try {
-        console.log("Generating calendar with submission data and foundation");
+        // console.log("Generating calendar with submission data and foundation");
         
         const response = await fetch('/api/generate-calendar', { 
             method: 'POST', 
@@ -218,7 +218,7 @@ function ResultsContent() {
         if (!response.ok) throw new Error(`Failed to generate content calendar (${response.status})`);
         
         const data = await response.json();
-        console.log("Calendar generation response received");
+        // console.log("Calendar generation response received");
         
         if (!data.calendar) throw new Error("Calendar generation response missing 'calendar' data");
         
@@ -244,7 +244,7 @@ function ResultsContent() {
       setError(null); 
       setSaveMessage('');
       try {
-          console.log("Generating foundation with submission data:", submissionData);
+          // console.log("Generating foundation with submission data:", submissionData);
           const response = await fetch('/api/generate-foundation', { 
               method: 'POST', 
               headers: {'Content-Type':'application/json'}, 
@@ -254,14 +254,14 @@ function ResultsContent() {
           if (!response.ok) throw new Error(`Failed to generate strategy foundation (${response.status})`);
           
           const data = await response.json();
-          console.log("Foundation generation response:", data);
+          // console.log("Foundation generation response:", data);
           
           if (!data.foundation) throw new Error("Foundation generation response missing 'foundation' data.");
           
           setFoundationStrategy(data.foundation);
           
           // Explicitly call calendar generation after foundation is set
-          console.log("Foundation generated successfully, now generating calendar...");
+          // console.log("Foundation generated successfully, now generating calendar...");
           await generateCalendar(submissionData, data.foundation);
       } catch (err) { 
           setError(err.message || 'Failed to generate foundation.'); 
@@ -275,7 +275,7 @@ function ResultsContent() {
     const retryFoundation = () => { 
         // Only proceed if we have the initial submission data
         if (submission) { 
-            console.log("Retrying foundation generation...");
+            // console.log("Retrying foundation generation...");
             setFoundationStrategy(null); // Clear previous results
             setCalendarStrategy(null); 
             setContentCalendar(null); 
@@ -292,7 +292,7 @@ function ResultsContent() {
   
     // --- Save Strategy Function ---
     const saveStrategy = async () => {
-      console.log("--- saveStrategy started ---");
+      // console.log("--- saveStrategy started ---");
       if (!submission || !foundationStrategy || !calendarStrategy || !contentCalendar) {
         console.log("--- saveStrategy: Aborted - data incomplete ---", { 
           submission: !!submission, 
@@ -315,13 +315,13 @@ function ResultsContent() {
           contentCalendar,
           overwrite: true // Add this flag to indicate overwriting existing strategy
         };
-        console.log("--- saveStrategy: Sending Payload to /api/profile/save-strategy");
+        // console.log("--- saveStrategy: Sending Payload to /api/profile/save-strategy");
         const response = await fetch('/api/profile/save-strategy', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        console.log("--- saveStrategy: Received Response - Status:", response.status, "OK:", response.ok);
+        // console.log("--- saveStrategy: Received Response - Status:", response.status, "OK:", response.ok);
     
         if (!response.ok) {
           let errorDetails = `Failed to save strategy. Status: ${response.status}`;
@@ -333,7 +333,7 @@ function ResultsContent() {
         }
     
         const resultData = await response.json(); 
-        console.log("--- saveStrategy: Response OK.", resultData);
+        // console.log("--- saveStrategy: Response OK.", resultData);
         setSaveMessage('Strategy saved successfully!');
         alert('Your LinkedIn strategy has been saved to your profile!'); 
         setStrategyStatus(true);
@@ -342,7 +342,7 @@ function ResultsContent() {
         setSaveMessage(`Error: ${error.message}`);
         alert(`Failed to save strategy: ${error.message}`);
       } finally {
-        console.log("--- saveStrategy: Finally block executing ---");
+        // console.log("--- saveStrategy: Finally block executing ---");
         setIsSavingStrategy(false);
       }
     };
@@ -480,14 +480,14 @@ function ResultsContent() {
 
           {/* Information alert to emphasize the importance of saving */}
           {!isSavingStrategy && !saveMessage.includes("success") && (
-            <div className="alert alert-warning shadow-lg">
-              <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                <span>You must save your strategy before you can view or access your content calendar.</span>
-              </div>
+            <div className="alert alert-warning shadow-lg p-3 md:p-4 text-sm md:text-base">
+            <div className="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <span>You must save your strategy before you can view or access your content calendar.</span>
             </div>
+          </div>
           )}
 
           {/* Secondary actions - Only show View Calendar if strategy was successfully saved */}

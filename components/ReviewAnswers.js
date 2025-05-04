@@ -91,11 +91,11 @@
       if (!answer) return <p className="text-base-content/50 italic">No answer provided</p>;
       
       switch (question.type) {
-        case 'singleSelect':
+        case 'singleSelect': {
           const selectedOption = question.options.find(opt => opt.value === answer);
           return <p className="text-base-content">{selectedOption?.label || answer}</p>;
-        
-        case 'multiSelect':
+        }
+        case 'multiSelect': {
           return (
             <ul className="list-disc pl-5">
               {answer.map(value => {
@@ -104,8 +104,8 @@
               })}
             </ul>
           );
-        
-        case 'tagInput':
+            }
+        case 'tagInput': {
           return (
             <div className="flex flex-wrap gap-2">
               {answer.map(tag => (
@@ -115,7 +115,7 @@
               ))}
             </div>
           );
-        
+              }
         default:
           return <p className="text-base-content">{JSON.stringify(answer)}</p>;
       }
