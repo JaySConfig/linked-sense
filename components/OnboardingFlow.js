@@ -537,7 +537,7 @@
 
 // export default OnboardingFlow;
 
-// moibile optimised
+// // moibile optimised 
 
 
 "use client"
@@ -688,19 +688,20 @@ function OnboardingFlow() {
         throw new Error(errorData.error || `Failed to save submission (${response.status})`);
       }
 
-      // 4. If API call was successful:
-      console.log("Submission saved temporarily on server successfully.");
-      clearProgress(); // Clear the intermediate progress from localStorage
       
-      // 5. Redirect to the results page using Next.js router
-      router.push(`/dashboard/results?id=${submissionId}`);
+        // 4. If API call was successful:
+        console.log("Submission saved temporarily on server successfully.");
+        clearProgress(); // Clear the intermediate progress from localStorage
+        
+        // 5. Redirect to the results page using Next.js router
+        router.push(`/dashboard/results?id=${submissionId}`);
       
-    } catch (error) {
-      console.error('Error during final submission:', error);
-      alert(`There was an error submitting your answers: ${error.message}. Please try again.`);
-      setIsSubmitting(false); // Stop loading indicator on error
-    }
-  };
+        } catch (error) {
+          console.error('Error during final submission:', error);
+          alert(`There was an error submitting your answers: ${error.message}. Please try again.`);
+          setIsSubmitting(false); // Stop loading indicator on error
+        }
+      };
 
   // Handle different answer types with auto-save
   const handleSingleSelect = (questionId, value) => {

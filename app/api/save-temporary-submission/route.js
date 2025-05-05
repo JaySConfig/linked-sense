@@ -52,6 +52,7 @@ import { NextResponse } from 'next/server';
 import connectMongo from '@/libs/mongoose';
 import TemporarySubmissionModel from '@/models/TemporarySubmission';
 
+console.log('temporary submission page')
 export async function POST(request) {
   try {
     // 1. Get data from the request body
@@ -61,12 +62,12 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Missing submission ID or answers' }, { status: 400 });
     }
 
-    // console.log(`API: [/api/save-temp] - Received submission ID: ${id}`);
-    // console.log("TemporarySubmission type:", typeof TemporarySubmissionModel);
+    console.log(`API: [/api/save-temp] - Received submission ID: ${id}`);
+    console.log("TemporarySubmission type:", typeof TemporarySubmissionModel);
 
     // 2. Connect to DB
     await connectMongo();
-    // console.log("API: [/api/save-temp] - DB Connected.");
+    console.log("API: [/api/save-temp] - DB Connected.");
 
     // 3. Create the document directly without using "new"
     try {
@@ -75,9 +76,10 @@ export async function POST(request) {
         _id: id,
         submissionData: { answers },
         createdAt: new Date()
+
       });
 
-      // console.log(`API: [/api/save-temp] - Successfully saved submission ID: ${id}`);
+      console.log(`API: [/api/save-temp] - Successfully saved submission ID: ${id}`);
       return NextResponse.json({ success: true, submissionId: id }, { status: 201 });
     } catch (modelError) {
       console.error(`API: [/api/save-temp] - Model error:`, modelError);
@@ -92,7 +94,7 @@ export async function POST(request) {
         createdAt: new Date()
       });
       
-      // console.log(`API: [/api/save-temp] - Successfully saved submission ID: ${id} (direct method)`);
+      console.log(`API: [/api/save-temp] - Successfully saved submission ID: ${id} (direct method)`);
       return NextResponse.json({ success: true, submissionId: id }, { status: 201 });
     }
   } catch (error) {

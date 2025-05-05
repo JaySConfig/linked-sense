@@ -558,7 +558,7 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
             {strategyData?.savedCalendars?.length > 0 ? (
               <>
                 {/* Calendar selector tabs */}
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className="flex flex-col md:flex-row gap-2 mb-4">
                   {strategyData.savedCalendars.map((calendar, index) => {
                     // Get the start date
                     const startDate = new Date(calendar.startDate);

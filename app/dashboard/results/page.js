@@ -56,37 +56,48 @@
 
 
 
-// app/results/page.js
-import { redirect } from 'next/navigation';
+// // app/results/page.js
+// import { redirect } from 'next/navigation';
 
-// This completely disables static generation
+// // This completely disables static generation
+// export const dynamic = 'force-dynamic';
+// export const fetchCache = 'force-no-store';
+// export const revalidate = 0;
+
+// // Create a simple server component that immediately redirects to a client route
+// export default function Results() {
+//   // This will happen on the server side
+//   return (
+//     <ResultsWrapper />
+//   );
+// }
+
+// // This is just a simple wrapper to load the client component
+// function ResultsWrapper() {
+//   return (
+//     <div id="results-container">
+//       <script
+//         dangerouslySetInnerHTML={{
+//           __html: `
+//             // We'll force client-side navigation to the results page
+//             window.location.href = "/results-client" + window.location.search;
+//           `,
+//         }}
+//       />
+//       <div className="flex justify-center items-center min-h-screen">
+//         <span className="loading loading-lg"></span>
+//       </div>
+//     </div>
+//   );
+// }
+
+// app/dashboard/results/page.js
+import ResultsContent from './ResultsContentClient';
+
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 export const revalidate = 0;
 
-// Create a simple server component that immediately redirects to a client route
-export default function Results() {
-  // This will happen on the server side
-  return (
-    <ResultsWrapper />
-  );
-}
-
-// This is just a simple wrapper to load the client component
-function ResultsWrapper() {
-  return (
-    <div id="results-container">
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            // We'll force client-side navigation to the results page
-            window.location.href = "/results-client" + window.location.search;
-          `,
-        }}
-      />
-      <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-lg"></span>
-      </div>
-    </div>
-  );
+export default function ResultsPage() {
+  return <ResultsContent />;
 }
