@@ -9,8 +9,7 @@ import Link from 'next/link';
 import { format, addDays } from 'date-fns';
 
 // components
-// import MarkdownContent from '../components/MarkdownContent';
-
+import MarkdownContent from '@/components/MarkdownContent';
 // First, let's extract the calculatePostDate function since it's used by the calendar
 const calculatePostDate = (startDate, index, postsPerWeek) => {
   // [Keep the existing implementation...]
@@ -649,11 +648,11 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
 
                   {/* markdown  */}
 
-              {/* <div className="flex-grow overflow-y-auto mb-6 pr-2 border rounded-md bg-white p-4">
+              <div className="flex-grow overflow-y-auto mb-6 pr-2 border rounded-md bg-white p-4">
                 {postToShowInModal === "Generating..." 
                   ? <div className="text-center p-10"><span className="loading loading-dots loading-md"></span></div> 
                   : <MarkdownContent content={postToShowInModal || ''} className="prose prose-sm max-w-none" />}
-              </div> */}
+              </div>
               <div className="flex-shrink-0 mt-auto flex flex-wrap justify-end gap-2">
                 <button
                   className="btn btn-ghost btn-sm"

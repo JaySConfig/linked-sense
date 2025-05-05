@@ -57,27 +57,27 @@ const TOS = () => {
           className="leading-relaxed whitespace-pre-wrap"
           style={{ fontFamily: "sans-serif" }}
         >
-          {`Last Updated: September 26, 2023
+         {`Last Updated: 2025-05-05
 
-Welcome to ShipFast!
+Welcome to Thinkd.In!
 
-These Terms of Service ("Terms") govern your use of the ShipFast website at https://shipfa.st ("Website") and the services provided by ShipFast. By using our Website and services, you agree to these Terms.
+These Terms of Service ("Terms") govern your use of the Thinkd.in website at https://thinkd.in ("Website") and the services provided by Thinkd.In. By using our Website and services, you agree to these Terms.
 
-1. Description of ShipFast
+1. Description of Thinkd.in
 
-ShipFast is a platform that offers a JavaScript code boilerplate to assist entrepreneurs in launching their startups more efficiently.
+Thinkd.In is a platform that provides tools and AI-powered generators to help users develop their LinkedIn strategy, content, and personal brand more efficiently.
 
 2. Ownership and Usage Rights
 
-When you purchase a package from ShipFast, you gain the right to download and use the code provided for creating applications. You own the code you create but do not have the right to resell it. We offer a full refund within 7 days of purchase, as specified in our refund policy.
+When you purchase a plan from Thinkd.in, you gain access to tools and generated content to support your marketing or professional growth. You may use this content for personal or business use, but you may not resell, redistribute, or claim ownership of the platform or its underlying code. We offer a full refund within 7 days of purchase upon request.
 
 3. User Data and Privacy
 
-We collect and store user data, including name, email, and payment information, as necessary to provide our services. For details on how we handle your data, please refer to our Privacy Policy at https://shipfa.st/privacy-policy.
+We collect user data including name, email, and payment information to deliver our services. Please refer to our Privacy Policy at https://thinkd.in/privacy-policy for full details on data usage.
 
 4. Non-Personal Data Collection
 
-We use web cookies to collect non-personal data for the purpose of improving our services and user experience.
+We use cookies to collect non-personal data, such as browser type and usage patterns, to improve your experience and optimize our services.
 
 5. Governing Law
 
@@ -85,11 +85,11 @@ These Terms are governed by the laws of France.
 
 6. Updates to the Terms
 
-We may update these Terms from time to time. Users will be notified of any changes via email.
+We may revise these Terms periodically. Any significant changes will be communicated via email.
 
-For any questions or concerns regarding these Terms of Service, please contact us at marc@shipfa.st.
+If you have any questions about these Terms, please contact us at info@thinkd.in.
 
-Thank you for using ShipFast!`}
+Thank you for using Thinkd.in!`}
         </pre>
       </div>
     </main>

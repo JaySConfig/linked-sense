@@ -9,7 +9,7 @@ export async function POST(request) {
     // Get the submission data from the request
     const submissionData = await request.json();
     
-    // console.log("Received submission data for foundation generation");
+    console.log("Received submission data for foundation generation");
     
     // Get API key
     const apiKey = process.env.GOOGLE_API;
@@ -31,14 +31,14 @@ export async function POST(request) {
     // Format the prompt for foundation only
     const prompt = createFoundationPrompt(answers);
     
-    // console.log("Sending foundation generation prompt to Gemini API...");
+    console.log("Sending foundation generation prompt to Gemini API...");
     
     // Generate content
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const foundation = response.text();
     
-    // console.log("Successfully received foundation from Gemini API");
+    console.log("Successfully received foundation from Gemini API");
     
     return Response.json({ foundation });
     

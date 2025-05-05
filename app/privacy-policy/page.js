@@ -57,9 +57,9 @@ const PrivacyPolicy = () => {
           className="leading-relaxed whitespace-pre-wrap"
           style={{ fontFamily: "sans-serif" }}
         >
-          {`Last Updated: 2023-08-25
+          {`Last Updated: 2025-05-05
 
-Thank you for visiting ShipFast ("we," "us," or "our"). This Privacy Policy outlines how we collect, use, and protect your personal and non-personal information when you use our website located at https://shipfa.st (the "Website").
+Thank you for visiting Thinkd.in ("we," "us," or "our"). This Privacy Policy outlines how we collect, use, and protect your personal and non-personal information when you use our website located at https://thinkd.in (the "Website").
 
 By accessing or using the Website, you agree to the terms of this Privacy Policy. If you do not agree with the practices described in this policy, please do not use the Website.
 
@@ -69,39 +69,37 @@ By accessing or using the Website, you agree to the terms of this Privacy Policy
 
 We collect the following personal information from you:
 
-Name: We collect your name to personalize your experience and communicate with you effectively.
-Email: We collect your email address to send you important information regarding your orders, updates, and communication.
-Payment Information: We collect payment details to process your orders securely. However, we do not store your payment information on our servers. Payments are processed by trusted third-party payment processors.
+Name: Used to personalize your experience and communicate effectively.
+Email: Used to send you your generated content, important updates, and communications.
+Payment Information: Collected and processed securely via third-party payment processors. We do not store your payment details.
 
 1.2 Non-Personal Data
 
-We may use web cookies and similar technologies to collect non-personal information such as your IP address, browser type, device information, and browsing patterns. This information helps us to enhance your browsing experience, analyze trends, and improve our services.
+We use cookies and similar technologies to collect non-personal data such as browser type, device information, and usage patterns to improve the functionality and performance of our services.
 
 2. Purpose of Data Collection
 
-We collect and use your personal data for the sole purpose of order processing. This includes processing your orders, sending order confirmations, providing customer support, and keeping you updated about the status of your orders.
+Your data is collected solely for the purpose of processing orders, generating and delivering content, and improving our services.
 
 3. Data Sharing
 
-We do not share your personal data with any third parties except as required for order processing (e.g., sharing your information with payment processors). We do not sell, trade, or rent your personal information to others.
+We do not share your personal data with third parties, except as necessary to process payments or operate our service infrastructure. We never sell your data.
 
 4. Children's Privacy
 
-ShipFast is not intended for children under the age of 13. We do not knowingly collect personal information from children. If you are a parent or guardian and believe that your child has provided us with personal information, please contact us at the email address provided below.
+Thinkd.in is not intended for children under 13. We do not knowingly collect information from children. If you believe a child has submitted personal data, please contact us.
 
-5. Updates to the Privacy Policy
+5. Updates to This Policy
 
-We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. Any updates will be posted on this page, and we may notify you via email about significant changes.
+We may update this Privacy Policy from time to time. Users will be notified of significant changes via email.
 
 6. Contact Information
 
-If you have any questions, concerns, or requests related to this Privacy Policy, you can contact us at:
+For questions or concerns regarding this Privacy Policy, please contact:
 
-Email: marc@shipfa.st
+Email: info@thinkd.in
 
-For all other inquiries, please visit our Contact Us page on the Website.
-
-By using ShipFast, you consent to the terms of this Privacy Policy.`}
+By using Thinkd.In, you consent to the terms of this Privacy Policy.`}
         </pre>
       </div>
     </main>
