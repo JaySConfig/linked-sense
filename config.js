@@ -72,9 +72,9 @@ const config = {
   },
   resend: {
     // REQUIRED — Email 'From' field to be used when sending magic login links
-    fromNoReply: `thinkd.in <noreply@resend.thinkd.in>`,
+    fromNoReply: `thinkd.in <noreply@mail.thinkd.in>`,
     // REQUIRED — Email 'From' field to be used when sending other emails, like abandoned carts, updates etc..
-    fromAdmin: `Jay @ Thinkd.in <marc@resend.thinkd.in>`,
+    fromAdmin: `Jay @ Thinkd.in <info@mail.thinkd.in>`,
     // Email shown to customer if need support. Leave empty if not needed => if empty, set up Crisp above, otherwise you won't be able to offer customer support."
     supportEmail: "info@thinkd.in",
   },
