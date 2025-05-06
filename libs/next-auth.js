@@ -242,7 +242,7 @@ export const authOptions = {
   
   theme: {
     brandColor: config.colors.main,
-    logo: `https://${config.domainName}/logoAndName.png`,
-    // logo: `/logoAndName.png`
+    // logo: `https://${config.domainName}/logoAndName.png`,
+    logo: "/logo.png", 
   },
 };

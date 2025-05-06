@@ -897,58 +897,146 @@ function OnboardingFlow() {
   };
 
   // Render question types with accessibility improvements
+  // const renderSingleSelect = () => {
+  //   return (
+  //     <div className="space-y-3">
+  //       <div className="flex flex-col space-y-2 sm:space-y-3" role="radiogroup" aria-labelledby={`question-${currentQuestion.id}`}>
+  //         <span id={`question-${currentQuestion.id}`} className="sr-only">{currentQuestion.question}</span>
+  //         {currentQuestion.options.map((option, index) => {
+  //           const isSelected = answers[currentQuestion.id] === option.value;
+            
+  //           return (
+  //             <button 
+  //               key={option.value}
+  //               role="radio"
+  //               aria-checked={isSelected}
+  //               className={`flex items-center p-3 sm:p-4 border rounded-lg text-left transition-colors
+  //                 ${isSelected 
+  //                   ? 'border-primary bg-primary/10' 
+  //                   : 'border-base-300 hover:bg-base-200'}`}
+  //               onClick={() => handleSingleSelect(currentQuestion.id, option.value)}
+  //             >
+  //               <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 bg-base-200 rounded mr-2 sm:mr-3 text-xs sm:text-sm font-medium text-base-content">
+  //                 {String.fromCharCode(65 + index)}
+  //               </span> 
+  //               <span className="text-sm sm:text-base text-base-content break-words">
+  //                 {option.label}
+  //               </span>
+  //             </button>
+  //           );
+  //         })}
+  //       </div>
+        
+  //       {showValidationError && (
+  //         <p className="text-error text-sm mt-2">
+  //           {getValidationMessage()}
+  //         </p>
+  //       )}
+  //     </div>
+  //   );
+  // };
   const renderSingleSelect = () => {
     return (
-      <div className="space-y-3">
-        <div className="flex flex-col space-y-2 sm:space-y-3" role="radiogroup" aria-labelledby={`question-${currentQuestion.id}`}>
-          <span id={`question-${currentQuestion.id}`} className="sr-only">{currentQuestion.question}</span>
-          {currentQuestion.options.map((option, index) => {
-            const isSelected = answers[currentQuestion.id] === option.value;
-            
-            return (
-              <button 
-                key={option.value}
-                role="radio"
-                aria-checked={isSelected}
-                className={`flex items-center p-3 sm:p-4 border rounded-lg text-left transition-colors
-                  ${isSelected 
-                    ? 'border-primary bg-primary/10' 
-                    : 'border-base-300 hover:bg-base-200'}`}
-                onClick={() => handleSingleSelect(currentQuestion.id, option.value)}
-              >
-                <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 bg-base-200 rounded mr-2 sm:mr-3 text-xs sm:text-sm font-medium text-base-content">
-                  {String.fromCharCode(65 + index)}
-                </span> 
-                <span className="text-sm sm:text-base text-base-content break-words">
-                  {option.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-        
-        {showValidationError && (
-          <p className="text-error text-sm mt-2">
-            {getValidationMessage()}
-          </p>
-        )}
+      <div className="flex flex-col space-y-3" role="radiogroup" aria-labelledby={`question-${currentQuestion.id}`}>
+        <span id={`question-${currentQuestion.id}`} className="sr-only">{currentQuestion.question}</span>
+        {currentQuestion.options.map((option, index) => {
+          const isSelected = answers[currentQuestion.id] === option.value;
+          
+          return (
+            <button 
+              key={option.value}
+              role="radio"
+              aria-checked={isSelected}
+              className={`flex items-center p-4 border rounded-lg text-left transition-colors
+                ${isSelected 
+                  ? 'border-primary bg-primary/10' 
+                  : 'border-base-300 hover:bg-base-200'}`}
+              onClick={() => handleSingleSelect(currentQuestion.id, option.value)}
+            >
+              <span className="flex items-center justify-center w-6 h-6 bg-gray-200 rounded mr-3 text-sm font-medium">
+                {String.fromCharCode(65 + index)}
+              </span> 
+              <div>
+                <div className="font-medium">{option.label}</div>
+                {option.description && (
+                  <div className="text-sm text-gray-500 mt-1">{option.description}</div>
+                )}
+              </div>
+            </button>
+          );
+        })}
       </div>
     );
   };
+
+  // const renderMultiSelect = () => {
+  //   const selectedValues = answers[currentQuestion.id] || [];
+  //   const canSelectMore = !currentQuestion.maxSelections || selectedValues.length < currentQuestion.maxSelections;
+    
+  //   return (
+  //     <div className="space-y-3 sm:space-y-4">
+  //       <p id={`multiselect-help-${currentQuestion.id}`} className="text-xs sm:text-sm text-base-content/60">
+  //         {selectedValues.length} of {currentQuestion.maxSelections || 'unlimited'} selected
+  //         {currentQuestion.minSelections && ` (minimum ${currentQuestion.minSelections})`}
+  //       </p>
+        
+  //       <div 
+  //         className="flex flex-col space-y-2 sm:space-y-3" 
+  //         role="group" 
+  //         aria-labelledby={`question-${currentQuestion.id}`}
+  //         aria-describedby={`multiselect-help-${currentQuestion.id}`}
+  //       >
+  //         <span id={`question-${currentQuestion.id}`} className="sr-only">{currentQuestion.question}</span>
+  //         {currentQuestion.options.map((option, index) => {
+  //           const isSelected = selectedValues.includes(option.value);
+            
+  //           return (
+  //             <button 
+  //               key={option.value}
+  //               role="checkbox"
+  //               aria-checked={isSelected}
+  //               className={`flex items-center p-3 sm:p-4 border rounded-lg text-left transition-colors
+  //                 ${isSelected 
+  //                   ? 'border-primary bg-primary/10' 
+  //                   : !canSelectMore && !isSelected
+  //                     ? 'border-base-300 opacity-50 cursor-not-allowed'
+  //                     : 'border-base-300 hover:bg-base-200'}`}
+  //               onClick={() => handleMultiSelect(currentQuestion.id, option.value)}
+  //               disabled={!canSelectMore && !isSelected}
+  //             >
+  //               <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 bg-base-200 rounded mr-2 sm:mr-3 text-xs sm:text-sm font-medium text-base-content">
+  //                 {String.fromCharCode(65 + index)}
+  //               </span> 
+  //               <span className="text-sm sm:text-base text-base-content break-words">
+  //                 {option.label}
+  //               </span>
+  //             </button>
+  //           );
+  //         })}
+  //       </div>
+        
+  //       {showValidationError && (
+  //         <p className="text-error text-sm mt-2">
+  //           {getValidationMessage()}
+  //         </p>
+  //       )}
+  //     </div>
+  //   );
+  // };
 
   const renderMultiSelect = () => {
     const selectedValues = answers[currentQuestion.id] || [];
     const canSelectMore = !currentQuestion.maxSelections || selectedValues.length < currentQuestion.maxSelections;
     
     return (
-      <div className="space-y-3 sm:space-y-4">
-        <p id={`multiselect-help-${currentQuestion.id}`} className="text-xs sm:text-sm text-base-content/60">
+      <div className="space-y-4">
+        <p id={`multiselect-help-${currentQuestion.id}`} className="text-sm text-gray-500">
           {selectedValues.length} of {currentQuestion.maxSelections || 'unlimited'} selected
           {currentQuestion.minSelections && ` (minimum ${currentQuestion.minSelections})`}
         </p>
         
         <div 
-          className="flex flex-col space-y-2 sm:space-y-3" 
+          className="flex flex-col space-y-3" 
           role="group" 
           aria-labelledby={`question-${currentQuestion.id}`}
           aria-describedby={`multiselect-help-${currentQuestion.id}`}
@@ -962,7 +1050,7 @@ function OnboardingFlow() {
                 key={option.value}
                 role="checkbox"
                 aria-checked={isSelected}
-                className={`flex items-center p-3 sm:p-4 border rounded-lg text-left transition-colors
+                className={`flex items-center p-4 border rounded-lg text-left transition-colors
                   ${isSelected 
                     ? 'border-primary bg-primary/10' 
                     : !canSelectMore && !isSelected
@@ -971,22 +1059,19 @@ function OnboardingFlow() {
                 onClick={() => handleMultiSelect(currentQuestion.id, option.value)}
                 disabled={!canSelectMore && !isSelected}
               >
-                <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 bg-base-200 rounded mr-2 sm:mr-3 text-xs sm:text-sm font-medium text-base-content">
+                <span className="flex items-center justify-center w-6 h-6 bg-gray-200 rounded mr-3 text-sm font-medium">
                   {String.fromCharCode(65 + index)}
                 </span> 
-                <span className="text-sm sm:text-base text-base-content break-words">
-                  {option.label}
-                </span>
+                <div>
+                  <div className="font-medium">{option.label}</div>
+                  {option.description && (
+                    <div className="text-sm text-gray-500 mt-1">{option.description}</div>
+                  )}
+                </div>
               </button>
             );
           })}
         </div>
-        
-        {showValidationError && (
-          <p className="text-error text-sm mt-2">
-            {getValidationMessage()}
-          </p>
-        )}
       </div>
     );
   };

@@ -46,6 +46,7 @@ const ButtonSignin = ({ text = "Get started", extraStyle }) => {
     );
   }
 
+  // console.log("ButtonSignin: Rendering unauthenticated state");
   return (
     <button
       className={`btn btn-primary ${extraStyle ? extraStyle : ""}`}
