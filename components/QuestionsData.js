@@ -11,7 +11,7 @@ export const sections = [
           id: 'industry',
           question: 'What industry do you work in?',
           type: 'tagInput',
-          description: 'Select your primary industry or enter a custom one.',
+          description: 'This helps us tailor content ideas to your specific field.',
           maxSelections: 1, // Only allow one industry
           suggestions: [
             'Technology & Software', 
@@ -29,7 +29,7 @@ export const sections = [
           id: 'role',
           question: 'What is your professional role?',
           type: 'tagInput',
-          description: 'Select your current role or enter a custom one.',
+          description: 'Your role influences the type of content that will resonate with your audience.',
           maxSelections: 1, // Only allow one role
           suggestions: [
             'Executive/C-Suite',
@@ -95,8 +95,9 @@ export const sections = [
     questions: [
       {
         id: 'primaryGoal',
-        question: 'What is your primary LinkedIn goal?',
+        question: 'What do you want to achieve on LinkedIn?"',
         type: 'singleSelect',
+        description: 'This will shape your entire content strategy and approach.',
         options: [
           { value: 'thoughtLeadership', label: 'Thought Leadership' },
           { value: 'leadGeneration', label: 'Lead Generation' },
@@ -107,8 +108,9 @@ export const sections = [
       },
       {
         id: 'targetAudience',
-        question: 'Which audience are you primarily trying to reach on LinkedIn?',
+        question: 'Who do you want to connect with?',
         type: 'singleSelect',
+        description: 'Knowing your audience helps create content that speaks directly to them.',
         options: [
           { value: 'executives', label: 'Senior Executives & Decision Makers' },
           { value: 'peers', label: 'Industry Peers & Colleagues' },
@@ -119,8 +121,10 @@ export const sections = [
       },
       {
         id: 'commercialObjectives',
-        question: 'What commercial objectives do you have?',
+        question: 'What do you want to achieve on LinkedIn?',
         type: 'singleSelect',
+        description: 'This helps us focus your strategy on specific outcomes.',
+        // minSelections: 1,
         options: [
           { value: 'driveSales', label: 'Drive Sales' },
           { value: 'attractJobOffers', label: 'Attract Job Offers' },
@@ -134,11 +138,11 @@ export const sections = [
   {
     id: 'audience',
     title: 'Understanding Your Audience',
-    description: "Let's identify who you're speaking to and what matters most to them.",
+    description: "Great content addresses specific problems your audience faces.",
     questions: [
       {
         id: 'audienceChallenges',
-        question: 'What are the biggest challenges your audience faces?',
+        question: 'What problems do your connections struggle with?',
         type: 'tagInput',
         description: 'Identify the key struggles your audience encounters.',
         minSelections: 2,
@@ -162,9 +166,9 @@ export const sections = [
       // },
       {
         id: 'audienceGoals',
-        question: 'What are the primary goals your audience wants to achieve?',
+        question: 'What are people in your industry trying to accomplish?',
         type: 'tagInput',
-        description: 'Determine the aspirations that drive your audience forward.',
+        description: 'Understanding goals helps you create content that feels relevant and timely.',
         minSelections: 2,
         maxSelections: 3,
         suggestions: [
@@ -195,9 +199,9 @@ export const sections = [
       // },
       {
         id: 'uniquePerspective',
-        question: 'How do you naturally express your insights?',
+        question: 'How do you prefer to share your ideas?',
         type: 'singleSelect',
-        description: 'Define the style in which you communicate your expertise.',
+        description: 'This helps us match content formats to your natural communication style.',
         options: [
           { value: 'analytical', label: 'Analytical (Breaks down complex ideas with logic & data)' },
           { value: 'inspiring', label: 'Inspiring (Motivates with personal stories & big-picture thinking)' },
@@ -209,7 +213,7 @@ export const sections = [
         id: 'contentPillars',
         question: 'What topics do you consistently post about?',
         type: 'tagInput',
-        description: 'Define the recurring themes that shape your LinkedIn content.',
+        description: 'These key topics will form the foundation of your content calendar.',
         minSelections: 2,
         maxSelections: 3,
         suggestions: [
@@ -226,9 +230,9 @@ export const sections = [
     questions: [
       {
         id: 'contentTypes',
-        question: 'What content types do you want to create?',
+        question: 'How would you like to share your ideas?',
         type: 'multiSelect',
-        description: 'Pick at least two content types that match your style.',
+        description: 'A mix of content types keeps your audience engaged and interested.',
         minSelections: 2,
         options: [
           { value: 'storytelling', label: 'Storytelling (Personal experiences & insights)' },
@@ -244,7 +248,7 @@ export const sections = [
         id: 'postingFrequency',
         question: 'How often do you want to post each week?',
         type: 'singleSelect',
-        description: 'Choose a frequency that aligns with your goals and availability.',
+        description: 'Consistency matters more than frequency - pick what you can maintain.',
         options: [
           { value: '1-2', label: '1-2 times per week' },
           { value: '3-4', label: '3-4 times per week' },
@@ -255,7 +259,7 @@ export const sections = [
         id: 'userVoice',
         question: 'How should your content feel to your audience?',
         type: 'singleSelect',
-        description: 'Helps us understand your voice',
+        description: 'Your tone should match your personal brand and resonate with your audience.',
         options: [
           { value: 'professional', label: 'Professional & Insightful' },
           { value: 'casual', label: 'Casual & Conversational' },

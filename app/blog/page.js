@@ -84,7 +84,7 @@ export default async function Blog() {
         <div className="mt-8 p-6 bg-base-200 rounded-lg">
           <h2 className="font-bold text-xl mb-3">Coming Soon</h2>
           <p>
-            We're working on creating valuable content to help you master LinkedIn. 
+            We are working on creating valuable content to help you master LinkedIn. 
             Check back soon for articles on strategy development, content creation, 
             and audience growth.
           </p>
