@@ -1,13 +1,55 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { RateLimiterMemory } from 'rate-limiter-flexible';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/libs/next-auth";
+
+const limiter = new RateLimiterMemory({
+  points: 5,          // 5 requests
+  duration: 300,      // per 5 minutes
+  blockDuration: 600  // Block for 10 minutes if exceeded
+});
+
+
 
 export const POST = async (request) => {
   try {
+     // Get the user session for auth-based rate limiting
+   const session = await getServerSession(authOptions);
+    
+   // If not authenticated, return 401
+   if (!session) {
+     return Response.json(
+       { error: "Authentication required" },
+       { status: 401 }
+     );
+   }
+   
+   // Use user ID for rate limiting (much better than IP)
+   const userId = session.user.id;
+   
+   // Apply rate limiting with user ID
+   try {
+     await limiter.consume(userId);
+   } catch (rateLimiterRes) {
+     // If rate limited, return 429 response
+     const retryAfter = Math.ceil(rateLimiterRes.msBeforeNext / 1000);
+     return Response.json(
+       { 
+         error: "Rate limit exceeded. Please try again later.",
+         retryAfter
+       },
+       { 
+         status: 429,
+         headers: { 'Retry-After': retryAfter }
+       }
+     );
+   }
     const { postTopic, postTone, postType, postLength, keyTakeaway, callToAction } = await request.json();
     
     // Debug: Print all environment variables (be careful with sensitive info)
-    console.log("Available env vars:", Object.keys(process.env));
-    console.log("GOOGLE_API_KEY exists:", !!process.env.GOOGLE_API);
-    console.log("GOOGLE_API_KEY first 5 chars:", process.env.GOOGLE_API ? process.env.GOOGLE_API.substring(0, 5) : "undefined");
+    // console.log("Available env vars:", Object.keys(process.env));
+    // console.log("GOOGLE_API_KEY exists:", !!process.env.GOOGLE_API);
+    // console.log("GOOGLE_API_KEY first 5 chars:", process.env.GOOGLE_API ? process.env.GOOGLE_API.substring(0, 5) : "undefined");
     
     // Debug: Check if API key is being loaded
     const apiKey = process.env.GOOGLE_API;
@@ -25,7 +67,7 @@ export const POST = async (request) => {
     const genAI = new GoogleGenerativeAI(apiKey);
     
     // Get the model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
     // Create a prompt for the LinkedIn post
     const prompt = `

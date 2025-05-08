@@ -1247,7 +1247,7 @@ function OnboardingFlow() {
               <h2 className="text-lg sm:text-xl font-medium mb-1 text-base-content">
                 {currentQuestionIndex + 1}→ {currentQuestion.question}
               </h2>
-              <p className="text-xs sm:text-sm text-base-content/60">{currentQuestion.description || currentSection.description}</p>
+              <p className="text-s sm:text-s text-base">{currentQuestion.description || currentSection.description}</p>
             </div>
             
             {/* Question content - can expand downward */}

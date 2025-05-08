@@ -4,13 +4,54 @@
 // ///////// Logic from test app 
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { RateLimiterMemory } from 'rate-limiter-flexible';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/libs/next-auth";
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
+const limiter = new RateLimiterMemory({
+  points: 5,          // 5 requests
+  duration: 300,      // per 5 minutes
+  blockDuration: 600  // Block for 10 minutes if exceeded
+});
+
 export async function POST(request) {
   try {
+
+    // Get the user session for auth-based rate limiting
+   const session = await getServerSession(authOptions);
+    
+   // If not authenticated, return 401
+   if (!session) {
+     return Response.json(
+       { error: "Authentication required" },
+       { status: 401 }
+     );
+   }
+   
+   // Use user ID for rate limiting (much better than IP)
+   const userId = session.user.id;
+   
+   // Apply rate limiting with user ID
+   try {
+     await limiter.consume(userId);
+   } catch (rateLimiterRes) {
+     // If rate limited, return 429 response
+     const retryAfter = Math.ceil(rateLimiterRes.msBeforeNext / 1000);
+     return Response.json(
+       { 
+         error: "Rate limit exceeded. Please try again later.",
+         retryAfter
+       },
+       { 
+         status: 429,
+         headers: { 'Retry-After': retryAfter }
+       }
+     );
+   }
     // Get the submission data from the request
     const submissionData = await request.json();
     
