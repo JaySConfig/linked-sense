@@ -257,36 +257,86 @@ export async function POST(request) {
 
 ////// ----- prompt that guides the user ----- /////
 
-const prompt = `
-You are a LinkedIn content coach.
+//  claude coaching prompt 1
+// const prompt = `You are a LinkedIn content coach helping users develop their own authentic posts.
 
-Create a structured *LinkedIn post framework* using the following details:
+// Create a FRAMEWORK (not a sample post) for a LinkedIn post based on:
+// - PILLAR: ${pillar}
+// - TOPIC: ${topic}
+// - APPROACH: ${approach}
+// - CONTENT TYPE: ${contentType}
+// - COMMUNICATION STYLE: ${perspectiveLabel || "Not specified"}
+// - DESIRED TONE: ${voiceLabel || "Not specified"}
 
-PILLAR: ${pillar}
-TOPIC: ${topic}
-APPROACH: ${approach}
-CONTENT TYPE: ${contentType}
+// The framework should:
+// 1. Break down the structure of an effective post on this topic into clear sections
+// 2. For each section, provide COACHING QUESTIONS that prompt the user to develop their own ideas
+// 3. Offer 1-2 sentence examples of HOW different approaches might work (without writing the full content)
+// 4. Explain the PURPOSE of each section (why it matters for engagement)
+// 5. Include guidance on length, pacing, and structure
+// 6. Suggest 3-5 relevant hashtags to consider
 
-USER'S COMMUNICATION STYLE: ${perspectiveLabel || "Not specified"}
-USER'S DESIRED TONE: ${voiceLabel || "Not specified"}
+// Include a "Strategy Notes" section explaining:
+// - Why this approach works for this specific topic
+// - Common pitfalls to avoid
+// - One tip for making the post more authentic
 
-The framework should:
-1. Be formatted as a real LinkedIn post, but include placeholder prompts for the user to fill in
-2. Include guidance in brackets (e.g. [Insert a personal story about...], [Share 1-2 key takeaways from...])
-3. Still match the content type — e.g., carousel, video, etc.
-4. Include 3-5 suggested hashtags
-5. Include a sample CTA the user can customize
-6. Match the style and tone as much as possible
+// For visuals, provide conceptual guidance on what TYPES of images work well (and why), not specific image instructions.
 
-VISUAL RECOMMENDATION SECTION:
-- Add a short section at the end titled "📸 Visual Recommendation:"
-- Suggest 1 or 2 visuals that would enhance the post
-- Be specific and emotionally resonant
+// IMPORTANT:
+// - Focus on teaching HOW to create content, not providing the content itself
+// - Use a coaching tone that empowers the user to develop their own voice
+// - Avoid providing complete sentences or paragraphs that users would simply copy
+// `
 
-IMPORTANT: 
-- Do NOT generate a finished post.
-- Begin immediately with the post structure, using placeholder prompts and examples as needed.
-`;
+const prompt = `You are a LinkedIn content strategist helping professionals create effective posts.
+
+Design a STRUCTURED FRAMEWORK for a LinkedIn post on:
+- PILLAR: ${pillar}
+- TOPIC: ${topic}
+- APPROACH: ${approach}
+- CONTENT TYPE: ${contentType}
+- STYLE: ${perspectiveLabel || "Not specified"}
+- TONE: ${voiceLabel || "Not specified"}
+
+Create a clear, professional yet engaging framework:
+
+1. Develop a POST STRUCTURE with 4-5 sections, each containing:
+   - 📌 SECTION NAME (professional but clear)
+   - 📏 RECOMMENDED LENGTH (words/lines)
+   - 🎯 PURPOSE (concise explanation)
+   - ✓ 2-3 CONTENT PROMPTS (e.g., "Share how you discovered that ___")
+   - 💡 BRIEF EXAMPLE (5-7 words)
+   - 📝 WRITING TIP (professional guidance)
+
+2. Include a "STRATEGIC INSIGHTS" section with:
+   - 3 KEY TECHNIQUES for maximizing impact
+   - 1 COMMON PITFALL to avoid
+   - 1 EFFECTIVENESS FACTOR specific to this content type
+
+3. Add a "VISUAL RECOMMENDATIONS" section:
+   - 2 SPECIFIC VISUAL APPROACHES with rationales
+   - 1 PRACTICAL CREATION TIP for busy professionals
+
+4. Suggest 3-4 TARGETED HASHTAGS with brief reach explanations
+
+5. End with an "IMPLEMENTATION GUIDE":
+   - 3 concise next steps
+   - 1 quality-check recommendation
+   - Brief notes on measuring engagement
+   - **POSTING TIME:** Suggest an optimal time range for publishing this specific content (e.g., "8:00-9:00 AM" or "12:00-1:00 PM") with a brief explanation of why this timing works well for this content type and audience
+
+
+6. Add an "INSPIRATION EXAMPLE" section:
+   - A short (150-200 word) example post following this framework
+   - Note: Mark this clearly as "FOR INSPIRATION ONLY - Customize to your authentic voice and experience"
+
+FORMAT FOR CLARITY:
+- Use professional visual organization (headers, bullets)
+- Include occasional strategic emojis
+- Highlight key concepts in **bold**
+- Maintain professional language throughout
+- Balance actionable guidance with strategic context`
 
     
     // Generate content

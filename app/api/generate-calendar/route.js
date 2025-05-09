@@ -153,143 +153,106 @@ export async function POST(request) {
   }
 }
 
-// // Create the prompt for calendar only
-// function createCalendarPrompt(answers, foundation) {
-//   return `
-// You are a LinkedIn strategy expert who helps executives and professionals build their personal brand on LinkedIn.
-
-// ### Comprehensive User Profile
-// * Industry: ${getReadableValue(answers.industry, 'industry')}
-// * Professional Role: ${getReadableValue(answers.role, 'role')}
-// * Primary LinkedIn Goal: ${getReadableValue(answers.primaryGoal, 'primaryGoal')}
-// * Target Audience: ${getReadableValue(answers.targetAudience, 'targetAudience')}
-// * Commercial Objectives: ${getReadableValue(answers.commercialObjectives, 'commercialObjectives')} 
-// * Communication Style: ${getReadableValue(answers.uniquePerspective, 'uniquePerspective')}
-// * Content Tone/Feel: ${getReadableValue(answers.userVoice, 'userVoice')}
-// * Posting Frequency: ${getReadableValue(answers.postingFrequency, 'postingFrequency')}
-
-// ### Content Strategy Foundation
-// * Content Pillars: ${formatArrayAnswer(answers.contentPillars)}
-// * Preferred Content Types: ${formatContentTypes(answers.contentTypes)}
-// * Engagement Preferences: ${formatArrayAnswer(answers.engagementStyle)}
-
-// ### Previously Generated Strategy Foundation
-// ${foundation}
-
-// ### Task
-// Based on this user profile and the previously generated strategy foundation, create a detailed 4-week content calendar:
-
-// ## FOUR-WEEK CONTENT CALENDAR
-// Create a detailed 4-week content plan with ${getPostingFrequencyCount(answers.postingFrequency)} posts per week (Monday-Friday).
-
-// Format the content plan as a clear markdown table with these columns:
-// | Week - Day | Pillar | Topic | Approach | Content Type |
-// | ---------- | ------ | ----- | -------- | ------------ |
-// | Week 1 - Monday | Pillar Name | Topic description | Detailed approach | Format details |
-
-// In the 'Approach' column, explain the specific angle the post will take (educational, case study, myth-busting, etc.) with details on what points it will cover.
-
-// In the 'Content Type' column, specify both the format (text, carousel, image, etc.) and what specific elements the content should include.
-
-// Include at least one promotional post per week and one value-add resource (checklist, template, guide, etc.) per week.
-
-// ### Output Formatting
-// - Format your response as clean, readable markdown
-// - Ensure the table is properly formatted with markdown syntax
-// - Make the calendar specific and actionable
-
-// Focus ONLY on the content calendar in your response.
-// `;
-// }
-
-// ///// new prompt that calculates posts per week 
-
-// In app/api/generate-calendar/route.js
-
-// --- Make sure helper functions are accessible here ---
-// getReadableValue, formatArrayAnswer, formatContentTypes, getPostingFrequencyCount
-
-// function createCalendarPrompt(answers, foundation) {
-//   // Calculate the target number of posts per week
-//   // Your helper currently returns "4" for "3-4". Let's use that.
-//   const postingCount = getPostingFrequencyCount(answers.postingFrequency); // e.g., "4"
-//   const postsPerWeekText = `${postingCount} posts per week`;
-//   // Calculate total expected posts for clearer instruction (optional)
-//   const totalPosts = 4 * parseInt(postingCount, 10); // e.g., 16
-
-//   return `
-// You are a LinkedIn strategy expert who helps executives and professionals build their personal brand on LinkedIn. Your output must be only the requested markdown table.
-
-// ### Comprehensive User Profile
-// * Industry: ${getReadableValue(answers.industry, 'industry')}
-// * Professional Role: ${getReadableValue(answers.role, 'role')}
-// * Primary LinkedIn Goal: ${getReadableValue(answers.primaryGoal, 'primaryGoal')}
-// * Target Audience: ${getReadableValue(answers.targetAudience, 'targetAudience')}
-// * Commercial Objectives: ${getReadableValue(answers.commercialObjectives, 'commercialObjectives')}
-// * Communication Style: ${getReadableValue(answers.uniquePerspective, 'uniquePerspective')}
-// * Content Tone/Feel: ${getReadableValue(answers.userVoice, 'userVoice')}
-// * Posting Frequency: ${getReadableValue(answers.postingFrequency, 'postingFrequency')}
-
-// ### Content Strategy Foundation
-// * Content Pillars: ${formatArrayAnswer(answers.contentPillars)}
-// * Preferred Content Types: ${formatContentTypes(answers.contentTypes)}
-// * Engagement Preferences: ${formatArrayAnswer(answers.engagementStyle)}
-
-// ### Previously Generated Strategy Foundation
-// ${foundation}
-
-// ### Task
-// Based on this user profile and the previously generated strategy foundation, create a detailed 4-week content calendar:
-
-// ## FOUR-WEEK CONTENT CALENDAR
-// Create a detailed 4-week content plan with ${postsPerWeekText} (Monday-Friday).
-
-// **IMPORTANT SCHEDULING INSTRUCTIONS:**
-// * Schedule exactly ${postingCount} posts for each of the 4 weeks.
-// * Distribute these ${postingCount} posts across **different weekdays (Monday to Friday)** each week. For example, if posting 4 times, use days like Monday, Tuesday, Thursday, Friday, or Monday, Wednesday, Thursday, Friday.
-// * Aim for an even distribution throughout the week.
-// * **Do NOT schedule multiple posts on the same day within the same week.**
-
-// Format the content plan as a clear markdown table with these columns:
-// | Week - Day | Pillar | Topic | Approach | Content Type |
-// | ---------- | ------ | ----- | -------- | ------------ |
-// | Week 1 - Monday | Pillar Name | Topic description | Detailed approach | Format details |
-// | ... (Ensure exactly ${totalPosts} data rows plus header/separator) ... | ... | ... | ... | ... |
-
-// In the 'Approach' column, explain the specific angle the post will take (educational, case study, myth-busting, etc.) with details on what points it will cover.
-
-// In the 'Content Type' column, specify both the format (text, carousel, image, etc.) and what specific elements the content should include.
-
-// Include at least one promotional post per week and one value-add resource (checklist, template, guide, etc.) per week.
-
-// ### Output Formatting
-// - Format your response as clean, readable markdown.
-// - Ensure the table is properly formatted with markdown syntax.
-// - Make the calendar specific and actionable.
-// - Output ONLY the content calendar section starting with the '## FOUR-WEEK CONTENT CALENDAR' heading and the markdown table itself. Do not include any preamble or concluding remarks.
-// `;
-// }
-
 
 /// includes season
 
 // In app/api/generate-calendar/route.js
 
 // Update function signature
-function createCalendarPrompt(answers, foundation, currentYear, currentMonthName, currentQuarter) {
+// function createCalendarPrompt(answers, foundation, currentYear, currentMonthName, currentQuarter) {
+//   const postingCount = getPostingFrequencyCount(answers.postingFrequency);
+//   const postsPerWeekText = `${postingCount} posts per week`;
+//   const totalPosts = 4 * parseInt(postingCount, 10);
+
+//   // Determine Season (simple example for Northern Hemisphere)
+//   const monthNum = new Date().getMonth() + 1; // 1 (Jan) - 12 (Dec)
+//   let season = 'Winter';
+//   if (monthNum >= 3 && monthNum <= 5) season = 'Spring';
+//   else if (monthNum >= 6 && monthNum <= 8) season = 'Summer';
+//   else if (monthNum >= 9 && monthNum <= 11) season = 'Autumn';
+
+
+  // current prompt
+
+  // return `
+// You are a LinkedIn strategy expert creating timely, relevant content plans.
+
+// ### Comprehensive User Profile
+// * Industry: ${getReadableValue(answers.industry, 'industry')}
+// * Role: ${getReadableValue(answers.role, 'role')}
+// * Goal: ${getReadableValue(answers.primaryGoal, 'primaryGoal')}
+// * Audience: ${getReadableValue(answers.targetAudience, 'targetAudience')}
+// * Objectives: ${getReadableValue(answers.commercialObjectives, 'commercialObjectives')}
+// * Style: ${getReadableValue(answers.uniquePerspective, 'uniquePerspective')}
+// * Tone: ${getReadableValue(answers.userVoice, 'userVoice')}
+// * Frequency: ${getReadableValue(answers.postingFrequency, 'postingFrequency')}
+
+// ### Current Temporal Context
+// * Year: ${currentYear}
+// * Month: ${currentMonthName}
+// * Quarter: Q${currentQuarter}
+// * Season: ${season}
+
+// ### Content Strategy Foundation
+// * Pillars: ${formatArrayAnswer(answers.contentPillars)}
+// * Preferred Types: ${formatContentTypes(answers.contentTypes)}
+// * Engagement: ${formatArrayAnswer(answers.engagementStyle)}
+
+// ### Previously Generated Strategy Foundation
+// ${foundation}
+
+// ### Task
+// Based on the user profile, strategy foundation, and **current temporal context (especially ${currentMonthName}, Q${currentQuarter}, ${season})**, create a detailed 4-week content calendar starting from the next appropriate Monday.
+
+// ## FOUR-WEEK CONTENT CALENDAR
+// Create a detailed 4-week content plan with ${postsPerWeekText} (Monday-Friday).
+
+// **IMPORTANT SCHEDULING & CONTENT INSTRUCTIONS:**
+// * Schedule exactly ${postingCount} posts for each of the 4 weeks.
+// * Distribute these ${postingCount} posts across **different weekdays (Monday to Friday)** each week evenly. Do NOT schedule multiple posts on the same day within the same week.
+// **CRUCIAL FOR TOPICS:** Ensure generated topics, advice, or examples are **generally timely for the current period ${currentMonthName} ${currentYear}, Q${currentQuarter})**. Consider common business cycles or themes relevant now based on the user's industry and goals, but avoid over-focusing on a single narrow theme (like a specific season) across all posts. Aim for a balanced mix of relevant evergreen and timely topics. Avoid topics clearly dated to past years. * Consider typical business cycles, holidays (if any relevant ones are upcoming), or seasonal themes appropriate for ${currentMonthName} / ${season}.
+// * Avoid generic or outdated topics (e.g., "Predictions for ${currentYear - 1}").
+// * Include at least one promotional post per week and one value-add resource (checklist, template, guide, etc.) per week, tailoring them to the current context if possible.
+
+// Format the content plan as a clear markdown table with these columns:
+// | Week - Day | Pillar | Topic | Approach | Content Type |
+// | ---------- | ------ | ----- | -------- | ------------ |
+// | Week 1 - Monday | [Pillar] | [Timely Topic for ${currentMonthName}/${currentYear}] | [Context-Relevant Approach] | [Content Type Details] |
+// | ... (ensure exactly ${totalPosts} data rows plus header/separator) ... | ... | ... | ... | ... |
+
+// In the 'Approach' and 'Content Type' columns, provide specific, actionable details as requested before.
+
+// ### Output Formatting
+// - Format your response as clean, readable markdown.
+// - Ensure the table is properly formatted with markdown syntax.
+// - Make the calendar specific, actionable, and **temporally relevant**.
+// - Output ONLY the content calendar section starting with the '## FOUR-WEEK CONTENT CALENDAR' heading and the markdown table itself. Do not include any preamble or concluding remarks.
+// `;
+
+function createCalendarPrompt(answers, foundation, currentYear, currentMonthName) {
   const postingCount = getPostingFrequencyCount(answers.postingFrequency);
   const postsPerWeekText = `${postingCount} posts per week`;
   const totalPosts = 4 * parseInt(postingCount, 10);
 
-  // Determine Season (simple example for Northern Hemisphere)
-  const monthNum = new Date().getMonth() + 1; // 1 (Jan) - 12 (Dec)
+  // Get current date information
+  const now = new Date();
+  const currentMonthNum = now.getMonth(); // 0-11
+  const currentQuarter = Math.ceil((currentMonthNum + 1) / 3);
+  
+  // Map of month numbers to names
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  // Determine season (Northern Hemisphere)
+  const monthNum = now.getMonth() + 1; // 1-12
   let season = 'Winter';
   if (monthNum >= 3 && monthNum <= 5) season = 'Spring';
   else if (monthNum >= 6 && monthNum <= 8) season = 'Summer';
-  else if (monthNum >= 9 && monthNum <= 11) season = 'Autumn';
+  else if (monthNum >= 9 && monthNum <= 11) season = 'Fall';
 
-  return `
-You are a LinkedIn strategy expert creating timely, relevant content plans.
+  return `You are a LinkedIn strategy expert creating timely, relevant content plans based on the user's expertise and experience.
 
 ### Comprehensive User Profile
 * Industry: ${getReadableValue(answers.industry, 'industry')}
@@ -302,10 +265,10 @@ You are a LinkedIn strategy expert creating timely, relevant content plans.
 * Frequency: ${getReadableValue(answers.postingFrequency, 'postingFrequency')}
 
 ### Current Temporal Context
-* Year: ${currentYear}
-* Month: ${currentMonthName}
-* Quarter: Q${currentQuarter}
-* Season: ${season}
+* Current Year: ${currentYear}
+* Current Month: ${currentMonthName}
+* Current Quarter: Q${currentQuarter}
+* Current Season: ${season}
 
 ### Content Strategy Foundation
 * Pillars: ${formatArrayAnswer(answers.contentPillars)}
@@ -316,7 +279,7 @@ You are a LinkedIn strategy expert creating timely, relevant content plans.
 ${foundation}
 
 ### Task
-Based on the user profile, strategy foundation, and **current temporal context (especially ${currentMonthName}, Q${currentQuarter}, ${season})**, create a detailed 4-week content calendar starting from the next appropriate Monday.
+Based on the user profile, strategy foundation, and current temporal context, create a 4-week content calendar for an UPCOMING PERIOD that starts on the first Monday of the chosen month.
 
 ## FOUR-WEEK CONTENT CALENDAR
 Create a detailed 4-week content plan with ${postsPerWeekText} (Monday-Friday).
@@ -324,17 +287,60 @@ Create a detailed 4-week content plan with ${postsPerWeekText} (Monday-Friday).
 **IMPORTANT SCHEDULING & CONTENT INSTRUCTIONS:**
 * Schedule exactly ${postingCount} posts for each of the 4 weeks.
 * Distribute these ${postingCount} posts across **different weekdays (Monday to Friday)** each week evenly. Do NOT schedule multiple posts on the same day within the same week.
-**CRUCIAL FOR TOPICS:** Ensure generated topics, advice, or examples are **generally timely for the current period ${currentMonthName} ${currentYear}, Q${currentQuarter})**. Consider common business cycles or themes relevant now based on the user's industry and goals, but avoid over-focusing on a single narrow theme (like a specific season) across all posts. Aim for a balanced mix of relevant evergreen and timely topics. Avoid topics clearly dated to past years. * Consider typical business cycles, holidays (if any relevant ones are upcoming), or seasonal themes appropriate for ${currentMonthName} / ${season}.
-* Avoid generic or outdated topics (e.g., "Predictions for ${currentYear - 1}").
-* Include at least one promotional post per week and one value-add resource (checklist, template, guide, etc.) per week, tailoring them to the current context if possible.
+
+**CRITICAL: FORWARD-LOOKING CONTENT**
+* This calendar should be FORWARD-LOOKING - for an upcoming month, not the current month (${currentMonthName}).
+* Choose a specific upcoming month for this calendar and be consistent throughout.
+* Clearly indicate the target month in each topic and approach.
+* All dates in the "Week - Day" column should reflect the actual calendar dates (e.g., "Week 1 - Mon, Jul 1").
+
+**CRUCIAL FOR CONTENT TYPES:**
+* Focus on EXPERIENCE-BASED content that leverages the user's existing knowledge and expertise.
+* Avoid suggesting topics that require specific resources the user might not have (e.g., "Share your new guide" or "Announce your latest case study").
+* Instead, use these content categories:
+   1. PERSONAL INSIGHTS (experiences, lessons learned, career milestones)
+   2. INDUSTRY PERSPECTIVES (observations, trends, predictions)
+   3. PROFESSIONAL TIPS (practical advice based on personal experience)
+   4. THOUGHT-PROVOKING QUESTIONS (to engage audience and spark discussion)
+   5. BEHIND-THE-SCENES (workflow glimpses, day-in-the-life content)
+
+**SEASONAL RELEVANCE & TIMELINESS:**
+* Strongly emphasize seasonal themes relevant to the user's industry for the chosen calendar month.
+* Consider how your chosen month aligns with business cycles and seasonal trends in the user's industry.
+
+**BUSINESS CYCLE AWARENESS:**
+* Relate content to typical business activities happening in the chosen month.
+* Consider fiscal quarters, planning cycles, and industry-specific busy periods.
+* Include references to industry events or holidays that occur during your chosen month.
+
+// In the prompt, modify the "CRUCIAL FOR TOPICS" section:
+
+**CRUCIAL FOR TOPICS:** 
+* Ensure generated topics are relevant and timely for the chosen calendar period.
+* Use time references (month/season/quarter) ONLY when they genuinely enhance the topic - not in every topic.
+* Appropriate times to include date references:
+  - When discussing seasonal trends or time-specific challenges
+  - When making predictions about upcoming developments
+  - When topics are tied to specific events, holidays, or business cycles
+* Do NOT force time references into evergreen topics like "My Favorite Marketing Tools" or "Lessons Learned from My Career"
+* Aim for approximately 30% of topics to have explicit time references, with the rest being timely but not explicitly dated
 
 Format the content plan as a clear markdown table with these columns:
 | Week - Day | Pillar | Topic | Approach | Content Type |
 | ---------- | ------ | ----- | -------- | ------------ |
-| Week 1 - Monday | [Pillar] | [Timely Topic for ${currentMonthName}/${currentYear}] | [Context-Relevant Approach] | [Content Type Details] |
+| Week 1 - Mon, [DATE] | [Pillar] | [Timely Topic for chosen month] | [Context-Relevant Approach] | [Content Type Details] |
 | ... (ensure exactly ${totalPosts} data rows plus header/separator) ... | ... | ... | ... | ... |
 
-In the 'Approach' and 'Content Type' columns, provide specific, actionable details as requested before.
+For the "Approach" column:
+* Provide a specific angle or framing for the topic
+* Include details about how to make the post engaging and relevant
+* Emphasize how the user can share their unique perspective
+* If applicable, connect to seasonal themes or current business cycles
+
+For the "Content Type" column:
+* Specify the format (e.g., storytelling, list, how-to)
+* Add details about structure and key elements to include
+* Explain how this format serves the topic and audience
 
 ### Output Formatting
 - Format your response as clean, readable markdown.
