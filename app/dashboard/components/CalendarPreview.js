@@ -416,6 +416,7 @@
 import { useState, useEffect } from 'react';
 import { format, addDays } from 'date-fns';
 import Link from 'next/link';
+import PostModal from '@/components/PostModal';
 import MarkdownContent from '@/components/MarkdownContent';
 
 // Helper function from your calendar page
@@ -596,21 +597,88 @@ const CalendarPreview = () => {
     }
   };
 
-  const savePost = async () => {
-    if (postToShowInModal === "Generating..." || !postToShowInModal || modalPostIndex === null) {
+  // const savePost = async () => {
+    // if (postToShowInModal === "Generating..." || !postToShowInModal || modalPostIndex === null) {
+    //   return;
+    // }
+
+    // const contentCalendar = selectedCalendar?.contentCalendar;
+    // if (!contentCalendar?.rows?.[modalPostIndex]) {
+    //   return;
+    // }
+
+    // const calendarRow = contentCalendar.rows[modalPostIndex];
+
+    // try {
+    //   const bodyPayload = {
+    //     content: postToShowInModal,
+    //     postIndex: modalPostIndex,
+    //     pillar: calendarRow.pillar,
+    //     topic: calendarRow.topic,
+    //     approach: calendarRow.approach,
+    //     contentType: calendarRow.contentType,
+    //     weekDay: calendarRow.weekDay,
+    //     calendarIndex: selectedCalendarIndex
+    //   };
+
+    //   const response = await fetch('/api/posts/save', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(bodyPayload)
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error(`Save failed with status: ${response.status}`);
+    //   }
+
+    //   alert('Post saved successfully!');
+    //   setShowPostModal(false);
+    //   setModalPostIndex(null);
+    //   setPostToShowInModal(null);
+
+    //   // Refetch data to update the UI
+    //   const fetchData = async () => {
+    //     try {
+    //       const response = await fetch('/api/profile');
+    //       if (response.ok) {
+    //         const data = await response.json();
+    //         if (data.profile?.linkedinStrategy) {
+    //           setStrategyData(data.profile.linkedinStrategy);
+    //         }
+    //       }
+    //     } catch (err) {
+    //       console.error('Error refetching profile:', err);
+    //     }
+    //   };
+      
+    //   fetchData();
+    // } catch (error) {
+    //   console.error('Error saving post:', error);
+    //   alert(`Failed to save post. Error: ${error.message}`);
+    // }
+  // };
+
+
+  ////// ---- new savePost function for editable modal ----- ///////
+
+  const savePost = async (contentOverride = null) => {
+    // Use the override content if provided, otherwise use the original
+    const contentToSave = contentOverride || postToShowInModal;
+    
+    if (!contentToSave || contentToSave === "Generating..." || modalPostIndex === null) {
       return;
     }
-
+  
     const contentCalendar = selectedCalendar?.contentCalendar;
     if (!contentCalendar?.rows?.[modalPostIndex]) {
       return;
     }
-
+  
     const calendarRow = contentCalendar.rows[modalPostIndex];
-
+  
     try {
       const bodyPayload = {
-        content: postToShowInModal,
+        content: contentToSave, // Use contentToSave instead of postToShowInModal
         postIndex: modalPostIndex,
         pillar: calendarRow.pillar,
         topic: calendarRow.topic,
@@ -619,22 +687,22 @@ const CalendarPreview = () => {
         weekDay: calendarRow.weekDay,
         calendarIndex: selectedCalendarIndex
       };
-
+  
       const response = await fetch('/api/posts/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bodyPayload)
       });
-
+  
       if (!response.ok) {
         throw new Error(`Save failed with status: ${response.status}`);
       }
-
+  
       alert('Post saved successfully!');
       setShowPostModal(false);
       setModalPostIndex(null);
       setPostToShowInModal(null);
-
+  
       // Refetch data to update the UI
       const fetchData = async () => {
         try {
@@ -656,6 +724,8 @@ const CalendarPreview = () => {
       alert(`Failed to save post. Error: ${error.message}`);
     }
   };
+
+
 
   const copyToClipboard = (text) => {
     if (!text || text === "Generating...") return;
@@ -842,7 +912,30 @@ const CalendarPreview = () => {
       </div>
 
       {/* Post Modal - make it more mobile friendly */}
-      {showPostModal && (
+
+      {/* import PostModal from '@/components/PostModal'; */}
+
+{/* // ... in your component */}
+      <PostModal
+        isOpen={showPostModal}
+        onClose={() => {
+          setShowPostModal(false);
+          setModalPostIndex(null);
+          setPostToShowInModal(null);
+        }}
+        postContent={postToShowInModal}
+        isGenerating={postToShowInModal === "Generating..."}
+        isSaved={currentCalendarPosts.some(p => p.postIndex === modalPostIndex && p.content === postToShowInModal)}
+        modalPostIndex={null} // CalendarPreview doesn't show row numbers
+        onSave={savePost}
+        onCopy={copyToClipboard}
+        title={postToShowInModal && currentCalendarPosts.some(p => p.postIndex === modalPostIndex && p.content === postToShowInModal) 
+          ? "Viewing Saved Post" 
+          : "Generated Post"}
+        />
+
+
+      {/* {showPostModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-2 md:p-4 backdrop-blur-sm">
           <div className="bg-base-100 rounded-lg shadow-xl p-4 md:p-6 w-full max-w-3xl max-h-[95vh] flex flex-col">
             <h2 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-base-content flex-shrink-0">
@@ -888,7 +981,7 @@ const CalendarPreview = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

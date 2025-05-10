@@ -367,6 +367,8 @@ function createFoundationPrompt(answers) {
 
   //   Create a practical foundation the user can immediately use to guide their LinkedIn activities.`;
 
+//  new claude prompt for shorter output and summary.
+
 return  `You are an expert LinkedIn strategist and personal branding coach specializing in helping professionals and executives elevate their presence and achieve their goals. Your advice is practical, actionable, and tailored.
 
 ### User Profile & Goals Provided

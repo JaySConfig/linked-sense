@@ -4,12 +4,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import PostModal from '@/components/PostModal';
 
 // UI & Utility Libraries
 import { format, addDays } from 'date-fns';
 
 // components
-import MarkdownContent from '@/components/MarkdownContent';
+// import MarkdownContent from '@/components/MarkdownContent';
 
 // First, let's extract the calculatePostDate function since it's used by the calendar
 const calculatePostDate = (startDate, index, postsPerWeek) => {
@@ -331,21 +332,85 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
       }
     };
   
-    const savePost = async () => {
-      if (postToShowInModal === "Generating..." || !postToShowInModal || modalPostIndex === null) {
+    // const savePost = async () => {
+    //   if (postToShowInModal === "Generating..." || !postToShowInModal || modalPostIndex === null) {
+    //     return;
+    //   }
+  
+    //   const contentCalendar = selectedCalendar?.contentCalendar;
+    //   if (!contentCalendar?.rows?.[modalPostIndex]) {
+    //     return;
+    //   }
+  
+    //   const calendarRow = contentCalendar.rows[modalPostIndex];
+  
+    //   try {
+    //     const bodyPayload = {
+    //       content: postToShowInModal,
+    //       postIndex: modalPostIndex,
+    //       pillar: calendarRow.pillar,
+    //       topic: calendarRow.topic,
+    //       approach: calendarRow.approach,
+    //       contentType: calendarRow.contentType,
+    //       weekDay: calendarRow.weekDay,
+    //       calendarIndex: selectedCalendarIndex
+    //     };
+  
+    //     const response = await fetch('/api/posts/save', {
+    //       method: 'POST',
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify(bodyPayload)
+    //     });
+  
+    //     if (!response.ok) {
+    //       let errorDetails = `Save failed with status: ${response.status}`;
+    //       try {
+    //         const errorData = await response.json();
+    //         errorDetails += ` - API Error: ${errorData.error || errorData.message || JSON.stringify(errorData)}`;
+    //       } catch (jsonError) {
+    //         errorDetails += ` - Response body could not be parsed as JSON.`;
+    //       }
+    //       throw new Error(errorDetails);
+    //     }
+  
+    //     alert('Post saved successfully!');
+    //     setShowPostModal(false);
+    //     setModalPostIndex(null);
+    //     setPostToShowInModal(null);
+  
+    //     await fetchStrategyData();
+    //   } catch (error) {
+    //     console.error('Error saving post (frontend catch):', error);
+    //     alert(`Failed to save post. Error: ${error.message}`);
+    //   }
+    // };
+  
+
+    // 
+
+
+
+
+    ///// --- new savePost for editable post modal
+
+    const savePost = async (contentOverride = null) => {
+      // Use the override content if provided, otherwise use the original
+      const contentToSave = contentOverride || postToShowInModal;
+      
+      if (!contentToSave || contentToSave === "Generating..." || modalPostIndex === null) {
         return;
       }
-  
+    
       const contentCalendar = selectedCalendar?.contentCalendar;
       if (!contentCalendar?.rows?.[modalPostIndex]) {
         return;
       }
-  
+    
       const calendarRow = contentCalendar.rows[modalPostIndex];
-  
+    
       try {
         const bodyPayload = {
-          content: postToShowInModal,
+          content: contentToSave, // Use contentToSave instead of postToShowInModal
           postIndex: modalPostIndex,
           pillar: calendarRow.pillar,
           topic: calendarRow.topic,
@@ -354,13 +419,13 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
           weekDay: calendarRow.weekDay,
           calendarIndex: selectedCalendarIndex
         };
-  
+    
         const response = await fetch('/api/posts/save', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bodyPayload)
         });
-  
+    
         if (!response.ok) {
           let errorDetails = `Save failed with status: ${response.status}`;
           try {
@@ -371,19 +436,20 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
           }
           throw new Error(errorDetails);
         }
-  
+    
         alert('Post saved successfully!');
         setShowPostModal(false);
         setModalPostIndex(null);
         setPostToShowInModal(null);
-  
+    
         await fetchStrategyData();
       } catch (error) {
         console.error('Error saving post (frontend catch):', error);
         alert(`Failed to save post. Error: ${error.message}`);
       }
     };
-  
+
+
     const copyToClipboard = (text) => {
       if (!text || text === "Generating...") return;
       navigator.clipboard.writeText(text)
@@ -636,10 +702,33 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
             )}
           </div>
         </div>
+
+        <PostModal
+          isOpen={showPostModal}
+          onClose={() => {
+            setShowPostModal(false);
+            setModalPostIndex(null);
+            setPostToShowInModal(null);
+          }}
+          postContent={postToShowInModal}
+          isGenerating={postToShowInModal === "Generating..."}
+          isSaved={currentCalendarPosts.some(p => p.postIndex === modalPostIndex && p.content === postToShowInModal)}
+          modalPostIndex={modalPostIndex}
+          onSave={(content) => {
+            savePost(content);
+          }}
+          onCopy={copyToClipboard}
+          onUpdateContent={(newContent) => {
+            // Update the parent component's state with the edited content
+            setPostToShowInModal(newContent);
+          }}
+        />
+
+        
         
         {/* Post Modal */}
-        {showPostModal && (
-          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+        {/* {showPostModal && ( */}
+          {/* <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
             <div className="bg-base-100 rounded-lg shadow-xl p-6 max-w-3xl w-full max-h-[90vh] flex flex-col">
               <h2 className="text-xl font-bold mb-4 text-base-content flex-shrink-0">
                 {postToShowInModal && currentCalendarPosts.some(p => p.postIndex === modalPostIndex && p.content === postToShowInModal) 
@@ -649,12 +738,14 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
 
                   {/* markdown  */}
 
-              <div className="flex-grow overflow-y-auto mb-6 pr-2 border rounded-md bg-white p-4">
+              {/* <div className="flex-grow overflow-y-auto mb-6 pr-2 border rounded-md bg-white p-4">
                 {postToShowInModal === "Generating..." 
                   ? <div className="text-center p-10"><span className="loading loading-dots loading-md"></span></div> 
                   : <MarkdownContent content={postToShowInModal || ''} className="prose prose-sm max-w-none" />}
-              </div>
-              <div className="flex-shrink-0 mt-auto flex flex-wrap justify-end gap-2">
+              </div> */}
+              
+              
+              {/* <div className="flex-shrink-0 mt-auto flex flex-wrap justify-end gap-2">
                 <button
                   className="btn btn-ghost btn-sm"
                   onClick={() => { 
@@ -683,9 +774,9 @@ const ContentCalendarTable = ({ calendar, calendarPosts, generatingPostId, handl
                   </button>
                 )}
               </div>
-            </div>
-          </div>
-        )}
+            </div> */}
+          {/* </div>  */}
+        {/* )} */}
       </div>
     );
   }
