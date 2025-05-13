@@ -417,7 +417,7 @@ import { useState, useEffect } from 'react';
 import { format, addDays } from 'date-fns';
 import Link from 'next/link';
 import PostModal from '@/components/PostModal';
-import MarkdownContent from '@/components/MarkdownContent';
+// import MarkdownContent from '@/components/MarkdownContent';
 
 // Helper function from your calendar page
 const calculatePostDate = (startDate, index, postsPerWeek) => {
@@ -916,23 +916,26 @@ const CalendarPreview = () => {
       {/* import PostModal from '@/components/PostModal'; */}
 
 {/* // ... in your component */}
-      <PostModal
-        isOpen={showPostModal}
-        onClose={() => {
-          setShowPostModal(false);
-          setModalPostIndex(null);
-          setPostToShowInModal(null);
-        }}
-        postContent={postToShowInModal}
-        isGenerating={postToShowInModal === "Generating..."}
-        isSaved={currentCalendarPosts.some(p => p.postIndex === modalPostIndex && p.content === postToShowInModal)}
-        modalPostIndex={null} // CalendarPreview doesn't show row numbers
-        onSave={savePost}
-        onCopy={copyToClipboard}
-        title={postToShowInModal && currentCalendarPosts.some(p => p.postIndex === modalPostIndex && p.content === postToShowInModal) 
-          ? "Viewing Saved Post" 
-          : "Generated Post"}
-        />
+          <PostModal
+            isOpen={showPostModal}
+            onClose={() => {
+              setShowPostModal(false);
+              setModalPostIndex(null);
+              setPostToShowInModal(null);
+            }}
+            postContent={postToShowInModal}
+            isGenerating={postToShowInModal === "Generating..."}
+            isSaved={currentCalendarPosts.some(p => p.postIndex === modalPostIndex && p.content === postToShowInModal)}
+            modalPostIndex={modalPostIndex}
+            onSave={(content) => {
+              savePost(content);
+            }}
+            onCopy={copyToClipboard}
+            onUpdateContent={(newContent) => {
+              // Update the parent component's state with the edited content
+              setPostToShowInModal(newContent);
+            }}
+          />
 
 
       {/* {showPostModal && (
