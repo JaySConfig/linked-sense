@@ -8,7 +8,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import MarkdownContent from '@/components/MarkdownContent';
-import OnboardingFlow from '@/components/OnboardingFlow';
+import StrategyChat from '@/components/StrategyChat';
 
 const StrategyPage = () => {
     // Change to remove unused session variable
@@ -158,7 +158,7 @@ const StrategyPage = () => {
                     ">
                         It looks like you haven&apos;t created your LinkedIn strategy yet. Let&apos;s get started!
                     </p>
-                    <OnboardingFlow />
+                    <StrategyChat />
                 </div>
                 )
             )}

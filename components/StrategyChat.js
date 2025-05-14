@@ -289,7 +289,7 @@ export default function StrategyChat() {
             <div 
               className={`max-w-[80%] p-3 rounded-lg ${
                 msg.isUser 
-                  ? "bg-emerald-500 text-white" 
+                  ? "bg-primary text-white" 
                   : "bg-gray-100 text-gray-800"
               }`}
             >
@@ -321,13 +321,13 @@ export default function StrategyChat() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
           placeholder="Type your message..."
-          className="flex-1 p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="flex-1 p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary/90"
           disabled={isLoading}
         />
         <button
           onClick={handleSend}
           disabled={isLoading}
-          className="bg-emerald-500 text-white px-4 py-2 rounded-r-lg hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary"
         >
           Send
         </button>
